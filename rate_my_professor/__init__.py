@@ -125,14 +125,14 @@ class RateMyProfessor:
 
         return teacher
 
-    def search_professor(self, name):
+    def search_teacher(self, name):
         """
-        Searches for a professor based on @name.
-        Returns a dictionary of professor's full name to professor's ID.
+        Searches for a teacher based on @name.
+        Returns a dictionary of teacher's full name to teacher's ID.
         """
         query = gql(
             r"""
-            query SearchProfessors($text: String!, $schoolID: ID!) {
+            query SearchTeacher($text: String!, $schoolID: ID!) {
                 newSearch {
                     teachers(query: {text: $text, schoolID: $schoolID}) {
                         edges {
