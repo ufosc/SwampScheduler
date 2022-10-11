@@ -24,7 +24,7 @@
 - would_take_again -> Will the student take class again
 - quality_rating -> Float value of quality rating
 - clarity_rating -> Float value of clarity rating
-- helpful_rating -> FLoat value of helpful rating
+- helpful_rating -> Float value of helpful rating
 - thumbs_up -> Number of thumbs up received on this rating
 - thumbs_down -> Number of thumbs down received on this rating
 - comment -> Comment by the user
@@ -36,25 +36,30 @@
 ### Search
 
 Searches for teacher based on their name. It returns a dictionary with teacher's full name to teacher's ID.
+
 ```python
 import rate_my_professor
 
 rms = rate_my_professor.RateMyProfessor()
 teacher = rms.search_teacher("John Doe")
-"""
+```
+
+`search_teacher` returns something like this:
+
+```
 {
     "John Doe": "jkdhue#8bcdcj",
     "Johnie Doe": "djfdwdlkdk",
 }
 ```
+
 ### Get Ratings
 
-Gets teacher's rating based on teacher's ID.
+Gets teacher's ratings based on teacher's ID.
+
 ```python
 import rate_my_professor
 
 rms = rate_my_professor.RateMyProfessor()
-teacher = rms.get_teacher_rating("3478Vdhd")
-
-# Returns Teacher dataclass as output.
+teacher = rms.get_teacher_ratings("3478Vdhd")  # Returns Teacher dataclass
 ```

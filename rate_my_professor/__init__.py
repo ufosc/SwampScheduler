@@ -1,10 +1,12 @@
 """ Module to fetch data from RateMyProfessor.com """
 from dataclasses import dataclass
+
 from gql import gql, Client
 from gql.transport.aiohttp import AIOHTTPTransport
 
 _AUTH_TOKEN = "dGVzdDp0ZXN0"
 _UF_SCHOOL_ID = "U2Nob29sLTExMDA="
+
 
 @dataclass
 class Rating:
@@ -25,6 +27,7 @@ class Rating:
     flag_status: str
     grade: str
 
+
 @dataclass
 class Teacher:
     """ Data class for a teacher """
@@ -37,6 +40,7 @@ class Teacher:
     would_take_again_percent: float
     ratings_count: int
     ratings: list[Rating]
+
 
 class RateMyProfessor:
     """ Class to fetch data from RateMyProfessor.com """
