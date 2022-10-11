@@ -7,6 +7,25 @@ _AUTH_TOKEN = "dGVzdDp0ZXN0"
 _UF_SCHOOL_ID = "U2Nob29sLTExMDA="
 
 @dataclass
+class Rating:
+    """ Data class for a rating """
+    class_name: str
+    is_attendance_required: bool
+    is_for_credit: bool
+    is_online: bool
+    is_textbook_required: bool
+    would_take_again: bool
+    quality_rating: float
+    clarity_rating: float
+    difficulty_rating: float
+    helpful_rating: float
+    thumbs_up: int
+    thumbs_down: int
+    comment: str
+    flag_status: str
+    grade: str
+
+@dataclass
 class Teacher:
     """ Data class for a teacher """
     uid: str
@@ -17,6 +36,7 @@ class Teacher:
     would_take_again_count: int
     would_take_again_percent: float
     ratings_count: int
+    ratings: list[Rating]
 
 class RateMyProfessor:
     """ Class to fetch data from RateMyProfessor.com """
@@ -28,8 +48,8 @@ class RateMyProfessor:
         )
         self._client = Client(transport=self._transport, fetch_schema_from_transport=True)
 
-    def get_class_ratings(self, teacher_id):
-        """Returns a classe's ratings based on @teacher_id."""
+    def get_teacher_ratings(self, teacher_id):
+        """Returns a teacher's ratings based on @teacher_id."""
         query = gql(
             r"""
             query TeacherRatingsPageQuery($id: ID!) {
@@ -40,6 +60,27 @@ class RateMyProfessor:
                         wouldTakeAgainCount
                         wouldTakeAgainPercentRounded
                         numRatings
+                        ratings {
+                            edges {
+                                node {
+                                    attendanceMandatory
+                                    clarityRatingRounded
+                                    class
+                                    comment
+                                    difficultyRatingRounded
+                                    flagStatus
+                                    grade
+                                    helpfulRatingRounded
+                                    isForCredit
+                                    isForOnlineClass
+                                    iWouldTakeAgain
+                                    qualityRating
+                                    textbookIsUsed
+                                    thumbsUpTotal
+                                    thumbsDownTotal
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -49,7 +90,7 @@ class RateMyProfessor:
         params = {"id": teacher_id}
         results = self._client.execute(query, variable_values=params)
 
-        return Teacher(
+        teacher = Teacher(
             uid=teacher_id,
             first_name=None,
             last_name=None,
@@ -57,8 +98,32 @@ class RateMyProfessor:
             avg_rating=results["node"]["avgRatingRounded"],
             would_take_again_count=results["node"]["wouldTakeAgainCount"],
             would_take_again_percent=results["node"]["wouldTakeAgainPercentRounded"],
-            ratings_count=results["node"]["numRatings"]
+            ratings_count=results["node"]["numRatings"],
+            ratings=[],
         )
+
+        for element in results["node"]["ratings"]["edges"]:
+            teacher.ratings.append(
+                Rating(
+                    class_name=element["node"]["class"],
+                    is_attendance_required=element["node"]["attendanceMandatory"],
+                    is_for_credit=element["node"]["isForCredit"],
+                    is_online=element["node"]["isForOnlineClass"],
+                    is_textbook_required=element["node"]["textbookIsUsed"],
+                    quality_rating=element["node"]["qualityRating"],
+                    difficulty_rating=element["node"]["difficultyRatingRounded"],
+                    helpful_rating=element["node"]["helpfulRatingRounded"],
+                    comment=element["node"]["comment"],
+                    flag_status=element["node"]["flagStatus"],
+                    grade=element["node"]["grade"],
+                    thumbs_down=element["node"]["thumbsUpTotal"],
+                    thumbs_up=element["node"]["thumbsDownTotal"],
+                    clarity_rating=element["node"]["clarityRatingRounded"],
+                    would_take_again=element["node"]["iWouldTakeAgain"],
+                )
+            )
+
+        return teacher
 
     def search_professor(self, name):
         """
@@ -92,7 +157,3 @@ class RateMyProfessor:
             output[full_name] = element["node"]["id"]
 
         return output
-
-if __name__ == "__main__":
-    rmp = RateMyProfessor()
-    print(rmp.get_class_ratings("VGVhY2hlci0xMjU4NDI2"))
