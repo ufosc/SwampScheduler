@@ -32,8 +32,8 @@ class Rating:
 class Teacher:
     """ Data class for a teacher """
     uid: str
-    first_name: str
-    last_name: str
+    first_name: str | None
+    last_name: str | None
     avg_difficulty: float
     avg_rating: float
     would_take_again_count: int
@@ -129,10 +129,10 @@ class RateMyProfessor:
 
         return teacher
 
-    def search_teacher(self, name):
+    def search_teachers(self, name: str) -> dict:
         """
-        Searches for a teacher based on @name.
-        Returns a dictionary of teacher's full name to teacher's ID.
+        Searches for teachers based on @name.
+        Returns a dictionary that maps a teacher's their ID.
         """
         query = gql(
             r"""
@@ -155,9 +155,9 @@ class RateMyProfessor:
         params = {"text": name, "schoolID": _UF_SCHOOL_ID}
         results = self._client.execute(query, variable_values=params)
 
-        output = {}
-        for element in results["newSearch"]["teachers"]["edges"]:
-            full_name = f"{element['node']['firstName']} {element['node']['lastName']}"
-            output[full_name] = element["node"]["id"]
+        teachers = {}
+        for x in results["newSearch"]["teachers"]["edges"]:
+            full_name = f"{x['node']['firstName']} {x['node']['lastName']}"
+            teachers[full_name] = x["node"]["id"]
 
-        return output
+        return teachers
