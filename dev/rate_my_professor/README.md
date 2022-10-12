@@ -38,7 +38,8 @@
 Searches for teacher based on their name. It returns a dictionary with teacher's full name to teacher's ID.
 
 ```python
-import rate_my_professor
+
+from dev import rate_my_professor
 
 rms = rate_my_professor.RateMyProfessor()
 teacher = rms.search_teachers("John Doe")
@@ -58,7 +59,8 @@ teacher = rms.search_teachers("John Doe")
 Gets teacher's ratings based on teacher's ID.
 
 ```python
-import rate_my_professor
+
+from dev import rate_my_professor
 
 rms = rate_my_professor.RateMyProfessor()
 teacher = rms.get_teacher_ratings("3478Vdhd")  # Returns Teacher dataclass
