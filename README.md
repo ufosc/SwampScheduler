@@ -2,9 +2,7 @@
 
 [![standard-readme compliant](https://img.shields.io/badge/standard--readme-OK-green.svg?style=flat-square)](https://github.com/RichardLitt/standard-readme)
 
-Temp description
-
-TODO: Fill out this long description.
+A website to help students at the University of Florida plan classes for the upcoming semester. 
 
 ## Table of Contents
 
@@ -30,7 +28,7 @@ We're still in the process of setting up the repo but this is what you can do to
 4. Activate the VENV:
     1) From the project root directory run the following command: `.\ScheduleHelperVENV\Scripts\activate`
     2) A pair of parentheses should appear on the left of your terminal to signify when the environent is active
-5. Once activated run `py -m pip install Django==4.1.2`
+5. Once activated run `py -m pip install -r requirements.txt`
 6. You're all set to begin! The django project directory is the `mysite` folder.
 
 ## Usage
