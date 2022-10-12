@@ -41,15 +41,15 @@ Searches for teacher based on their name. It returns a dictionary with teacher's
 import rate_my_professor
 
 rms = rate_my_professor.RateMyProfessor()
-teacher = rms.search_teacher("John Doe")
+teacher = rms.search_teachers("John Doe")
 ```
 
-`search_teacher` returns something like this:
+`search_teachers` returns something like this:
 
 ```
 {
     "John Doe": "jkdhue#8bcdcj",
-    "Johnie Doe": "djfdwdlkdk",
+    "Johnie Doe": "djfdwdlkdk"
 }
 ```
 
