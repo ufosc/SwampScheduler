@@ -25,11 +25,11 @@ We're still in the process of setting up the repo but this is what you can do to
 1. Download and install Python 3.10.7
 2. Setup git and pull the current version of the repo
 3. Create a Python virtual environment (VENV) in your project directory
-   - Open terminal and CD into the root directory of the project (AKA /Schedule_Helper/)
-   - Create a python virtual environment using "py -m venv ScheduleHelperVENV"
+    - Open terminal and CD into the root directory of the project (AKA /Schedule_Helper/)
+    - Create a python virtual environment using "py -m venv ScheduleHelperVENV"
 4. Activate the VENV:
-   1) From the project root directory run the following command: `.\ScheduleHelperVENV\Scripts\activate`
-   2) A pair of parentheses should appear on the left of your terminal to signify when the environent is active
+    1) From the project root directory run the following command: `.\ScheduleHelperVENV\Scripts\activate`
+    2) A pair of parentheses should appear on the left of your terminal to signify when the environent is active
 5. Once activated run `py -m pip install Django==4.1.2`
 6. You're all set to begin! The django project directory is the `mysite` folder.
 
@@ -40,6 +40,7 @@ Placeholder
 ```
 
 ## API
+
 Placeholder
 
 ## Maintainers
@@ -49,9 +50,8 @@ Placeholder
 
 ## Contributing
 
-
-
-Small note: If editing the README, please conform to the [standard-readme](https://github.com/RichardLitt/standard-readme) specification.
+Small note: If editing the README, please conform to
+the [standard-readme](https://github.com/RichardLitt/standard-readme) specification.
 
 ## License
 
