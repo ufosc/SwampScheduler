@@ -2,7 +2,7 @@
 
 [![standard-readme compliant](https://img.shields.io/badge/standard--readme-OK-green.svg?style=flat-square)](https://github.com/RichardLitt/standard-readme)
 
-A website to help students at the University of Florida plan classes for the upcoming semester. 
+A website to help students at the University of Florida plan classes for the upcoming semester.
 
 ## Table of Contents
 
