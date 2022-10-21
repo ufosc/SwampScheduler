@@ -1,0 +1,17 @@
+{
+  "name": "rpm",
+  "private": true,
+  "type": "module",
+  "version": "1.0.0",
+  "description": "A client to RateMyProfessor.com's GraphQL API",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "graphql": "^16.6.0",
+    "graphql-request": "^5.0.0"
+  }
+}
