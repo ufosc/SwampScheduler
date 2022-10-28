@@ -1,11 +1,17 @@
 <script lang="ts">
+    import { slide } from 'svelte/transition';
+
     import CourseCard from './CourseCard.svelte';
-    import { fly, slide, fade, draw, scale, crossfade } from 'svelte/transition';
+
+    interface CourseCardSelector {
+        card_id: number;
+        class_number: string;
+    }
 
     // Next course ID number to use (incremental)
     let course_next_id_number: number = 0;
 
-    let added_cards = [];
+    let added_cards: CourseCardSelector[] = [];
 
     function add_card_on_click() {
         console.log("Adding card " + course_next_id_number);
@@ -13,7 +19,7 @@
         added_cards = [...added_cards,
             {
                 card_id: course_next_id_number,
-                course_id: (Math.random() + 1).toString(36).substring(7).toUpperCase(),
+                class_number: '19039',
             }
         ];
 
