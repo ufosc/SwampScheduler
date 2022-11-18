@@ -1,9 +1,11 @@
 <script lang="ts">
     import {Section} from "../scripts/SOC";
+    import allJSON from '../assets/uf_fall_2022_soc.json'
 
     const getSOCJSON = async () => {
-        let resp = await fetch("https://samkoski.000webhostapp.com/uf_fall_2022_soc.json");
-        return resp.json();
+        // let resp = await fetch("https://samkoski.000webhostapp.com/uf_fall_2022_soc.json");
+        // return resp.json();
+        return allJSON;
     }
 
     const getSections = async () => {
