@@ -1,7 +1,7 @@
 <script lang="ts">
-    import { slide } from 'svelte/transition';
-        
-    import { Section } from "../scripts/soc";
+    import {slide} from 'svelte/transition';
+
+    import {Section} from "../scripts/soc";
     import allJson from '../assets/uf_fall_2022_soc.json';
 
     const getSocJson = async () => {
