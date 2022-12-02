@@ -38,4 +38,4 @@ def get_schedule():
     return jsonify(response.json())
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()
