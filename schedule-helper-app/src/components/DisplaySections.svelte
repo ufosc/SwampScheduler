@@ -1,28 +1,28 @@
 <script lang="ts">
-    import {Section} from "../scripts/SOC";
-    import allJSON from '../assets/uf_fall_2022_soc.json'
+    import {slide} from 'svelte/transition';
 
-    const getSOCJSON = async () => {
+    import {Section} from "../scripts/soc";
+    import allJson from '../assets/uf_fall_2022_soc.json';
+
+    const getSocJson = async () => {
         // let resp = await fetch("https://samkoski.000webhostapp.com/uf_fall_2022_soc.json");
         // return resp.json();
-        return allJSON;
-    }
+        return allJson;
+    };
 
     const getSections = async () => {
-        let socJSON = await getSOCJSON(),
-            sections: Section[] = [];
+        let socJson = await getSocJson();
+        let sections: Section[] = [];
 
-        socJSON.forEach(function (courseJSON) {
-            courseJSON['sections'].forEach(function (sectionJSON) {
-                sections.push(new Section(sectionJSON));
+        socJson.forEach(function (courseJson) {
+            courseJson['sections'].forEach(function (sectionJson) {
+                sections.push(new Section(sectionJson));
             });
         });
         return sections;
-    }
+    };
 
     let sections = getSections();
-
-    import {slide} from 'svelte/transition';
 </script>
 
 {#await sections then sections}
