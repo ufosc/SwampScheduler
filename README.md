@@ -1,31 +1,27 @@
-# Movieholics
+# Schedule Helper
 
-Movieholics is a command-line application built with C++ that recommends different movies depending on a set of parameters. 
-The program takes data from the imdb movie database ```https://datasets.imdbws.com/``` and uses the uses parameters on movie genre,
-rating popularity, and length to give each movie a weight. Once weighted, the movies are sorted by score with both quick sort and merge sort and
-then displayed. The time for each sorting algorithim is also dispalyed.
+A web app to help students at the University of Florida plan classes for the semester.
 
 ## Table of Contents
 
-- [Prerequisites](#Prerequisites)
+- [Usage](#Usage)
+- [Maintainers](#maintainers)
+- [License](#license)
 
-- [Installation](#Installation)
+## Usage
 
+To run the development server locally:
+- `cd schedule-helper-app`
+- `npm install`
+- `npm run dev`
 
-## Prerequisites
+`npm run build` will build the app to `./dist`.
 
-(NOTE: All prerequisite instructions are for windows only)
+## Maintainers
 
-- MinGW or some other form of C++ devlopment envrionment
-    * Download here: https://sourceforge.net/projects/mingw/
-    * add MinGW path to PATH variable
+- [Robert Conde](https://github.com/RobertConde)
+- [Brian Nielsen](https://github.com/bnielsen1)
 
-- Make (MinGW's make is recommended)
-    - To install mingw make run ```mingw-get install mingw32-make```
-## Installation
+## License
 
-- Open a command line and enter the root directory of the repo
-
-- Run ```make``` or ```mingw32-make``` depending on your make installation
-
-- Run the Movieholics.exe using ```./Movieholics.exe```
+GNU Affero General Public License v3.0 - Robert Conde
