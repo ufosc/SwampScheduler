@@ -2,12 +2,10 @@
     import {slide} from 'svelte/transition';
 
     import {Section} from "../scripts/soc";
-    import allJson from '../assets/uf_fall_2022_soc.json';
 
     const getSocJson = async () => {
-        // let resp = await fetch("https://samkoski.000webhostapp.com/uf_fall_2022_soc.json");
-        // return resp.json();
-        return allJson;
+        let resp = await fetch("https://github.com/ufosc/Schedule_Helper/raw/main/dev/schedule_of_courses/soc_scraped.json");
+        return resp.json();
     };
 
     const getSections = async () => {
