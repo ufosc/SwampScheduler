@@ -56,7 +56,7 @@ def fetch_soc(term: str, category: str, last_control_number: int = 0, num_result
 
 if __name__ == "__main__":
     print('Fetching SOC...', end=' ')
-    soc_scraped = fetch_soc('2228', 'CWSP')  # Scrape the schedule of courses for Fall 2022 (On-campus)
+    soc_scraped = fetch_soc('2231', 'CWSP')  # Scrape the schedule of courses for Fall 2022 (On-campus)
     print('DONE')
 
     print("'Converting to JSON and writing to 'soc_scraped.json'...", end=' ')
