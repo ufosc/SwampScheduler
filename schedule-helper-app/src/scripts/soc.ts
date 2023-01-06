@@ -1,16 +1,19 @@
 export class MeetTime {
-    days: string[];
     periodBegin: number;
     periodEnd: number;
     bldg: string;
     room: string;
 
     constructor(meetTimeJSON) {
-        this.days = meetTimeJSON['meetDays'];
         this.periodBegin = meetTimeJSON['meetPeriodBegin'];
         this.periodEnd = meetTimeJSON['meetPeriodEnd'];
         this.bldg = meetTimeJSON['meetBuilding'];
         this.room = meetTimeJSON['meetRoom'];
+    }
+
+    conflictsWith(other: MeetTime) {
+        return (this.periodBegin <= other.periodEnd)
+            && (other.periodBegin <= this.periodEnd);
     }
 }
 
@@ -19,18 +22,40 @@ export class Section {
     courseCode: string;
     displayName: string;
     instructors: string[] = [];
-    meetTimes: MeetTime[] = [];
+    meetTimes: Map<string, MeetTime[]> = new Map(
+        [
+            ["M", []],
+            ["T", []],
+            ["W", []],
+            ["R", []],
+            ["F", []],
+            ["S", []]
+        ]
+    );
     finalExamDate: string;
 
     constructor(sectionJSON, courseCode) {
         this.number = sectionJSON['classNumber'];
         this.courseCode = courseCode;
         this.displayName = sectionJSON['display'];
-        for (let [, x] of sectionJSON['instructors'].entries())
+        for (const [, x] of sectionJSON['instructors'].entries())
             this.instructors.push(x['name']);
-        for (let [, x] of sectionJSON['meetTimes'].entries())
-            this.meetTimes.push(new MeetTime(x));
+        for (const [, x] of sectionJSON['meetTimes'].entries()) { // Go through meetTimes
+            for (const day of x['meetDays']) // Add a MeetTime for each day with the same schedule
+                this.meetTimes.get(day).push(new MeetTime(x));
+        }
         this.finalExamDate = sectionJSON['finalExam'];
+    }
+
+    conflictsWith(other: Section) {
+        // Make sure none of the meet times for each day don't conflict
+        for (const day of this.meetTimes.keys()) {
+            for (const mt1 of this.meetTimes.get(day))
+                for (const mt2 of other.meetTimes.get(day))
+                    if (mt1.conflictsWith(mt2))
+                        return true;
+        }
+        return false;
     }
 }
 
