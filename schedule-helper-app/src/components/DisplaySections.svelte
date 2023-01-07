@@ -16,6 +16,13 @@
         coursesToDisplay.push(await (await soc).getCourse("MAP2302"));
         coursesToDisplay.push(await (await soc).getCourse("MHF3202"));
 
+        let combinations = 1;
+        for (const c of coursesToDisplay) {
+            console.log(c.sections.length);
+            combinations *= c.sections.length;
+        }
+        console.log("# of Combinations = " + combinations);
+
         return coursesToDisplay;
     }
 
