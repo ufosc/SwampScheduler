@@ -2,7 +2,6 @@ import {Section, SOC} from "./soc";
 
 export class Generator {
     soc: SOC;
-    // selections: Map<string, Section[]>;
     selections: Array<Section[]>;
 
     private constructor(soc: SOC) {
