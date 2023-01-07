@@ -17,34 +17,25 @@ export class Generator {
         this.selections = selections;
     }
 
-    async loadExampleSelections() {
-        this.selections = [];
-        this.selections.push((await this.soc.getCourse("CDA3101")).sections);
-        this.selections.push((await this.soc.getCourse("COP3530")).sections);
-        this.selections.push((await this.soc.getCourse("ENC3246")).sections);
-        this.selections.push((await this.soc.getCourse("MAP2302")).sections);
-        this.selections.push((await this.soc.getCourse("MHF3202")).sections);
-    }
-
-    async generateSchedules(courseInd: number = 0, schedule: Section[] = [], schedules: Array<Section[]> = []) {
+    async generateSchedules(selectionInd: number = 0, currSchedule: Section[] = [], schedules: Array<Section[]> = []) {
         // Return if schedule is complete
-        if (courseInd == this.selections.length) {
-            schedules.push(schedule);
+        if (selectionInd == this.selections.length) {
+            schedules.push(currSchedule);
             return schedules;
         }
 
-        // Go through all the sections for the course, see if it fits the schedule so far
-        let sections: Section[] = this.selections[courseInd];
+        // Go through all the sections for the selection, see if it fits the schedule so far
+        let sections: Section[] = this.selections[selectionInd];
         for (const tryToAdd of sections) {
             let fitsSchedule = true;
-            for (const s of schedule)
+            for (const s of currSchedule)
                 if (tryToAdd.conflictsWith(s)) {
                     fitsSchedule = false;
                     break;
                 }
 
             if (fitsSchedule)
-                await this.generateSchedules(courseInd + 1, [...schedule, tryToAdd], schedules);
+                await this.generateSchedules(selectionInd + 1, [...currSchedule, tryToAdd], schedules);
         }
         return schedules;
     }

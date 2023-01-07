@@ -19,7 +19,7 @@ export class MeetTime {
 
 export class Section {
     number: number;
-    courseCode: string;
+    courseCode: string; // Only for display
     displayName: string;
     instructors: string[] = [];
     meetTimes: Map<string, MeetTime[]> = new Map(
@@ -102,29 +102,55 @@ export class SOC {
         return new SOC(courses); // Return the SOC
     }
 
-    async getCourse(courseCode: string): Promise<Course> {
-        for (const c of this.courses)
-            if (c.code == courseCode)
-                return c;
-        return null;
+    /**
+     * Used to get a course from the SOC.
+     * @param uid -- The course's index in the SOC.
+     * @returns A promise for the course; undefined if it doesn't exist.
+     */
+    async getCourseByUID(uid: number): Promise<Course> {
+        return this.courses.at(uid);
     }
 
+    /**
+     * Used to get the course that a section belongs to.
+     * @param section -- A `Section` object
+     * @returns A promise for the course; undefined if it doesn't exist.
+     */
+    async getCourseBySection(section: Section): Promise<Course> {
+        for (const c of this.courses) {
+            for (const s of c.sections)
+                if (s == section)
+                    return c;
+        }
+        return undefined;
+    }
+
+
+    /* TESTING */
+
+    /**
+     * Note: Course codes are NOT unique! This should only be used for testing purposes.
+     * @param courseCode -- Ex. COT3100 (not case-sensitive)
+     * @returns A promise for the first matching course; undefined if one doesn't exist.
+     */
+    async getCourse(courseCode: string): Promise<Course> {
+        for (const c of this.courses)
+            if (c.code == courseCode.toUpperCase())
+                return c;
+        return undefined;
+    }
+
+    /**
+     * Note: Section numbers are NOT unique! This should only be used for testing purposes.
+     * @param sectionNum -- Ex. 11490
+     * @returns A promise for the first matching section; undefined if one doesn't exist.
+     */
     async getSection(sectionNum: number): Promise<Section> {
         for (const c of this.courses) {
             for (const s of c.sections)
                 if (s.number == sectionNum)
                     return s;
         }
-        return null;
-    }
-
-    async getCourseSection(sectionNum: number, courseCode: string) {
-        let c = await this.getCourse(courseCode);
-        if (c != null) {
-            for (const s of c.sections)
-                if (s.number == sectionNum)
-                    return s;
-        }
-        return null;
+        return undefined;
     }
 }
