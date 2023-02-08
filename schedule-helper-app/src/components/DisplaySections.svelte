@@ -4,7 +4,7 @@
     import {Course, Section, SOC} from "../scripts/soc";
     import {Generator} from "../scripts/generator";
 
-    let soc = SOC.fetchSOC("https://tinyurl.com/uf-soc-scraped");
+    let soc = SOC.fetchSOC("https://raw.githubusercontent.com/ufosc/Schedule_Helper/main/dev/schedule_of_courses/soc_scraped.json");
 
     async function getCoursesToDisplay() {
         let coursesToDisplay: Course[] = [];
