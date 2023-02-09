@@ -11,9 +11,9 @@ A web app to help students at the University of Florida plan classes for the sem
 ## Usage
 
 To run the development server locally:
-- `cd schedule-helper-app`
+- `cd app`
 - `npm install`
-- `npm run dev`
+- `npm run start`
 
 `npm run build` will build the app to `./dist`.
 
