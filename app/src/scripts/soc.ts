@@ -126,7 +126,7 @@ export class SOC {
     async getCourseBySection(section: Section): Promise<Course> {
         for (const c of this.courses) {
             for (const s of c.sections)
-                if (s == section)
+                if (s === section)
                     return c;
         }
         return undefined;
@@ -142,7 +142,7 @@ export class SOC {
      */
     async getCourse(courseCode: string): Promise<Course> {
         for (const c of this.courses)
-            if (c.code == courseCode.toUpperCase())
+            if (c.code === courseCode.toUpperCase())
                 return c;
         return undefined;
     }
@@ -155,7 +155,7 @@ export class SOC {
     async getSection(sectionNum: number): Promise<Section> {
         for (const c of this.courses) {
             for (const s of c.sections)
-                if (s.number == sectionNum)
+                if (s.number === sectionNum)
                     return s;
         }
         return undefined;
