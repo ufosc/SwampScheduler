@@ -27,7 +27,7 @@ export default class MainDisplay extends Component<{}, myStates> {
   }
 
   async componentDidMount(): Promise<any> {
-    let soc = await SOC.fetchSOC('https://tinyurl.com/uf-soc-scraped')
+    let soc = await SOC.fetchSOC('https://raw.githubusercontent.com/ufosc/Schedule_Helper/main/dev/schedule_of_courses/soc_scraped.json')
     
     let coursesToDisplay: Course[] = [];
     coursesToDisplay.push(await (await soc).getCourse("CDA3101"));
