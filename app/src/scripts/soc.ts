@@ -1,32 +1,27 @@
-export class MeetTime {
-    periodBegin: number;
-    periodEnd: number;
-    bldg: string;
-    room: string;
-
-    constructor(meetTimeJSON) {
-        this.periodBegin = meetTimeJSON['meetPeriodBegin'];
-        this.periodEnd = meetTimeJSON['meetPeriodEnd'];
-        this.bldg = meetTimeJSON['meetBuilding'];
-        this.room = meetTimeJSON['meetRoom'];
-    }
-
-    conflictsWith(other: MeetTime) {
-        return (this.periodBegin <= other.periodEnd)
-            && (other.periodBegin <= this.periodEnd);
-    }
+enum Day {
+    M, T, W, R, F, S
 }
 
-class Meetings extends Map<string, MeetTime[]> {
-    constructor() {
-        super([
-            ["M", []],
-            ["T", []],
-            ["W", []],
-            ["R", []],
-            ["F", []],
-            ["S", []]
-        ]);
+enum Period {
+    P1, P2, P3, P4, P5, P6, P7, P8, P9, P10, P11, E1, E2, E3
+}
+
+// The set of periods in a week through the Day x Period Cartesian product
+export class MeetTime {
+    day: Day;
+    start_period: Period;
+    end_period: Period;
+
+    constructor(day: Day, start_period: Period, end_period: Period) {
+        this.day = day;
+        this.start_period = start_period;
+        this.end_period = end_period;
+    }
+
+    conflictsWith(other: MeetTime): boolean {
+        return this.day == other.day
+            && this.start_period <= other.end_period
+            && other.start_period <= this.end_period;
     }
 }
 
@@ -35,32 +30,47 @@ export class Section {
     courseCode: string; // Only for display
     displayName: string;
     instructors: string[];
-    meetTimes: Meetings;
+    meetTimes: MeetTime[];
     finalExamDate: string;
 
     constructor(sectionJSON, courseCode) {
         this.number = sectionJSON['classNumber'];
         this.courseCode = courseCode;
         this.displayName = sectionJSON['display'];
+
+        // Parse instructors 
         this.instructors = [];
-        this.meetTimes = new Meetings();
-        for (const [, x] of sectionJSON['instructors'].entries())
-            this.instructors.push(x['name']);
-        for (const [, x] of sectionJSON['meetTimes'].entries()) { // Go through meetTimes
-            for (const day of x['meetDays']) // Add a MeetTime for each day with the same schedule
-                this.meetTimes.get(day).push(new MeetTime(x));
+        for (const [, instructorJSON] of sectionJSON['instructors'].entries())
+            this.instructors.push(instructorJSON['name']);
+
+        // Parse meeting times
+        this.meetTimes = [];
+        for (const [, meetTimeJSON] of sectionJSON['meetTimes'].entries()) {
+            // Add a MeetTime for each day 
+            let start_period = Period[meetTimeJSON['startPeriod']];
+            let end_period = Period[meetTimeJSON['endPeriod']];
+
+            if (!start_period.startsWith['E']) start_period = 'P' + start_period;
+            if (!end_period.startsWith['E']) end_period = 'P' + end_period;
+
+            this.meetTimes.push(new MeetTime(
+                Day[meetTimeJSON['day'] as keyof typeof Day],
+                Period[start_period as keyof typeof Period],
+                Period[end_period as keyof typeof Period]
+            ))
+
         }
         this.finalExamDate = sectionJSON['finalExam'];
     }
 
-    conflictsWith(other: Section) {
-        // Make sure none of the meet times for each day don't conflict
-        for (const day of this.meetTimes.keys()) {
-            for (const mt1 of this.meetTimes.get(day))
-                for (const mt2 of other.meetTimes.get(day))
-                    if (mt1.conflictsWith(mt2))
-                        return true;
-        }
+    conflictsWith(other: Section): boolean {
+        return this.conflictsWithTimes(other.meetTimes);
+    }
+
+    conflictsWithTimes(times: MeetTime[]): boolean {
+        for (const meetTime of this.meetTimes)
+            for (const otherTime of times)
+                if (meetTime.conflictsWith(otherTime)) return true; 
         return false;
     }
 }
