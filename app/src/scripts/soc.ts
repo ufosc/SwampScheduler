@@ -9,19 +9,19 @@ enum Period {
 // The set of periods in a week through the Day x Period Cartesian product
 export class MeetTime {
     day: Day;
-    start_period: Period;
-    end_period: Period;
+    periodBegin: Period;
+    periodEnd: Period;
 
-    constructor(day: Day, start_period: Period, end_period: Period) {
+    constructor(day: Day, periodBegin: Period, periodEnd: Period) {
         this.day = day;
-        this.start_period = start_period;
-        this.end_period = end_period;
+        this.periodBegin = periodBegin;
+        this.periodEnd = periodEnd;
     }
 
     conflictsWith(other: MeetTime): boolean {
         return this.day == other.day
-            && this.start_period <= other.end_period
-            && other.start_period <= this.end_period;
+            && this.periodBegin <= other.periodEnd
+            && other.periodBegin <= this.periodEnd;
     }
 }
 
@@ -47,16 +47,16 @@ export class Section {
         this.meetTimes = [];
         for (const [, meetTimeJSON] of sectionJSON['meetTimes'].entries()) {
             // Add a MeetTime for each day 
-            let start_period = Period[meetTimeJSON['startPeriod']];
-            let end_period = Period[meetTimeJSON['endPeriod']];
+            let periodBegin = Period[meetTimeJSON['meetPeriodBegin']];
+            let periodEnd = Period[meetTimeJSON['meetPeriodEnd']];
 
-            if (!start_period.startsWith['E']) start_period = 'P' + start_period;
-            if (!end_period.startsWith['E']) end_period = 'P' + end_period;
+            if (!periodBegin.startsWith['E']) periodBegin = 'P' + periodBegin;
+            if (!periodEnd.startsWith['E']) periodEnd = 'P' + periodEnd;
 
             this.meetTimes.push(new MeetTime(
                 Day[meetTimeJSON['day'] as keyof typeof Day],
-                Period[start_period as keyof typeof Period],
-                Period[end_period as keyof typeof Period]
+                Period[periodBegin as keyof typeof Period],
+                Period[periodEnd as keyof typeof Period]
             ))
 
         }
