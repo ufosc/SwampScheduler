@@ -47,8 +47,8 @@ export class Section {
         this.meetTimes = [];
         for (const [, meetTimeJSON] of sectionJSON['meetTimes'].entries()) {
             // Add a MeetTime for each day 
-            let periodBegin = Period[meetTimeJSON['meetPeriodBegin']];
-            let periodEnd = Period[meetTimeJSON['meetPeriodEnd']];
+            let periodBegin = meetTimeJSON['meetPeriodBegin'];
+            let periodEnd = meetTimeJSON['meetPeriodEnd'];
 
             if (!periodBegin.startsWith['E']) periodBegin = 'P' + periodBegin;
             if (!periodEnd.startsWith['E']) periodEnd = 'P' + periodEnd;
