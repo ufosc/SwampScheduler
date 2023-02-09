@@ -17,27 +17,33 @@ export class MeetTime {
     }
 }
 
-export class Section {
-    number: number;
-    courseCode: string; // Only for display
-    displayName: string;
-    instructors: string[] = [];
-    meetTimes: Map<string, MeetTime[]> = new Map(
-        [
+class Meetings extends Map<string, MeetTime[]> {
+    constructor() {
+        super([
             ["M", []],
             ["T", []],
             ["W", []],
             ["R", []],
             ["F", []],
             ["S", []]
-        ]
-    );
+        ]);
+    }
+}
+
+export class Section {
+    number: number;
+    courseCode: string; // Only for display
+    displayName: string;
+    instructors: string[];
+    meetTimes: Meetings;
     finalExamDate: string;
 
     constructor(sectionJSON, courseCode) {
         this.number = sectionJSON['classNumber'];
         this.courseCode = courseCode;
         this.displayName = sectionJSON['display'];
+        this.instructors = [];
+        this.meetTimes = new Meetings();
         for (const [, x] of sectionJSON['instructors'].entries())
             this.instructors.push(x['name']);
         for (const [, x] of sectionJSON['meetTimes'].entries()) { // Go through meetTimes
@@ -65,7 +71,7 @@ export class Course {
     name: string;
     description: string;
     prerequisites: string;
-    sections: Section[] = [];
+    sections: Section[];
 
     constructor(courseJSON) {
         this.code = courseJSON['code'];
@@ -73,11 +79,12 @@ export class Course {
         this.name = courseJSON['name'];
         this.description = courseJSON['description'];
         this.prerequisites = courseJSON['prerequisites'];
+        this.sections = [];
     }
 }
 
 export class SOC {
-    courses: Course[] = [];
+    courses: Course[];
 
     private constructor(courses) {
         this.courses = courses;
