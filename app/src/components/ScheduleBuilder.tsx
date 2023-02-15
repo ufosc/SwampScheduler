@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import {Course, Section, SOC} from "../scripts/soc";
 import {Generator} from "../scripts/generator";
 import Button from '@mui/material/Button';
+import CircularProgress from '@mui/material/CircularProgress';
 import { TextField } from '@mui/material';
 import MainDisplay from './MainDisplay';
 
@@ -10,7 +11,7 @@ export default function ScheduleBuilder(props: any) {
 
     const [courses, setCourses] = useState([]);
     const [searchText, setSearchText] = useState("");
-    const [soc, setSOC] = useState<SOC>();
+    const [soc, setSOC] = useState<SOC>(null);
 
     useEffect(() => {
         async function fetchData() {
@@ -50,6 +51,15 @@ export default function ScheduleBuilder(props: any) {
         setCourses(coursesToDisplay);
     
         return coursesToDisplay;
+    }
+
+    if (soc === null) {
+        return (
+            <div>
+                <h1>Loading SOC...</h1>
+                <CircularProgress />
+            </div>
+        )
     }
 
     return (
