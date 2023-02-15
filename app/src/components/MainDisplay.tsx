@@ -1,13 +1,21 @@
 import React from 'react';
 import {Component} from 'react';
 import {Course, SOC} from "../scripts/soc";
+import IconButton from '@mui/material/IconButton';
+import Button from '@mui/material/Button';
+import DeleteIcon from '@mui/icons-material/Delete';
 import CircularProgress from '@mui/material/CircularProgress';
 
 type myStates = {
     current_courses: Course[];
 }
 
-export default class MainDisplay extends Component<{}, myStates> {
+type myProps = {
+    courses: Course[];
+    handleDelete: (course: Course) => void;
+}
+
+export default class MainDisplay extends Component<myProps, myStates> {
     constructor(props: any) {
         super(props);
         this.state = {
@@ -15,26 +23,10 @@ export default class MainDisplay extends Component<{}, myStates> {
         }
     }
 
-    async componentDidMount(): Promise<any> {
-        let soc = await SOC.fetchSOC('https://raw.githubusercontent.com/ufosc/Schedule_Helper/main/dev/schedule_of_courses/soc_scraped.json')
-
-        let coursesToDisplay: Course[] = [];
-        coursesToDisplay.push(await (await soc).getCourse("CDA3101"));
-        coursesToDisplay.push(await (await soc).getCourse("COP3530"));
-        coursesToDisplay.push(await (await soc).getCourse("ENC3246"));
-        coursesToDisplay.push(await (await soc).getCourse("MAP2302"));
-        coursesToDisplay.push(await (await soc).getCourse("MHF3202"));
-
-        let combinations = 1;
-        for (const c of coursesToDisplay) {
-            console.log(c.sections.length);
-            combinations *= c.sections.length;
+    componentDidUpdate(prevProps: Readonly<{}>, prevState: Readonly<myStates>, snapshot?: any): void {
+        if (this.props !== prevProps) {
+            this.setState({current_courses: this.props.courses});
         }
-        console.log("# of Combinations = " + combinations);
-
-        this.setState({current_courses: coursesToDisplay});
-
-        return coursesToDisplay;
     }
 
     render() {
@@ -58,6 +50,9 @@ export default class MainDisplay extends Component<{}, myStates> {
                 <div className="mb-3"> {/* COURSES */}
                     {/* Course Information */}
                     <p className="mx-4 text-xl text-slate-700 underline"><b>{course.code}</b> {course.name}</p>
+                    <Button onClick={() => this.props.handleDelete(course)}>
+                        delete
+                    </Button>
                     <div className="mx-5">
                         <p className="text-slate-700">{course.description}</p>
                     </div>
@@ -73,9 +68,7 @@ export default class MainDisplay extends Component<{}, myStates> {
         if (courses.length === 0) {
             return (
                 <>
-                    <b>Loading Courses...</b>
-                    <br/>
-                    <CircularProgress/>
+                    <b>No courses, add a course...</b>
                 </>
             );
         } else {
