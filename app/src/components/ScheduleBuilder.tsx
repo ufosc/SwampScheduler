@@ -33,24 +33,26 @@ export default function ScheduleBuilder(props: any) {
     
         let coursesToDisplay: Course[] = courses;
         let course = await (await soc).getCourse(searchText);
-        if (course != undefined) {
-            coursesToDisplay.push(await course);
+        if (course == undefined) {
+            console.log("Course not found");
+            
+        }
+        else if (coursesToDisplay.find(c => c.code === course.code) !== undefined)
+        {
+            console.log("Course already added");
         }
         else
         {
-            console.log("Course not found");
+            coursesToDisplay.push(await course);
+            let combinations = 1;
+            for (const c of coursesToDisplay) {
+                console.log(c.sections.length);
+                combinations *= c.sections.length;
+            }
+            console.log("# of Combinations = " + combinations);
+            console.log(coursesToDisplay);
+            setCourses(coursesToDisplay);
         }
-
-        let combinations = 1;
-        for (const c of coursesToDisplay) {
-            console.log(c.sections.length);
-            combinations *= c.sections.length;
-        }
-        console.log("# of Combinations = " + combinations);
-        console.log(coursesToDisplay);
-        setCourses(coursesToDisplay);
-    
-        return coursesToDisplay;
     }
 
     if (soc === null) {
