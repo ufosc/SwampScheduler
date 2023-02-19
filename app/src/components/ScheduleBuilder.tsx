@@ -1,87 +1,80 @@
-import React from 'react';
-import { useEffect, useState } from 'react';
-import {Course, Section, SOC} from "../scripts/soc";
-import {Generator} from "../scripts/generator";
-import Button from '@mui/material/Button';
-import CircularProgress from '@mui/material/CircularProgress';
-import { TextField } from '@mui/material';
-import MainDisplay from './MainDisplay';
+import React, {Component} from 'react';
+import {Course, SOC} from "../scripts/soc";
+import MultipleCourseDisplay from "./MultipleCourseDisplay";
 
-export default function ScheduleBuilder(props: any) {
+type propType = {}
 
-    const [courses, setCourses] = useState([]);
-    const [searchText, setSearchText] = useState("");
-    const [soc, setSOC] = useState<SOC>(null);
+type stateType = {
+    courses: Course[];
+    searchText: string;
+    soc: SOC;
+}
 
-    useEffect(() => {
-        async function fetchData() {
-            let soc = await SOC.fetchSOC('https://tinyurl.com/uf-soc-scraped');
-            setSOC(soc);
-        }
-        fetchData();
-    });
+export default class ScheduleBuilder extends Component<propType, stateType> {
+    constructor(props: propType) {
+        super(props);
+        this.state = {
+            courses: [],
+            searchText: "",
+            soc: null
+        };
+    }
 
-    const handleDelete = (course: Course) => {
+    componentDidMount() {
+        SOC.fetchSOC('https://raw.githubusercontent.com/ufosc/Schedule_Helper/main/dev/schedule_of_courses/soc_scraped.json')
+            .then(soc => this.setState({soc: soc}))
+    }
+
+    handleDelete = (course: Course) => {
         console.log("Deleting " + course.code);
-        let coursesToDisplay: Course[] = courses;
-        coursesToDisplay = coursesToDisplay.filter((c) => c.code !== course.code);
-        setCourses(coursesToDisplay);
+        this.setState({courses: this.state.courses.filter((c) => c !== course)});
     }
 
-    const handleSubmit = async (event: any) => {
+    handleSubmit = async (event) => {
         event.preventDefault();
-    
-        let coursesToDisplay: Course[] = courses;
-        let course = await (await soc).getCourse(searchText);
-        if (course == undefined) {
+
+        let course: Course = await (this.state.soc).getCourse(this.state.searchText);
+
+        if (course == undefined)
             console.log("Course not found");
-            
-        }
-        else if (coursesToDisplay.find(c => c.code === course.code) !== undefined)
-        {
+        else if (this.state.courses.find((c) => c === course) !== undefined)
             console.log("Course already added");
-        }
-        else
-        {
-            coursesToDisplay.push(await course);
-            let combinations = 1;
-            for (const c of coursesToDisplay) {
-                console.log(c.sections.length);
-                combinations *= c.sections.length;
-            }
-            console.log("# of Combinations = " + combinations);
-            console.log(coursesToDisplay);
-            setCourses(coursesToDisplay);
+        else {
+            this.setState({courses: [...this.state.courses, course]})
+            console.log(this.state.courses)
         }
     }
 
-    if (soc === null) {
+    render() {
+        if (this.state.soc === null) {
+            return (
+                <div>
+                    <h1>Loading SOC...</h1>
+                </div>
+            )
+        }
+
         return (
-            <div>
-                <h1>Loading SOC...</h1>
-                <CircularProgress />
+            <div className={"m-4"}>
+                <p className="text-2xl text-slate-700 mb-2">Schedule Helper 📆</p>
+
+                <form onSubmit={this.handleSubmit}>
+                    <div>
+                        <input type={"text"}
+                               className={"bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5"}
+                               onChange={(event) => this.setState({searchText: event.target.value})}></input>
+
+                        <button type="submit"
+                                className="m-1 top-0 right-0 p-2.5 text-sm font-medium text-white bg-blue-700 rounded-r-lg rounded-l-lg border border-blue-700 ">
+                            Add
+                        </button>
+                    </div>
+                </form>
+
+                <hr className={"my-1.5"}></hr>
+
+                <MultipleCourseDisplay courses={this.state.courses} handleDelete={this.handleDelete}/>
             </div>
-        )
+        );
     }
-
-    return (
-        <>
-            <div>
-                <h1>Schedule Builder</h1>
-            </div>
-            <form onSubmit={handleSubmit}>
-                <TextField
-                    onChange={(event) => setSearchText(event.target.value)}
-                    value={searchText}
-                    label="Search"
-                    variant="outlined"
-                />
-                <Button type="submit" variant='contained'>
-                    Add
-                </Button>
-                <MainDisplay courses={courses} handleDelete={handleDelete}/>
-            </form>
-        </>
-
-    )
 }
