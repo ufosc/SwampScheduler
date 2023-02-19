@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import MainDisplay from './components/MainDisplay';
 import reportWebVitals from './reportWebVitals';
 import ScheduleBuilder from './components/ScheduleBuilder';
 
