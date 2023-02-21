@@ -62,8 +62,10 @@ export default class ScheduleBuilder extends Component<propType, stateType> {
         else if (this.state.courses.find((c) => c === course) !== undefined)
             console.log("Course already added");
         else {
-            this.setState({courses: [...this.state.courses, course]})
-            console.log(this.state.courses)
+            this.setState({courses: [...this.state.courses, course]}, () => {
+                console.log(this.state.courses);
+            });
+
         }
     }
 
