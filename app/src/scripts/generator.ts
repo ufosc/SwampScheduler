@@ -1,23 +1,24 @@
 import {Section, SOC} from "./soc";
 
+export class Selection extends Array<Section> {
+}
+
+export class Schedule extends Array<Section> {
+}
+
 export class Generator {
     soc: SOC;
-    selections: Array<Section[]>;
+    selections: Selection[];
 
-    private constructor(soc: SOC) {
+    constructor(soc: SOC) {
         this.soc = soc;
     }
 
-    static async createGenerator(soc_url: string) {
-        let soc = await SOC.fetchSOC(soc_url);
-        return new Generator(soc);
-    }
-
-    loadSelections(selections: Array<Section[]>) {
+    loadSelections(selections: Selection[]) {
         this.selections = selections;
     }
 
-    async generateSchedules(selectionInd: number = 0, currSchedule: Section[] = [], schedules: Array<Section[]> = []) {
+    async generateSchedules(selectionInd: number = 0, currSchedule: Schedule = [], schedules: Schedule[] = []): Promise<Schedule[]> {
         // Return if schedule is complete
         if (selectionInd == this.selections.length) {
             schedules.push(currSchedule);
@@ -25,17 +26,17 @@ export class Generator {
         }
 
         // Go through all the sections for the selection, see if it fits the schedule so far
-        let sections: Section[] = this.selections[selectionInd];
-        for (const tryToAdd of sections) {
+        let selection: Selection = this.selections[selectionInd];
+        for (const sectionToAdd of selection) {
             let fitsSchedule = true;
-            for (const s of currSchedule)
-                if (tryToAdd.conflictsWith(s)) {
+            for (const sec of currSchedule)
+                if (sectionToAdd.conflictsWith(sec)) {
                     fitsSchedule = false;
                     break;
                 }
 
             if (fitsSchedule)
-                await this.generateSchedules(selectionInd + 1, [...currSchedule, tryToAdd], schedules);
+                await this.generateSchedules(selectionInd + 1, [...currSchedule, sectionToAdd], schedules);
         }
         return schedules;
     }

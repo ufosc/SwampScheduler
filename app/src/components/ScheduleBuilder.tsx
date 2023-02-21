@@ -1,13 +1,16 @@
 import React, {Component} from 'react';
 import {Course, SOC} from "../scripts/soc";
 import MultipleCourseDisplay from "./MultipleCourseDisplay";
+import {Generator, Schedule, Selection} from "../scripts/generator";
 
 type propType = {}
 
 type stateType = {
-    courses: Course[];
-    searchText: string;
-    soc: SOC;
+    courses: Course[],
+    searchText: string,
+    soc: SOC,
+    generator: Generator
+    schedules: Schedule[]
 }
 
 export default class ScheduleBuilder extends Component<propType, stateType> {
@@ -16,13 +19,32 @@ export default class ScheduleBuilder extends Component<propType, stateType> {
         this.state = {
             courses: [],
             searchText: "",
-            soc: null
+            soc: null,
+            generator: null,
+            schedules: []
         };
     }
 
     componentDidMount() {
         SOC.fetchSOC('https://raw.githubusercontent.com/ufosc/Schedule_Helper/main/dev/schedule_of_courses/soc_scraped.json')
-            .then(soc => this.setState({soc: soc}))
+            .then(soc => this.setState({soc: soc, generator: new Generator(soc)}));
+    }
+
+    componentDidUpdate(prevProps: Readonly<propType>, prevState: Readonly<stateType>) {
+        if (prevState.courses != this.state.courses) {
+            // TODO: allow for specific sections in a selection (not just whole courses)
+            let selections: Selection[] = this.state.courses.map(
+                (course: Course) => {
+                    return course.sections;
+                }
+            );
+
+            this.state.generator.loadSelections(selections);
+            this.state.generator.generateSchedules()
+                .then((schedules: Schedule[]) => this.setState({schedules: schedules}));
+        }
+        if (prevState.schedules != this.state.schedules)
+            console.log(this.state.schedules);
     }
 
     handleDelete = (course: Course) => {
