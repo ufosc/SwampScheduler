@@ -119,6 +119,18 @@ export class SOC {
     }
 
     /**
+     * Used to get a UID from a course from the SOC.
+     * @param course -- A `Course` object.
+     * @returns A promise for the UID; undefined if it doesn't exist.
+     */
+    async getUIDByCourse(course: Course): Promise<number> {
+        for (const [key, item] of this.courses.entries())
+            if (item === course)
+                return key;
+        return null;
+    }
+
+    /**
      * Used to get the course that a section belongs to.
      * @param section -- A `Section` object
      * @returns A promise for the course; null if it doesn't exist.
