@@ -122,16 +122,16 @@ export class SOC {
     /**
      * Used to get a course from the SOC.
      * @param uid -- The course's index in the SOC.
-     * @returns A promise for the course; undefined if it doesn't exist.
+     * @returns A promise for the course; null if it doesn't exist.
      */
     async getCourseByUID(uid: number): Promise<Course> {
-        return this.courses.at(uid);
+        return this.courses.at(uid) ?? null;
     }
 
     /**
      * Used to get the course that a section belongs to.
      * @param section -- A `Section` object
-     * @returns A promise for the course; undefined if it doesn't exist.
+     * @returns A promise for the course; null if it doesn't exist.
      */
     async getCourseBySection(section: Section): Promise<Course> {
         for (const c of this.courses) {
@@ -139,7 +139,7 @@ export class SOC {
                 if (s === section)
                     return c;
         }
-        return undefined;
+        return null;
     }
 
 
@@ -148,19 +148,19 @@ export class SOC {
     /**
      * Note: Course codes are NOT unique! This should only be used for testing purposes.
      * @param courseCode -- Ex. COT3100 (not case-sensitive)
-     * @returns A promise for the first matching course; undefined if one doesn't exist.
+     * @returns A promise for the first matching course; null if one doesn't exist.
      */
     async getCourse(courseCode: string): Promise<Course> {
         for (const c of this.courses)
             if (c.code === courseCode.toUpperCase())
                 return c;
-        return undefined;
+        return null;
     }
 
     /**
      * Note: Section numbers are NOT unique! This should only be used for testing purposes.
      * @param sectionNum -- Ex. 11490
-     * @returns A promise for the first matching section; undefined if one doesn't exist.
+     * @returns A promise for the first matching section; null if one doesn't exist.
      */
     async getSection(sectionNum: number): Promise<Section> {
         for (const c of this.courses) {
@@ -168,6 +168,6 @@ export class SOC {
                 if (s.number === sectionNum)
                     return s;
         }
-        return undefined;
+        return null;
     }
 }
