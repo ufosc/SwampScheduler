@@ -65,7 +65,6 @@ export default class ScheduleBuilder extends Component<propType, stateType> {
             this.setState({courses: [...this.state.courses, course]}, () => {
                 console.log(this.state.courses);
             });
-
         }
     }
 
