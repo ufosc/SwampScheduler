@@ -64,6 +64,8 @@ export default class ScheduleBuilder extends Component<propType, stateType> {
         else {
             this.setState({courses: [...this.state.courses, course]}, () => {
                 console.log(this.state.courses);
+
+            (document.getElementById("course-code") as HTMLInputElement).value = "";
             });
         }
     }
@@ -83,7 +85,8 @@ export default class ScheduleBuilder extends Component<propType, stateType> {
 
                 <form onSubmit={this.handleSubmit}>
                     <div>
-                        <input type={"text"}
+                        <input id="course-code"
+                               type={"text"}
                                className={"bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5"}
                                placeholder={"Course Code"}
                                onChange={(event) => this.setState({searchText: event.target.value})}></input>
