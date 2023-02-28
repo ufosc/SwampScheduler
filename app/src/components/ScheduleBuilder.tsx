@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {Course, SOC} from "../scripts/soc";
 import MultipleCourseDisplay from "./MultipleCourseDisplay";
 import {Generator, Schedule, Selection} from "../scripts/generator";
+import ScheduleDisplay from "./ScheduleDisplay";
 
 type propType = {}
 
@@ -77,6 +78,10 @@ export default class ScheduleBuilder extends Component<propType, stateType> {
             )
         }
 
+        let scheduleDisplays = this.state.schedules.map((schedule: Schedule) =>
+            <ScheduleDisplay schedule={schedule}></ScheduleDisplay>
+        )
+
         return (
             <div className={"m-4"}>
                 <p className="text-2xl text-slate-700 mb-2">Schedule Helper 📆</p>
@@ -96,6 +101,8 @@ export default class ScheduleBuilder extends Component<propType, stateType> {
                 </form>
 
                 <hr className={"my-1.5"}></hr>
+
+                {scheduleDisplays}
 
                 <MultipleCourseDisplay courses={this.state.courses} handleDelete={this.handleDelete}/>
             </div>
