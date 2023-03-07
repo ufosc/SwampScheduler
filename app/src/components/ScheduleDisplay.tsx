@@ -51,7 +51,7 @@ export default class ScheduleDisplay extends Component<propType, stateType> {
         }
 
         return (
-            <div className={"w-5/12 pb-6"}>
+            <div className={"min-w-full w-5/12 pb-6"}>
                 <div className={"grid grid-cols-5 gap-1"}>
                     {divs}
                 </div>

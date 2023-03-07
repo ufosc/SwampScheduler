@@ -28,7 +28,7 @@ export default class ScheduleBuilder extends Component<propType, stateType> {
 
     componentDidMount() {
         SOC.fetchSOC('https://raw.githubusercontent.com/ufosc/Schedule_Helper/main/dev/schedule_of_courses/soc_scraped.json')
-            .then(soc => this.setState({soc: soc, generator: new Generator(soc)}));
+            .then(soc => this.setState({soc: soc, generator: new Generator(soc)}))
     }
 
     componentDidUpdate(prevProps: Readonly<propType>, prevState: Readonly<stateType>) {
@@ -78,9 +78,20 @@ export default class ScheduleBuilder extends Component<propType, stateType> {
             )
         }
 
-        let scheduleDisplays = this.state.schedules.map((schedule: Schedule) =>
-            <ScheduleDisplay schedule={schedule}></ScheduleDisplay>
-        )
+        const renderSchedules = () => {
+            if (this.state.schedules.length === 0) {
+                return (<></>)
+            }
+            else {
+                return (
+                    <div className='box-content h-96 w-2/3 border-2 border-slate-400 overflow-auto'>
+                        {this.state.schedules.map((schedule: Schedule) =>
+                            <ScheduleDisplay schedule={schedule}></ScheduleDisplay>
+                        )}
+                    </div>
+                )
+            }
+        }
 
         return (
             <div className={"m-4"}>
@@ -102,7 +113,7 @@ export default class ScheduleBuilder extends Component<propType, stateType> {
 
                 <hr className={"my-1.5"}></hr>
 
-                {scheduleDisplays}
+                {renderSchedules()}
 
                 <MultipleCourseDisplay courses={this.state.courses} handleDelete={this.handleDelete}/>
             </div>

@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
 import ScheduleBuilder from './components/ScheduleBuilder';
+import Test from './components/Test';
 
 const root = ReactDOM.createRoot(
     document.getElementById('root') as HTMLElement
@@ -10,7 +11,7 @@ const root = ReactDOM.createRoot(
 
 root.render(
     <React.StrictMode>
-        <ScheduleBuilder/>
+        <ScheduleBuilder />
     </React.StrictMode>
 );
 
