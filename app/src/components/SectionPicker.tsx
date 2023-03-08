@@ -43,7 +43,12 @@ export const SectionPicker = (props) => {
             let temp_selection_map = selectionMap;
             let temp_sections = temp_selection_map.get(newSection.courseCode);
             temp_sections = temp_sections.filter((section) => section !== newSection);
-            temp_selection_map.set(newSection.courseCode, temp_sections);
+            if (temp_sections.length == 0) {
+                temp_selection_map.delete(newSection.courseCode);
+            }
+            else {
+                temp_selection_map.set(newSection.courseCode, temp_sections);
+            }
             setSelectionMap(temp_selection_map);
         }
         else {
@@ -61,10 +66,16 @@ export const SectionPicker = (props) => {
         selectionMap.forEach((value, key) => {
             selections.push(value);
         })
-        
-        props.generator.loadSelections(selections);
-        props.generator.generateSchedules()
-            .then((schedules: Schedule[]) => setSchedules(schedules));
+
+        if (selections.length == 0) {
+            setSchedules([])
+        }
+        else {
+            props.generator.loadSelections(selections);
+            props.generator.generateSchedules()
+                .then((schedules: Schedule[]) => setSchedules(schedules));
+        }
+
     }
 
     const section_buttons = sections.map((section) => {
