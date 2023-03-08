@@ -7,6 +7,16 @@ type propType = {
 
 export default function SectionDisplay(props: propType) {
     const section = props.section;
+    let times = [];
+    section.meetTimes.forEach((value, key) => {
+        if (value.length > 0) {
+            times.push(key + ": " + value[0].periodBegin + "-" + value[0].periodEnd + " ");
+        }
+    });
+
+    if (times.length == 0) {
+        times = ["Online"]
+    }
 
     return (
         <div className="inline-block m-1"> {/* SECTION */}
@@ -17,6 +27,7 @@ export default function SectionDisplay(props: propType) {
 
                 <p className="text-lg text-slate-400">{section.displayName}</p>
                 <p className="text-lg text-slate-400"><i>{section.instructors.join(', ')}</i></p>
+                <p className="text-lg text-slate-400">{times}</p>
             </div>
         </div>
     );
