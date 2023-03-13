@@ -3,12 +3,14 @@ export class MeetTime {
     periodEnd: number;
     bldg: string;
     room: string;
+    locationID: string
 
     constructor(meetTimeJSON) {
         this.periodBegin = meetTimeJSON['meetPeriodBegin'];
         this.periodEnd = meetTimeJSON['meetPeriodEnd'];
         this.bldg = meetTimeJSON['meetBuilding'];
         this.room = meetTimeJSON['meetRoom'];
+        this.locationID = meetTimeJSON['meetBldgCode']
     }
 
     conflictsWith(other: MeetTime) {
