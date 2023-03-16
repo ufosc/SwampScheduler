@@ -1,9 +1,8 @@
 import React, {Component} from 'react';
 import {Course, SOC} from "../scripts/soc";
-import MultipleCourseDisplay from "./MultipleCourseDisplay";
 import {Generator, Schedule, Selection} from "../scripts/generator";
 import ScheduleDisplay from "./ScheduleDisplay";
-import { SectionPicker } from './SectionPicker';
+import {SectionPicker} from './SectionPicker';
 
 type propType = {}
 
@@ -29,7 +28,7 @@ export default class ScheduleBuilder extends Component<propType, stateType> {
 
     componentDidMount() {
         SOC.fetchSOC('https://raw.githubusercontent.com/ufosc/Schedule_Helper/main/dev/schedule_of_courses/soc_scraped.json')
-            .then(soc => this.setState({soc: soc, generator: new Generator(soc)}))
+            .then(soc => this.setState({soc: soc, generator: new Generator(soc)}));
     }
 
     componentDidUpdate(prevProps: Readonly<propType>, prevState: Readonly<stateType>) {
@@ -82,8 +81,7 @@ export default class ScheduleBuilder extends Component<propType, stateType> {
         const renderSchedules = () => {
             if (this.state.schedules.length === 0) {
                 return (<></>)
-            }
-            else {
+            } else {
                 return (
                     <div className='box-content h-96 w-2/3 border-2 border-slate-400 overflow-auto'>
                         {this.state.schedules.map((schedule: Schedule) =>
@@ -98,29 +96,9 @@ export default class ScheduleBuilder extends Component<propType, stateType> {
             <div className={"m-4"}>
                 <p className="text-2xl text-slate-700 mb-2">Schedule Helper 📆</p>
 
-                {/* old submit button/form not needed with Section Picker */}
-                {/* <form onSubmit={this.handleSubmit}>
-                    <div>
-                        <input type={"text"}
-                               className={"bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5"}
-                               placeholder={"Course Code"}
-                               onChange={(event) => this.setState({searchText: event.target.value})}></input>
-
-                        <button type="submit"
-                                className="m-1 top-0 right-0 p-2.5 text-sm font-medium text-white bg-blue-700 rounded-r-lg rounded-l-lg border border-blue-700 ">
-                            Add
-                        </button>
-                    </div>
-                </form> */}
-
                 <hr className={"my-1.5"}></hr>
 
-                {/* Section picker has its own render schedules function now */}
-                {/*renderSchedules()*/}
-
                 <SectionPicker soc={this.state.soc} generator={this.state.generator}/>
-                {/* Multiple course display isnt needed with Section Picker */}
-                {/* <MultipleCourseDisplay courses={this.state.courses} handleDelete={this.handleDelete}/> */}
             </div>
         );
     }
