@@ -27,7 +27,7 @@ export const SectionPicker = (props) => {
     const getSearchedSections = async (searchText: string) => {
         let course: Course = await (props.soc).getCourse(searchText);
 
-        if (course == undefined) {
+        if (course == null) {
             console.log("Course not found");
             setSections([]);
         }
