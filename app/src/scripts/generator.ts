@@ -8,7 +8,7 @@ export class Schedule extends Array<Section> {
 
 export class Generator {
     soc: SOC;
-    selections: Selection[];
+    selections: Selection[] = [];
 
     constructor(soc: SOC) {
         this.soc = soc;

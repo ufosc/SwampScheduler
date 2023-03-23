@@ -1,19 +1,16 @@
 import {Schedule} from "../scripts/generator";
 import {Component} from "react";
-import {MeetTime} from "../scripts/soc";
+import {MeetTime, Section} from "../scripts/soc";
 
-type propType = {
+interface Props {
     schedule: Schedule
 }
 
-type stateType = {}
+interface States {
+}
 
-export default class ScheduleDisplay extends Component<propType, stateType> {
-    constructor(props: propType) {
-        super(props);
-        this.state = {};
-    }
-
+export default class ScheduleDisplay extends Component<Props, States> {
+    // TODO: redo this (it is *disgusting*)
     render() {
         let blockSchedule: Map<string, MeetTime[]> = new Map([
             ["M", [null, null, null, null, null, null, null, null, null, null, null]],
@@ -27,7 +24,6 @@ export default class ScheduleDisplay extends Component<propType, stateType> {
             for (const [day, meetTimes] of section.meetTimes) {
                 for (const meetTime of meetTimes) {
                     for (let p = meetTime.periodBegin ?? 12; p <= meetTime.periodEnd ?? -1; ++p) {
-                        // console.log(day, p, blockSchedule, meetTime);
                         blockSchedule.get(day)[p - 1] = meetTime;
                     }
                 }
@@ -42,20 +38,23 @@ export default class ScheduleDisplay extends Component<propType, stateType> {
         for (let p = 0; p < 11; ++p) {
             for (let d = 0; d < 5; ++d) {
                 const meetTime = arrays[d][p];
-                if (meetTime != null)
-                    divs.push(<div
-                        className={"border-solid border-2 border-teal-400 rounded text-center"}>{arrays[d][p].room} @ {arrays[d][p].bldg}</div>);
-                else
-                    divs.push(<div className={"border-solid border-2 border-teal-400 rounded text-center"}>*</div>);
+                divs.push(
+                    <div className={"border-solid border-2 border-teal-400 rounded text-center"}>
+                        {(meetTime == null) ? '*' : (arrays[d][p].bldg + ' ' + arrays[d][p].room)}
+                    </div>
+                );
             }
         }
 
         return (
-            <div className={"min-w-full w-5/12 pb-6"}>
-                <div className={"grid grid-cols-5 gap-1"}>
-                    {divs}
+            <>
+                {this.props.schedule.map((sec: Section) => (sec.number + ' [' + sec.courseCode + ']')).join(', ')}
+                <div className={"min-w-full w-5/12 pb-6"}>
+                    <div className={"grid grid-cols-5 gap-1"}>
+                        {divs}
+                    </div>
                 </div>
-            </div>
+            </>
         );
     }
 }
