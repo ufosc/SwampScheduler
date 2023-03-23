@@ -1,7 +1,6 @@
 import {Component} from 'react';
 import {MeetTime, Section} from "../scripts/soc";
 import {Draggable} from 'react-drag-and-drop';
-import {FaTrash} from 'react-icons/fa'
 
 interface Props {
     section: Section,
@@ -60,7 +59,7 @@ export default class SectionDisplay extends Component<Props, States> {
                                     hidden={this.props.handleRemove == null}
                                     onClick={() => this.props.handleRemove(this.props.section)}
                             >
-                                <FaTrash/>
+                                ❌
                             </button>
                         </div>
 
