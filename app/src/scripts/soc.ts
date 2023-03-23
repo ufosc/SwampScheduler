@@ -3,14 +3,14 @@ export class MeetTime {
     periodEnd: number;
     bldg: string;
     room: string;
-    locationID: string
+    locationID: string;
 
     constructor(meetTimeJSON) {
         this.periodBegin = meetTimeJSON['meetPeriodBegin'];
         this.periodEnd = meetTimeJSON['meetPeriodEnd'];
         this.bldg = meetTimeJSON['meetBuilding'];
         this.room = meetTimeJSON['meetRoom'];
-        this.locationID = meetTimeJSON['meetBldgCode']
+        this.locationID = meetTimeJSON['meetBldgCode'];
     }
 
     conflictsWith(other: MeetTime) {
@@ -123,7 +123,7 @@ export class SOC {
     /**
      * Used to get a UID from a course from the SOC.
      * @param course -- A `Course` object.
-     * @returns A promise for the UID; undefined if it doesn't exist.
+     * @returns A promise for the UID; null if it doesn't exist.
      */
     async getUIDByCourse(course: Course): Promise<number> {
         for (const [key, item] of this.courses.entries())
@@ -147,22 +147,41 @@ export class SOC {
     }
 
 
-    /* TESTING */
+    /* SEARCHING & TESTING */
 
     /**
-     * Note: Course codes are NOT unique! This should only be used for testing purposes.
+     * Note: Course codes are NOT unique! This should only be used for searching & testing purposes.
      * @param courseCode -- Ex. COT3100 (not case-sensitive)
      * @returns A promise for the first matching course; null if one doesn't exist.
      */
     async getCourse(courseCode: string): Promise<Course> {
+        const upperCode: string = courseCode.toUpperCase();
+
         for (const c of this.courses)
-            if (c.code === courseCode.toUpperCase())
+            if (c.code === upperCode)
                 return c;
         return null;
     }
 
     /**
-     * Note: Section numbers are NOT unique! This should only be used for testing purposes.
+     * Note: Course codes are NOT unique! This should only be used for searching & testing purposes.
+     * @param courseCodeSubstr -- Ex. COT or COT3 or 3100  (not case-sensitive)
+     * @returns A promise for an array of the matching courses (will return an empty array if "" is the substring given).
+     */
+    async getCoursesMatching(courseCodeSubstr: string): Promise<Course[]> {
+        const upperSubstr: string = courseCodeSubstr.toUpperCase();
+        if (upperSubstr === "")
+            return [];
+
+        let matchingCourses: Course[] = [];
+        for (const c of this.courses)
+            if (c.code.includes(upperSubstr))
+                matchingCourses.push(c)
+        return matchingCourses;
+    }
+
+    /**
+     * Note: Section numbers are NOT unique! This should only be used for searching & testing purposes.
      * @param sectionNum -- Ex. 11490
      * @returns A promise for the first matching section; null if one doesn't exist.
      */
