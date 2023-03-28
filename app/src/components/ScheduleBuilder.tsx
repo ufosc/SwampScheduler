@@ -108,7 +108,7 @@ export default class ScheduleBuilder extends Component<Props, States> {
                     {schedules.map((schedule: Schedule, i: number) =>
                         <div>
                             <p>{i + 1}</p>
-                            <ScheduleDisplay schedule={schedule}></ScheduleDisplay>
+                            <ScheduleDisplay schedule={schedule}/>
                         </div>
                     )}
                 </div>
