@@ -5,7 +5,8 @@ interface Props {
     selections: Selection[],
     handleDrop,
     newSelection,
-    handleRemove
+    handleRemove,
+    handleDeleteSelection,
 }
 
 export default function MultipleSelectionDisplay(props: Props) {
@@ -15,6 +16,7 @@ export default function MultipleSelectionDisplay(props: Props) {
                           selection={sel}
                           handleDrop={props.handleDrop}
                           handleRemove={props.handleRemove}
+                          handleDeleteSelection={props.handleDeleteSelection}
         />
     );
 

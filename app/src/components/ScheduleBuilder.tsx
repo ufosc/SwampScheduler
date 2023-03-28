@@ -77,6 +77,11 @@ export default class ScheduleBuilder extends Component<Props, States> {
         this.setState({selections: newSelections});
     }
 
+    handleDeleteSelection(ind: number) {
+        let newSelections = this.state.selections.filter((sel, i) => (i != ind));
+        this.setState({selections: newSelections});
+    }
+
     handleRemove(sectionToRemove: Section) {
         let newSelections = this.state.selections.map((sel) =>
             sel.filter((sec) => (sec != sectionToRemove))
@@ -129,6 +134,7 @@ export default class ScheduleBuilder extends Component<Props, States> {
                                                   handleDrop={this.handleDrop.bind(this)}
                                                   newSelection={this.newSelection.bind(this)}
                                                   handleRemove={this.handleRemove.bind(this)}
+                                                  handleDeleteSelection={this.handleDeleteSelection.bind(this)}
                         ></MultipleSelectionDisplay>
                     </div>
 

@@ -8,7 +8,8 @@ interface Props {
     ind: number,
     selection: Selection,
     handleDrop,
-    handleRemove
+    handleRemove,
+    handleDeleteSelection,
 }
 
 export default function SelectionDisplay(props: Props) {
@@ -29,6 +30,11 @@ export default function SelectionDisplay(props: Props) {
                 <div className="p-2 mx-1 mb-2 rounded-lg shadow-sm shadow-slate-400">
                     <div>
                         <u>Course {props.ind + 1}</u>
+                        <button className={"mx-1"}
+                                onClick={() => props.handleDeleteSelection(props.ind)}
+                        >
+                            
+                        </button>
                     </div>
 
                     <div>
