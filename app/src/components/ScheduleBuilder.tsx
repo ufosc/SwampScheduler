@@ -41,7 +41,7 @@ export default class ScheduleBuilder extends Component<Props, States> {
     componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<States>) {
         // If selections were changed, generate new schedules
         if (this.state.selections != prevState.selections) {
-            this.state.generator.loadSelections(this.state.selections);
+            this.state.generator.loadSelections(this.state.selections.filter(sel => sel.length > 0));
             this.state.generator.generateSchedules()
                 .then((schedules: Schedule[]) => this.setState({schedules: schedules}));
             console.log("Selections were changed, so schedules have been regenerated", this.state.schedules);
