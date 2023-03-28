@@ -16,12 +16,14 @@ export class Generator {
 
     loadSelections(selections: Selection[]) {
         this.selections = selections;
+        console.log("Loaded selections", this.selections);
     }
 
     async generateSchedules(selectionInd: number = 0, currSchedule: Schedule = [], schedules: Schedule[] = []): Promise<Schedule[]> {
-        // Return if schedule is complete
+        // Return if schedule is complete (or given no selections)
         if (selectionInd == this.selections.length) {
-            schedules.push(currSchedule);
+            if (this.selections.length > 0) // Add "schedule" if selections were given (prevents returning an empty schedule when no selections are given)
+                schedules.push(currSchedule);
             return schedules;
         }
 
