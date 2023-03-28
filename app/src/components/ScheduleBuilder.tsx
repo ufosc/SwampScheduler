@@ -41,7 +41,9 @@ export default class ScheduleBuilder extends Component<Props, States> {
     componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<States>) {
         // If selections were changed, generate new schedules
         if (this.state.selections != prevState.selections) {
-            this.state.generator.loadSelections(this.state.selections);
+            this.state.generator.loadSelections( // Generate schedules from non-empty selections
+                this.state.selections.filter((sel: Selection) => sel.length > 0)
+            );
             this.state.generator.generateSchedules()
                 .then((schedules: Schedule[]) => this.setState({schedules: schedules}));
             console.log("Selections were changed, so schedules have been regenerated", this.state.schedules);
@@ -74,6 +76,11 @@ export default class ScheduleBuilder extends Component<Props, States> {
             if (i == ind) return [...sel, ...sectionsToAdd];
             return sel;
         });
+        this.setState({selections: newSelections});
+    }
+
+    handleDeleteSelection(ind: number) {
+        let newSelections = this.state.selections.filter((sel, i) => (i != ind));
         this.setState({selections: newSelections});
     }
 
@@ -129,7 +136,8 @@ export default class ScheduleBuilder extends Component<Props, States> {
                                                   handleDrop={this.handleDrop.bind(this)}
                                                   newSelection={this.newSelection.bind(this)}
                                                   handleRemove={this.handleRemove.bind(this)}
-                        ></MultipleSelectionDisplay>
+                                                  handleDeleteSelection={this.handleDeleteSelection.bind(this)}
+                        />
                     </div>
 
                     {/* Generated Schedules */}
