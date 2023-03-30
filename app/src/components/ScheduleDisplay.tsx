@@ -38,9 +38,17 @@ export default class ScheduleDisplay extends Component<Props, States> {
         for (let p = 0; p < 11; ++p) {
             for (let d = 0; d < 5; ++d) {
                 const meetTime = arrays[d][p];
+
+                let location = (<>*</>);
+                if (meetTime) {
+                    location = (<i>TBD</i>);
+                    if (meetTime.bldg && meetTime.room)
+                        location = (<>{meetTime.bldg + ' ' + meetTime.room}</>);
+                }
+
                 divs.push(
                     <div className={"border-solid border-2 border-teal-400 rounded text-center"}>
-                        {(meetTime == null) ? '*' : (arrays[d][p].bldg + ' ' + arrays[d][p].room)}
+                        {location}
                     </div>
                 );
             }
