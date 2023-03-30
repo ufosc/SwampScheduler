@@ -3,6 +3,7 @@ import {Section} from "../scripts/soc";
 import SectionDisplay from "./SectionDisplay";
 import {Droppable} from 'react-drag-and-drop';
 import {Selection} from "../scripts/generator";
+import {GrClose} from "react-icons/gr"
 
 interface Props {
     ind: number,
@@ -33,7 +34,7 @@ export default function SelectionDisplay(props: Props) {
                         <button className={"mx-1"}
                                 onClick={() => props.handleDeleteSelection(props.ind)}
                         >
-                            ❌
+                            <GrClose/>
                         </button>
                     </div>
 

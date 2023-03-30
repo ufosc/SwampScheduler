@@ -1,6 +1,7 @@
 import {Component} from 'react';
 import {MeetTime, Section} from "../scripts/soc";
 import {Draggable} from 'react-drag-and-drop';
+import {GrClose} from "react-icons/gr"
 
 interface Props {
     section: Section,
@@ -63,7 +64,7 @@ export default class SectionDisplay extends Component<Props, States> {
                                     hidden={this.props.handleRemove == null}
                                     onClick={() => this.props.handleRemove(this.props.section)}
                             >
-                                ❌
+                                <GrClose/>
                             </button>
                         </div>
 
