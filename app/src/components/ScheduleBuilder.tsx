@@ -7,6 +7,8 @@ import MultipleSelectionDisplay from "./MultipleSelectionDisplay";
 
 const SOC_URL: string = 'https://raw.githubusercontent.com/ufosc/Schedule_Helper/main/dev/schedule_of_courses/soc_scraped.json';
 
+const defaultSelections = [new Selection()];
+
 interface Props {
 }
 
@@ -21,7 +23,7 @@ interface States {
 const defaultState = {
     soc: null,
     generator: null,
-    selections: [new Selection()],
+    selections: defaultSelections,
     schedules: [],
     showAddCourse: false
 };
@@ -81,6 +83,9 @@ export default class ScheduleBuilder extends Component<Props, States> {
 
     handleDeleteSelection(ind: number) {
         let newSelections = this.state.selections.filter((sel, i) => (i != ind));
+        if (newSelections.length == 0)
+            newSelections = defaultSelections;
+
         this.setState({selections: newSelections});
     }
 
