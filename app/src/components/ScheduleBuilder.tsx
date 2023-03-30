@@ -7,7 +7,7 @@ import MultipleSelectionDisplay from "./MultipleSelectionDisplay";
 
 const SOC_URL: string = 'https://raw.githubusercontent.com/ufosc/Schedule_Helper/main/dev/schedule_of_courses/soc_scraped.json';
 
-const defaultSelections = [new Selection()];
+const defaultSelections: Selection[] = [new Selection()];
 
 interface Props {
 }
