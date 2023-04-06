@@ -33,7 +33,7 @@ export default class SectionDisplay extends Component<Props, States> {
                             {CampusMap.createLink(
                                 mT.locationID,
                                 <abbr title={mT.bldg + " " + mT.room}>
-                                    {mT.periodBegin == mT.periodEnd ? mT.periodBegin : mT.periodBegin + "-" + mT.periodEnd}
+                                    {mT.pBegin == mT.pEnd ? mT.pBegin : mT.pBegin + "-" + mT.pEnd}
                                 </abbr>
                             )}
                             {" "}

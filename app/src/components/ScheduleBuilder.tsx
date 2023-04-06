@@ -4,6 +4,7 @@ import {Generator, Schedule, Selection} from "../scripts/generator";
 import ScheduleDisplay from "./ScheduleDisplay";
 import SectionPicker from './SectionPicker';
 import MultipleSelectionDisplay from "./MultipleSelectionDisplay";
+import MultipleScheduleDisplay from "./MultipleScheduleDisplay";
 
 const SOC_URL: string = 'https://raw.githubusercontent.com/ufosc/Schedule_Helper/main/dev/schedule_of_courses/soc_scraped.json';
 
@@ -113,7 +114,8 @@ export default class ScheduleBuilder extends Component<Props, States> {
                     {schedules.map((schedule: Schedule, i: number) =>
                         <div>
                             <p>{i + 1}</p>
-                            <ScheduleDisplay schedule={schedule}/>
+                            <ScheduleDisplay schedule={schedule}
+                                             courseColors={['bg-red-200', 'bg-blue-200', 'bg-purple-200', 'bg-green-200']}/>
                         </div>
                     )}
                 </div>
@@ -147,7 +149,7 @@ export default class ScheduleBuilder extends Component<Props, States> {
 
                     {/* Generated Schedules */}
                     <div className="overflow-y-auto w-full p-1">
-                        {renderSchedules()}
+                        <MultipleScheduleDisplay schedules={this.state.schedules}/>
                     </div>
                 </main>
             </div>
