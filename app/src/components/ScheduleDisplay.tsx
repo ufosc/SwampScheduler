@@ -70,7 +70,7 @@ export default class ScheduleDisplay extends Component<Props, States> {
                     continue;
                 }
 
-                if (mT != null && mT.pBegin != mT.pEnd && (p == 0 || arrays[d][p - 1] == null || arrays[d][p - 1].meetTime != mT)) {
+                if (mT.pBegin != mT.pEnd && (p == 0 || arrays[d][p - 1] == null || arrays[d][p - 1].meetTime != mT)) {
                     // TODO: why do I have to do this garbage??
                     const spanMap: Map<number, string> = new Map<number, string>([
                         [2, 'row-span-2'],
