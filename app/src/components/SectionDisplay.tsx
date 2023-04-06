@@ -2,6 +2,7 @@ import {Component} from 'react';
 import {MeetTime, Section} from "../scripts/soc";
 import {Draggable} from 'react-drag-and-drop';
 import {GrClose} from "react-icons/gr"
+import {CampusMap} from "../scripts/api";
 
 interface Props {
     section: Section,
@@ -27,17 +28,16 @@ export default class SectionDisplay extends Component<Props, States> {
             if (mTs.length > 0) {
                 let times = [];
                 mTs.forEach((mT: MeetTime) => {
-                    // TODO: ugly
-                    const link = mT.locationID ? 'https://campusmap.ufl.edu/#/index/' + mT.locationID : 'javascript:void(0)';
-                    const target = mT.locationID ? '_blank' : '_self';
-
                     times.push(
-                        <a href={link} target={target}>
-                            <abbr title={mT.bldg + " " + mT.room}>
-                                {mT.periodBegin == mT.periodEnd ? mT.periodBegin : mT.periodBegin + "-" + mT.periodEnd}
-                            </abbr>
+                        <>
+                            {CampusMap.createLink(
+                                mT.locationID,
+                                <abbr title={mT.bldg + " " + mT.room}>
+                                    {mT.periodBegin == mT.periodEnd ? mT.periodBegin : mT.periodBegin + "-" + mT.periodEnd}
+                                </abbr>
+                            )}
                             {" "}
-                        </a>
+                        </>
                     );
                 });
                 allTimes.push(
