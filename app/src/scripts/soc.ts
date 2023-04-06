@@ -6,8 +6,9 @@ export class MeetTime {
     locationID: string;
 
     constructor(meetTimeJSON) {
-        this.periodBegin = meetTimeJSON['meetPeriodBegin'];
-        this.periodEnd = meetTimeJSON['meetPeriodEnd'];
+        // TODO: fix for E# periods
+        this.periodBegin = parseInt(meetTimeJSON['meetPeriodBegin']);
+        this.periodEnd = parseInt(meetTimeJSON['meetPeriodEnd']);
         this.bldg = meetTimeJSON['meetBuilding'];
         this.room = meetTimeJSON['meetRoom'];
         this.locationID = meetTimeJSON['meetBldgCode'];
