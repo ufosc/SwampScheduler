@@ -1,22 +1,22 @@
 export class MeetTime {
-    periodBegin: number;
-    periodEnd: number;
+    pBegin: number;
+    pEnd: number;
     bldg: string;
     room: string;
     locationID: string;
 
     constructor(meetTimeJSON) {
         // TODO: fix for E# periods
-        this.periodBegin = parseInt(meetTimeJSON['meetPeriodBegin']);
-        this.periodEnd = parseInt(meetTimeJSON['meetPeriodEnd']);
+        this.pBegin = parseInt(meetTimeJSON['meetPeriodBegin']);
+        this.pEnd = parseInt(meetTimeJSON['meetPeriodEnd']);
         this.bldg = meetTimeJSON['meetBuilding'];
         this.room = meetTimeJSON['meetRoom'];
         this.locationID = meetTimeJSON['meetBldgCode'];
     }
 
     conflictsWith(other: MeetTime) {
-        return (this.periodBegin <= other.periodEnd)
-            && (other.periodBegin <= this.periodEnd);
+        return (this.pBegin <= other.pEnd)
+            && (other.pBegin <= this.pEnd);
     }
 }
 
