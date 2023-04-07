@@ -106,22 +106,6 @@ export default class ScheduleBuilder extends Component<Props, States> {
                 </div>
             );
 
-        const schedules: Schedule[] = this.state.schedules;
-        const renderSchedules = () => {
-            return (
-                <div>
-                    <p className={"text-center"}><b><u>{schedules.length}</u> Schedules Generated</b></p>
-                    {schedules.map((schedule: Schedule, i: number) =>
-                        <div>
-                            <p>{i + 1}</p>
-                            <ScheduleDisplay schedule={schedule}
-                                             courseColors={['bg-red-200', 'bg-blue-200', 'bg-purple-200', 'bg-green-200']}/>
-                        </div>
-                    )}
-                </div>
-            );
-        }
-
         return (
             <div className="min-h-screen flex flex-col h-screen p-3">
                 {/* Title */}
