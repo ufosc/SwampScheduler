@@ -51,13 +51,15 @@ def fetch_soc(term: str, category: str, last_control_number: int = 0, num_result
         request = requests.get(url)
         last = json.loads(request.text)[0]
         soc.extend(last['COURSES'])
+
+        print('.', end='')
     return soc
 
 
 if __name__ == "__main__":
-    print('Fetching SOC...', end=' ')
-    soc_scraped = fetch_soc('2238', 'CWSP')  # Scrape the schedule of courses for Fall 2022 (On-campus)
-    print('DONE')
+    print('Fetching SOC...', end='')
+    soc_scraped = fetch_soc('2238', 'CWSP')  # Scrape the schedule of courses for Fall 2023 (On-campus)
+    print(' DONE')
 
     print("'Converting to JSON and writing to 'soc_scraped.json'...", end=' ')
     soc_str = json.dumps(soc_scraped)  # Convert to JSON
