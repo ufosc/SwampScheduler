@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {Section, SOC} from "../scripts/soc";
 import {Generator, Schedule, Selection} from "../scripts/generator";
-import ScheduleDisplay from "./ScheduleDisplay";
 import SectionPicker from './SectionPicker';
 import MultipleSelectionDisplay from "./MultipleSelectionDisplay";
 import MultipleScheduleDisplay from "./MultipleScheduleDisplay";
