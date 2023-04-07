@@ -93,12 +93,11 @@ export default class ScheduleDisplay extends Component<Props, States> {
                 } else if (!(p > 0 && mT != null && arrays[d][p - 1] != null && arrays[d][p - 1].meetTime == mT))
                     divs.push(
                         <div
-                            className={['border-solid', 'border-2', 'border-gray-400', color, 'rounded', 'whitespace-nowrap'].join(' ')}>
-                            <div className={"h-5 text-center"}>
-                                <ReactFitty minSize={0} maxSize={14}>
-                                    {location}<sup><b>{courseNum}</b></sup>
-                                </ReactFitty>
-                            </div>
+                            className={classNames(
+                                ['border-solid', 'border-2', 'border-gray-400', color, 'rounded', 'whitespace-nowrap', 'text-center'])}>
+                            <ReactFitty minSize={0} maxSize={14} className={"px-0.5"}>
+                                {location}<sup><b>{courseNum}</b></sup>
+                            </ReactFitty>
                         </div>
                     );
             }
