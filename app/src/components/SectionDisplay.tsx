@@ -28,12 +28,14 @@ export default class SectionDisplay extends Component<Props, States> {
             if (mTs.length > 0) {
                 let times = [];
                 mTs.forEach((mT: MeetTime) => {
+                    const begin = MeetTime.formatPeriod(mT.pBegin),
+                        end = MeetTime.formatPeriod(mT.pEnd);
                     times.push(
                         <>
                             {CampusMap.createLink(
                                 mT.locationID,
                                 <abbr title={mT.bldg + " " + mT.room}>
-                                    {mT.pBegin == mT.pEnd ? mT.pBegin : mT.pBegin + "-" + mT.pEnd}
+                                    {mT.pBegin == mT.pEnd ? begin : begin + "-" + end}
                                 </abbr>
                             )}
                             {" "}
