@@ -39,7 +39,7 @@ export default function SectionPicker(props: Props) {
             </div>
 
             {/*TODO: paginate courses, don't only show some*/}
-            <MultipleCourseDisplay courses={courses.slice(0, 20)}></MultipleCourseDisplay>
+            <MultipleCourseDisplay courses={courses.slice(0, 30)}></MultipleCourseDisplay>
         </div>
     );
 }
