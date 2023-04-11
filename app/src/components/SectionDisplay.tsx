@@ -1,6 +1,6 @@
 import {Component} from 'react';
 import {MeetTime, Section} from "../scripts/soc";
-import {Draggable} from 'react-drag-and-drop';
+import {Draggable} from "react-drag-and-drop";
 import {GrClose} from "react-icons/gr"
 import {CampusMap} from "../scripts/api";
 
