@@ -84,7 +84,7 @@ export default class ScheduleDisplay extends Component<Props, States> {
                     divs.push(
                         <div
                             className={classNames(
-                                ['border-solid', 'border-2', 'border-gray-400', color, 'rounded', 'whitespace-nowrap', 'text-center', 'h-6', span])}>
+                                ['border-solid', 'border-2', 'border-gray-400', color, 'rounded', 'whitespace-nowrap', 'text-center', span])}>
                             <ReactFitty minSize={0} maxSize={14} className={"px-0.5"}>
                                 {location}<sup><b>{courseNum}</b></sup>
                             </ReactFitty>
@@ -109,7 +109,7 @@ export default class ScheduleDisplay extends Component<Props, States> {
                     <div className={"flex gap-1"}>
                         {this.props.schedule.map((sec: Section, s: number) =>
                             <div
-                                className={['border-solid', 'border-2', 'border-gray-400', this.props.courseColors[s], 'rounded', 'text-center', 'grow'].join(' ')}>
+                                className={classNames(['border-solid', 'border-2', 'border-gray-400', this.props.courseColors[s], 'rounded', 'text-center', 'grow'])}>
                                 <b>({s + 1})</b> Sec. {sec.number} [{sec.courseCode}]
                             </div>
                         )}
@@ -121,7 +121,7 @@ export default class ScheduleDisplay extends Component<Props, States> {
                         <div className={"grid grid-cols-1 gap-y-1"}>
                             {[...Array(11).keys()].map(p =>
                                 <div
-                                    className={"border-solid border-2 border-gray-400 bg-gray-200 rounded text-center w-full px-0.5"}>
+                                    className={"border-solid border-2 border-gray-400 bg-gray-200 rounded text-center w-full h-6 px-0.5"}>
                                     <b>P{p + 1}</b>
                                 </div>
                             )}
