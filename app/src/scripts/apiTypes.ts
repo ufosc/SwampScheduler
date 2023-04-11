@@ -1,4 +1,4 @@
-export enum API_MeetDay {
+export enum API_Day {
     Mon = 'M',
     Tue = 'T',
     Wed = 'W',
@@ -7,18 +7,18 @@ export enum API_MeetDay {
     Sat = 'S'
 }
 
-export const API_MeetDays: API_MeetDay[] = [
-    API_MeetDay.Mon,
-    API_MeetDay.Tue,
-    API_MeetDay.Wed,
-    API_MeetDay.Thu,
-    API_MeetDay.Fri,
-    API_MeetDay.Sat
+export const API_Days: API_Day[] = [
+    API_Day.Mon,
+    API_Day.Tue,
+    API_Day.Wed,
+    API_Day.Thu,
+    API_Day.Fri,
+    API_Day.Sat
 ]
 
 export interface API_MeetTime {
     meetNo: number,
-    meetDays: API_MeetDay[],
+    meetDays: API_Day[],
     meetTimeBegin: string,
     meetTimeEnd: string,
     meetPeriodBegin: string,
