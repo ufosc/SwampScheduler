@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import { Transition } from '@headlessui/react'
 import {Section, SOC} from "../scripts/soc";
 import {Generator, Schedule, Selection} from "../scripts/generator";
 import SectionPicker from './SectionPicker';
@@ -17,7 +18,9 @@ interface States {
     generator: Generator | null,
     selections: Selection[],
     schedules: Schedule[],
-    showAddCourse: boolean
+    showAddCourse: boolean,
+    extendSchedule: boolean,
+    otherbool: boolean
 }
 
 const defaultState = {
@@ -25,13 +28,16 @@ const defaultState = {
     generator: null,
     selections: defaultSelections,
     schedules: [],
-    showAddCourse: false
+    showAddCourse: false,
+    extendSchedule: false,
+    otherbool: true,
 };
 
 export default class ScheduleBuilder extends Component<Props, States> {
     constructor(props: Props) {
         super(props);
         this.state = defaultState;
+        this.handleExtendSchedules = this.handleExtendSchedules.bind(this);
     }
 
     componentDidMount() {
@@ -96,6 +102,13 @@ export default class ScheduleBuilder extends Component<Props, States> {
         this.setState({selections: newSelections});
     }
 
+    handleExtendSchedules() {
+        setTimeout(() => {
+            this.setState({extendSchedule: !this.state.extendSchedule})
+            this.setState({otherbool: !this.state.otherbool})
+        }, 0)
+    }
+
     render() {
         // Show loading screen if SOC has not been fetched
         if (this.state.soc === null)
@@ -110,31 +123,54 @@ export default class ScheduleBuilder extends Component<Props, States> {
                 {/* Title */}
                 <div>
                     <p className="text-2xl text-slate-700 mb-2">Schedule Helper 📆</p>
-                    <hr className="my-1.5"></hr>
+                    <hr className="mt-1.5"></hr>
                 </div>
 
                 {/* Main of Builder */}
-                <main className="flex flex-row overflow-y-hidden h-full p-1">
-                    {/* Picker */}
-                    <div className="overflow-y-auto w-full">
-                        <SectionPicker soc={this.state.soc}/>
+                <main className="relative overflow-y-hidden h-full">
+                    <div className="absolute flex flex-row overflow-y-hidden h-full w-full p-1"
+                        
+                    >
+
+                        {/* Picker */}
+                        <div className='overflow-y-auto w-full'>
+                                <SectionPicker soc={this.state.soc}/>
+                        </div>
+
+                        {/* Selected */}
+                        {/* NOTE this does not properly enter due to a big with the droppable in selection display with the transition library */}
+                        <div className='overflow-y-auto w-full p-1'>
+                            <MultipleSelectionDisplay selections={this.state.selections}
+                                handleDrop={this.handleDrop.bind(this)}
+                                newSelection={this.newSelection.bind(this)}
+                                handleRemove={this.handleRemove.bind(this)}
+                                handleDeleteSelection={this.handleDeleteSelection.bind(this)}
+                            />
+                        </div>
+
+                        {/* Schedules (small) */}
+                        <div className='overflow-y-auto w-full'>
+                            <MultipleScheduleDisplay schedules={this.state.schedules}/>
+                        </div>
+
                     </div>
 
-                    {/* Selected */}
-                    <div className="overflow-y-auto w-full p-1">
-                        <MultipleSelectionDisplay selections={this.state.selections}
-                                                  handleDrop={this.handleDrop.bind(this)}
-                                                  newSelection={this.newSelection.bind(this)}
-                                                  handleRemove={this.handleRemove.bind(this)}
-                                                  handleDeleteSelection={this.handleDeleteSelection.bind(this)}
-                        />
-                    </div>
-
-                    {/* Generated Schedules */}
-                    <div className="overflow-y-auto w-full p-1">
-                        <MultipleScheduleDisplay schedules={this.state.schedules}/>
-                    </div>
+                    {/* Schedules (BIG) */}
+                    <Transition className="absolute flex flex-row overflow-y-hidden h-full w-full p-1 bg-white"
+                        show={this.state.extendSchedule}
+                        enter={`transition ease-in-out duration-1000 transform`}
+                        enterFrom="translate-y-full"
+                        enterTo="translate-y-0"
+                        leave={`transition ease-in-out duration-1000 transform`}
+                        leaveFrom="translate-y-0"
+                        leaveTo="translate-y-full"
+                    >
+                        <div className='overflow-y-auto w-full'>
+                            <MultipleScheduleDisplay schedules={this.state.schedules}/>
+                        </div>
+                    </Transition>
                 </main>
+                <button onClick={this.handleExtendSchedules} className='bottom-0 rounded left-0 w-full py-3 border-2 border-sky-500 bg-white text-center text-sky-500 text-xs hover:bg-sky-500 hover:text-white'>^</button>
             </div>
         );
     }
