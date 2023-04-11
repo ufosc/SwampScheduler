@@ -64,7 +64,7 @@ export default class ScheduleDisplay extends Component<Props, States> {
                 } else {
                     divs.push(
                         <div
-                            className={['border-solid', 'border-2', 'border-gray-300', 'rounded', 'whitespace-nowrap', 'h-6'].join(' ')}>
+                            className={classNames(['border-solid', 'border-2', 'border-gray-300', 'rounded', 'whitespace-nowrap', 'text-center', 'h-6'])}>
                         </div>
                     );
                     continue;
@@ -84,7 +84,7 @@ export default class ScheduleDisplay extends Component<Props, States> {
                     divs.push(
                         <div
                             className={classNames(
-                                ['border-solid', 'border-2', 'border-gray-400', color, 'rounded', 'whitespace-nowrap', 'text-center', span])}>
+                                ['border-solid', 'border-2', 'border-gray-400', color, 'rounded', 'whitespace-nowrap', 'text-center', 'h-6', span])}>
                             <ReactFitty minSize={0} maxSize={14} className={"px-0.5"}>
                                 {location}<sup><b>{courseNum}</b></sup>
                             </ReactFitty>
@@ -94,7 +94,7 @@ export default class ScheduleDisplay extends Component<Props, States> {
                     divs.push(
                         <div
                             className={classNames(
-                                ['border-solid', 'border-2', 'border-gray-400', color, 'rounded', 'whitespace-nowrap', 'text-center'])}>
+                                ['border-solid', 'border-2', 'border-gray-400', color, 'rounded', 'whitespace-nowrap', 'text-center', 'h-6'])}>
                             <ReactFitty minSize={0} maxSize={14} className={"px-0.5"}>
                                 {location}<sup><b>{courseNum}</b></sup>
                             </ReactFitty>
