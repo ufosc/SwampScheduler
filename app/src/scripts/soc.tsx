@@ -133,7 +133,7 @@ export class SOC {
      * @param uid -- The course's index in the SOC.
      * @returns A promise for the course; null if it doesn't exist.
      */
-    async getCourseByUID(uid: number): Promise<Course> {
+    async getCourseByUID(uid: number): Promise<Course | null> {
         return this.courses.at(uid) ?? null;
     }
 
@@ -142,7 +142,7 @@ export class SOC {
      * @param course -- A `Course` object.
      * @returns A promise for the UID; null if it doesn't exist.
      */
-    async getUIDByCourse(course: Course): Promise<number> {
+    async getUIDByCourse(course: Course): Promise<number | null> {
         for (const [key, item] of this.courses.entries())
             if (item === course)
                 return key;
@@ -154,7 +154,7 @@ export class SOC {
      * @param section -- A `Section` object
      * @returns A promise for the course; null if it doesn't exist.
      */
-    async getCourseBySection(section: Section): Promise<Course> {
+    async getCourseBySection(section: Section): Promise<Course | null> {
         for (const c of this.courses) {
             for (const s of c.sections)
                 if (s === section)
@@ -171,7 +171,7 @@ export class SOC {
      * @param courseCode -- Ex. COT3100 (not case-sensitive)
      * @returns A promise for the first matching course; null if one doesn't exist.
      */
-    async getCourse(courseCode: string): Promise<Course> {
+    async getCourse(courseCode: string): Promise<Course | null> {
         const upperCode: string = courseCode.toUpperCase();
 
         for (const c of this.courses)
@@ -202,7 +202,7 @@ export class SOC {
      * @param sectionNum -- Ex. 11490
      * @returns A promise for the first matching section; null if one doesn't exist.
      */
-    async getSection(sectionNum: number): Promise<Section> {
+    async getSection(sectionNum: number): Promise<Section | null> {
         for (const c of this.courses) {
             for (const s of c.sections)
                 if (s.number === sectionNum)
