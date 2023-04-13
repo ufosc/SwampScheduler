@@ -8,9 +8,9 @@ import {GrClose} from "react-icons/gr"
 interface Props {
     ind: number,
     selection: Selection,
-    handleDrop,
-    handleRemove,
-    handleDeleteSelection,
+    handleDrop: (ind: number, sectionNum: number) => Promise<void>,
+    handleRemove: (sectionToRemove: Section) => void,
+    handleDeleteSelection: (ind: number) => void,
 }
 
 export default function SelectionDisplay(props: Props) {

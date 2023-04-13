@@ -7,7 +7,7 @@ import {CampusMap} from "../scripts/api";
 interface Props {
     section: Section,
     draggable: boolean,
-    handleRemove
+    handleRemove: (sectionToRemove: Section) => void
 }
 
 interface States {
