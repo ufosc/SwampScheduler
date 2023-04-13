@@ -1,3 +1,5 @@
+import {API_Course, API_Day, API_Days, API_Instructor, API_MeetTime, API_Section} from "./apiTypes";
+
 export class MeetTime {
     pBegin: number;
     pEnd: number;
@@ -5,12 +7,12 @@ export class MeetTime {
     room: string;
     locationID: string;
 
-    constructor(meetTimeJSON) {
-        this.pBegin = MeetTime.parsePeriod(meetTimeJSON['meetPeriodBegin']);
-        this.pEnd = MeetTime.parsePeriod(meetTimeJSON['meetPeriodEnd']);
-        this.bldg = meetTimeJSON['meetBuilding'];
-        this.room = meetTimeJSON['meetRoom'];
-        this.locationID = meetTimeJSON['meetBldgCode'];
+    constructor(meetTimeJSON: API_MeetTime) {
+        this.pBegin = MeetTime.parsePeriod(meetTimeJSON.meetPeriodBegin);
+        this.pEnd = MeetTime.parsePeriod(meetTimeJSON.meetPeriodEnd);
+        this.bldg = meetTimeJSON.meetBuilding;
+        this.room = meetTimeJSON.meetRoom;
+        this.locationID = meetTimeJSON.meetBldgCode;
 
         // Assume course is one section if either pBegin or pEnd is NaN
         if (isNaN(this.pBegin)) this.pBegin = this.pEnd;
@@ -30,22 +32,17 @@ export class MeetTime {
         return (p > 11 ? `E${p - 11}` : `${p}`);
     }
 
-    conflictsWith(other: MeetTime) {
+    conflictsWith(other: MeetTime): boolean {
         return (this.pBegin <= other.pEnd)
             && (other.pBegin <= this.pEnd);
     }
 }
 
-class Meetings extends Map<string, MeetTime[]> {
+class Meetings extends Map<API_Day, MeetTime[]> {
     constructor() {
-        super([
-            ["M", []],
-            ["T", []],
-            ["W", []],
-            ["R", []],
-            ["F", []],
-            ["S", []]
-        ]);
+        super(
+            API_Days.map((day: API_Day) => [day, []])
+        );
     }
 }
 
@@ -57,30 +54,29 @@ export class Section {
     meetTimes: Meetings;
     finalExamDate: string;
 
-    constructor(sectionJSON, courseCode) {
-        this.number = sectionJSON['classNumber'];
+    constructor(sectionJSON: API_Section, courseCode: string) {
+        this.number = sectionJSON.classNumber;
         this.courseCode = courseCode;
-        this.displayName = sectionJSON['display'];
+        this.displayName = sectionJSON.display;
         this.instructors = [];
         this.meetTimes = new Meetings();
-        for (const [, x] of sectionJSON['instructors'].entries())
-            this.instructors.push(x['name']);
-        for (const [, x] of sectionJSON['meetTimes'].entries()) { // Go through meetTimes
-            for (const day of x['meetDays']) // Add a MeetTime for each day with the same schedule
-                this.meetTimes.get(day).push(new MeetTime(x));
+        this.instructors = sectionJSON.instructors.map((i: API_Instructor) => i.name);
+        for (const api_meetTime of sectionJSON.meetTimes) { // Go through meetTimes
+            for (const day of api_meetTime.meetDays) // Add a MeetTime for each day with the same schedule
+                this.meetTimes.get(day).push(new MeetTime(api_meetTime));
         }
-        this.finalExamDate = sectionJSON['finalExam'];
+        this.finalExamDate = sectionJSON.finalExam;
     }
 
     conflictsWith(other: Section) {
         // Make sure none of the meet times for each day don't conflict
-        for (const day of this.meetTimes.keys()) {
-            for (const mt1 of this.meetTimes.get(day))
-                for (const mt2 of other.meetTimes.get(day))
-                    if (mt1.conflictsWith(mt2))
-                        return true;
-        }
-        return false;
+        return API_Days.some(day =>
+            this.meetTimes.get(day).some(mT1 =>
+                other.meetTimes.get(day).some(mT2 =>
+                    mT1.conflictsWith(mT2)
+                )
+            )
+        );
     }
 }
 
@@ -92,12 +88,12 @@ export class Course {
     prerequisites: string;
     sections: Section[];
 
-    constructor(courseJSON) {
-        this.code = courseJSON['code'];
-        this.id = courseJSON['courseId'];
-        this.name = courseJSON['name'];
-        this.description = courseJSON['description'];
-        this.prerequisites = courseJSON['prerequisites'];
+    constructor(courseJSON: API_Course) {
+        this.code = courseJSON.code;
+        this.id = courseJSON.courseId;
+        this.name = courseJSON.name;
+        this.description = courseJSON.description;
+        this.prerequisites = courseJSON.prerequisites;
         this.sections = [];
     }
 }
@@ -105,20 +101,20 @@ export class Course {
 export class SOC {
     courses: Course[];
 
-    private constructor(courses) {
+    private constructor(courses: Course[]) {
         this.courses = courses;
     }
 
     static async fetchSOC(url: string): Promise<SOC> {
-        let resp = await fetch(url), // Fetch the file
+        const resp: Response = await fetch(url), // Fetch the file
             socJson = await resp.json(); // Parse the json file
 
         // Store the courses and their sections
-        let courses: Course[] = [];
-        socJson.forEach(function (courseJson) {
-            let courseCode: string = courseJson['code'],
+        const courses: Course[] = [];
+        socJson.forEach(function (courseJson: API_Course) {
+            const courseCode: string = courseJson.code,
                 course: Course = new Course(courseJson);
-            courseJson['sections'].forEach((sectionJson) => {
+            courseJson.sections.forEach((sectionJson: API_Section) => {
                 course.sections.push(new Section(sectionJson, courseCode));
             });
 
