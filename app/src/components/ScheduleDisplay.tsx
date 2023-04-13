@@ -31,7 +31,7 @@ export default class ScheduleDisplay extends Component<Props, States> {
             for (const [day, mTs] of section.meetTimes) {
                 for (const mT of mTs) {
                     for (let p: number = mT.pBegin ?? 12; p <= mT.pEnd ?? -1; ++p)
-                        blockSchedule.get(day)[p - 1] = blockSchedule.get(day)[p - 1] = {
+                        blockSchedule.get(day)![p - 1] = blockSchedule.get(day)![p - 1] = {
                             meetTime: mT,
                             courseColor: this.props.courseColors[s % this.props.courseColors.length],
                             courseNum: s + 1
@@ -68,7 +68,7 @@ export default class ScheduleDisplay extends Component<Props, States> {
                 if (mT.bldg && mT.room)
                     location = <>{mT.bldg} {mT.room}</>;
 
-                if (mT.pBegin != mT.pEnd && (p == 0 || arrays[d][p - 1] == null || arrays[d][p - 1].meetTime != mT)) {
+                if (mT.pBegin != mT.pEnd && (p == 0 || arrays[d][p - 1] == null || arrays[d][p - 1]!.meetTime != mT)) {
                     // TODO: why do I have to do this garbage??
                     const spanMap: Map<number, string> = new Map<number, string>([
                         [2, 'row-span-2'],
@@ -77,7 +77,7 @@ export default class ScheduleDisplay extends Component<Props, States> {
                         [5, 'row-span-5'],
                         [6, 'row-span-6']
                     ]);
-                    let span: string = spanMap.get(Math.min(1 + (mT.pEnd - mT.pBegin), 6));
+                    let span: string = spanMap.get(Math.min(1 + (mT.pEnd - mT.pBegin), 6))!;
 
                     divs.push(
                         <div className={classNames(
@@ -87,7 +87,7 @@ export default class ScheduleDisplay extends Component<Props, States> {
                             </ReactFitty>
                         </div>
                     );
-                } else if (!(p > 0 && mT != null && arrays[d][p - 1] != null && arrays[d][p - 1].meetTime == mT))
+                } else if (!(p > 0 && mT != null && arrays[d][p - 1] != null && arrays[d][p - 1]!.meetTime == mT))
                     divs.push(
                         <div className={classNames(
                             ['border-solid', 'border-2', 'border-gray-400', color, 'rounded', 'whitespace-nowrap', 'text-center', 'h-6'])}>

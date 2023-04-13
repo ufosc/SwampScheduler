@@ -63,7 +63,7 @@ export class Section {
         this.instructors = sectionJSON.instructors.map((i: API_Instructor) => i.name);
         for (const api_meetTime of sectionJSON.meetTimes) { // Go through meetTimes
             for (const day of api_meetTime.meetDays) // Add a MeetTime for each day with the same schedule
-                this.meetTimes.get(day).push(new MeetTime(api_meetTime));
+                this.meetTimes.get(day)!.push(new MeetTime(api_meetTime));
         }
         this.finalExamDate = sectionJSON.finalExam;
     }
@@ -71,8 +71,8 @@ export class Section {
     conflictsWith(other: Section) {
         // Make sure none of the meet times for each day don't conflict
         return API_Days.some(day =>
-            this.meetTimes.get(day).some(mT1 =>
-                other.meetTimes.get(day).some(mT2 =>
+            this.meetTimes.get(day)!.some(mT1 =>
+                other.meetTimes.get(day)!.some(mT2 =>
                     mT1.conflictsWith(mT2)
                 )
             )
