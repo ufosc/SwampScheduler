@@ -14,7 +14,8 @@ interface Props {
 }
 
 export default function SelectionDisplay(props: Props) {
-    const doDrop = (data: string) => {
+    // TODO: figure out type
+    const doDrop = (data: any) => {
         const section: Section = JSON.parse(data['section']);
         // TODO: use unique identifier
         props.handleDrop(props.ind, section.number)
