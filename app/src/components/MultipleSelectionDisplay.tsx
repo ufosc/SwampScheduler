@@ -1,12 +1,13 @@
 import SelectionDisplay from "./SelectionDisplay";
 import {Selection} from "../scripts/generator";
+import {Section} from "../scripts/soc";
 
 interface Props {
     selections: Selection[],
-    handleDrop,
-    newSelection,
-    handleRemove,
-    handleDeleteSelection
+    handleDrop: (ind: number, sectionNum: number) => Promise<void>,
+    newSelection: () => void,
+    handleRemove: (sectionToRemove: Section) => void,
+    handleDeleteSelection: (ind: number) => void
 }
 
 export default function MultipleSelectionDisplay(props: Props) {
