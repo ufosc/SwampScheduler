@@ -1,6 +1,7 @@
 import React from "react";
 import {Section} from "../scripts/soc";
 import SectionDisplay from "./SectionDisplay";
+// @ts-ignore
 import {Droppable} from "react-drag-and-drop";
 import {Selection} from "../scripts/generator";
 import {GrClose} from "react-icons/gr"
