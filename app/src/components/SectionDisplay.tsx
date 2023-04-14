@@ -1,13 +1,14 @@
 import {Component} from 'react';
 import {MeetTime, Section} from "../scripts/soc";
-import {Draggable} from 'react-drag-and-drop';
+// @ts-ignore
+import {Draggable} from "react-drag-and-drop";
 import {GrClose} from "react-icons/gr"
 import {CampusMap} from "../scripts/api";
 
 interface Props {
     section: Section,
     draggable: boolean,
-    handleRemove
+    handleRemove: (sectionToRemove: Section) => void
 }
 
 interface States {
@@ -23,13 +24,13 @@ export default class SectionDisplay extends Component<Props, States> {
 
     render() {
         // TODO: refactor
-        let allTimes = [];
+        let allTimes: JSX.Element[] = [];
         this.props.section.meetTimes.forEach((mTs: MeetTime[], day: string) => {
             if (mTs.length > 0) {
-                let times = [];
+                let times: JSX.Element[] = [];
                 mTs.forEach((mT: MeetTime) => {
-                    const begin = MeetTime.formatPeriod(mT.pBegin),
-                        end = MeetTime.formatPeriod(mT.pEnd);
+                    const begin: string = MeetTime.formatPeriod(mT.pBegin),
+                        end: string = MeetTime.formatPeriod(mT.pEnd);
                     times.push(
                         <>
                             {CampusMap.createLink(
@@ -52,7 +53,7 @@ export default class SectionDisplay extends Component<Props, States> {
 
         // TODO: not necessarily true (times may not have been assigned, yet)
         if (allTimes.length == 0)
-            allTimes = ["Online"]
+            allTimes = [<>Online</>]
 
         return (
             <Draggable className={"inline-block"} type={'section'} data={JSON.stringify(this.props.section)}

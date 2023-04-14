@@ -7,7 +7,7 @@ interface Props {
 }
 
 export default function SectionPicker(props: Props) {
-    const [courses, setCourses] = useState([]);
+    const [courses, setCourses] = useState<Course[]>([]);
 
     const doSearch = async (searchText: string) => {
         // Find and set matching courses

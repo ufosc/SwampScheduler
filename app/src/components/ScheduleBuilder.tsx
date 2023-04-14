@@ -49,12 +49,14 @@ export default class ScheduleBuilder extends Component<Props, States> {
     componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<States>) {
         // If selections were changed, generate new schedules
         if (this.state.selections != prevState.selections) {
-            this.state.generator.loadSelections( // Generate schedules from non-empty selections
-                this.state.selections.filter((sel: Selection) => sel.length > 0)
-            );
-            this.state.generator.generateSchedules()
-                .then((schedules: Schedule[]) => this.setState({schedules: schedules}));
-            console.log("Selections were changed, so schedules have been regenerated", this.state.schedules);
+            if (this.state.generator) { // Make sure generator is not null
+                this.state.generator.loadSelections( // Generate schedules from non-empty selections
+                    this.state.selections.filter((sel: Selection) => sel.length > 0)
+                );
+                this.state.generator.generateSchedules()
+                    .then((schedules: Schedule[]) => this.setState({schedules: schedules}));
+                console.log("Selections were changed, so schedules have been regenerated", this.state.schedules);
+            }
         }
 
         // If schedules changed, log schedules
@@ -63,14 +65,18 @@ export default class ScheduleBuilder extends Component<Props, States> {
     }
 
     async handleDrop(ind: number, sectionNum: number) {
-        // TODO: use unique section ID
-        const section: Section = await this.state.soc.getSection(sectionNum);
+        if (this.state.soc) { // Make sure SOC exists
+            // TODO: use unique section ID
+            const section: Section | null = await this.state.soc.getSection(sectionNum);
 
-        // Add section to specified selection if not in any selection
-        for (const sel of this.state.selections)
-            if (sel.includes(section))
-                return;
-        this.newSelection(ind, [section]);
+            if (section) { // Make sure a match was found (not null)
+                // Add section to specified selection if not in any selection
+                for (const sel of this.state.selections)
+                    if (sel.includes(section))
+                        return;
+                this.newSelection(ind, [section]);
+            }
+        }
     }
 
     // TODO: make separate functions

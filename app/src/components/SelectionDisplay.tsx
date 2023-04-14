@@ -1,20 +1,22 @@
 import React from "react";
 import {Section} from "../scripts/soc";
 import SectionDisplay from "./SectionDisplay";
-import {Droppable} from 'react-drag-and-drop';
+// @ts-ignore
+import {Droppable} from "react-drag-and-drop";
 import {Selection} from "../scripts/generator";
 import {GrClose} from "react-icons/gr"
 
 interface Props {
     ind: number,
     selection: Selection,
-    handleDrop,
-    handleRemove,
-    handleDeleteSelection,
+    handleDrop: (ind: number, sectionNum: number) => Promise<void>,
+    handleRemove: (sectionToRemove: Section) => void,
+    handleDeleteSelection: (ind: number) => void,
 }
 
 export default function SelectionDisplay(props: Props) {
-    const doDrop = (data) => {
+    // TODO: figure out type
+    const doDrop = (data: any) => {
         const section: Section = JSON.parse(data['section']);
         // TODO: use unique identifier
         props.handleDrop(props.ind, section.number)
