@@ -1,6 +1,6 @@
-import React from 'react';
-import {Course} from "../scripts/soc";
-import CourseDisplay from './CourseDisplay';
+import React from "react";
+import {Course} from "@src/scripts/soc";
+import CourseDisplay from "@src/components/CourseDisplay";
 
 interface Props {
     courses: Course[]

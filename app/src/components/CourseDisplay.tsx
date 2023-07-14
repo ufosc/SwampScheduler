@@ -1,6 +1,6 @@
 import React from "react";
-import {Course, Section} from "../scripts/soc";
-import SectionDisplay from "./SectionDisplay";
+import {Course, Section} from "@src/scripts/soc";
+import SectionDisplay from "@src/components/SectionDisplay";
 
 interface Props {
     course: Course

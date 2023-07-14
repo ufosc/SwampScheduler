@@ -1,9 +1,9 @@
-import React, {Component} from 'react';
-import {Section, SOC} from "../scripts/soc";
-import {Generator, Schedule, Selection} from "../scripts/generator";
-import SectionPicker from './SectionPicker';
-import MultipleSelectionDisplay from "./MultipleSelectionDisplay";
-import MultipleScheduleDisplay from "./MultipleScheduleDisplay";
+import React, {Component} from "react";
+import {Section, SOC} from "@src/scripts/soc";
+import {Generator, Schedule, Selection} from "@src/scripts/generator";
+import SectionPicker from "@src/components/SectionPicker";
+import MultipleSelectionDisplay from "@src/components/MultipleSelectionDisplay";
+import MultipleScheduleDisplay from "@src/components/MultipleScheduleDisplay";
 
 const SOC_URL: string = 'https://raw.githubusercontent.com/ufosc/Schedule_Helper/main/dev/schedule_of_courses/soc_scraped.json';
 

@@ -1,11 +1,10 @@
-import {Schedule} from "../scripts/generator";
-import {Component} from "react";
-import {MeetTime, Section} from "../scripts/soc";
-import {ReactFitty} from "react-fitty";
+import React, {Component} from "react";
 import classNames from "classnames";
-import {API_Day, API_Days} from "../scripts/apiTypes";
-import {getSectionColor} from "../scripts/constants";
-import React from "react";
+import {ReactFitty} from "react-fitty";
+import {API_Day, API_Days} from "@src/scripts/apiTypes";
+import {MeetTime, Section} from "@src/scripts/soc";
+import {Schedule} from "@src/scripts/generator";
+import {getSectionColor} from "@src/scripts/constants";
 
 interface Props {
     schedule: Schedule

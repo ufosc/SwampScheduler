@@ -1,9 +1,9 @@
 import React from "react";
-import {Section} from "../scripts/soc";
-import SectionDisplay from "./SectionDisplay";
+import {Section} from "@src/scripts/soc";
+import SectionDisplay from "@src/components/SectionDisplay";
 // @ts-ignore
 import {Droppable} from "react-drag-and-drop";
-import {Selection} from "../scripts/generator";
+import {Selection} from "@src/scripts/generator";
 import {GrClose} from "react-icons/gr"
 
 interface Props {

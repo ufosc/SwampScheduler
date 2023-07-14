@@ -1,6 +1,6 @@
 import React, {ChangeEvent, useState} from "react";
-import {Course, SOC} from "../scripts/soc";
-import MultipleCourseDisplay from "./MultipleCourseDisplay";
+import {Course, SOC} from "@src/scripts/soc";
+import MultipleCourseDisplay from "@src/components/MultipleCourseDisplay";
 
 interface Props {
     soc: SOC

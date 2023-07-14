@@ -1,10 +1,9 @@
-import {Component} from 'react';
-import {MeetTime, Section} from "../scripts/soc";
+import React, {Component} from "react";
+import {MeetTime, Section} from "@src/scripts/soc";
 // @ts-ignore
 import {Draggable} from "react-drag-and-drop";
 import {GrClose} from "react-icons/gr"
-import {CampusMap} from "../scripts/api";
-import React from "react";
+import {CampusMap} from "@src/scripts/api";
 
 interface Props {
     section: Section,

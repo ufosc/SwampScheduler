@@ -1,4 +1,4 @@
-import {API_Course, API_Day, API_Days, API_Instructor, API_MeetTime, API_Section} from "./apiTypes";
+import {API_Course, API_Day, API_Days, API_Instructor, API_MeetTime, API_Section} from "@src/scripts/apiTypes";
 
 export class MeetTime {
     pBegin: number;

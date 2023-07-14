@@ -1,6 +1,6 @@
-import {Schedule} from "../scripts/generator";
-import ScheduleDisplay from "./ScheduleDisplay";
 import React from "react";
+import {Schedule} from "@src/scripts/generator";
+import ScheduleDisplay from "@src/components/ScheduleDisplay";
 
 interface Props {
     schedules: Schedule[]

@@ -1,4 +1,4 @@
-import {Section, SOC} from "./soc";
+import {Section, SOC} from "@src/scripts/soc";
 
 export class Selection extends Array<Section> {
 }
