@@ -4,6 +4,7 @@ import {MeetTime, Section} from "../scripts/soc";
 import {Draggable} from "react-drag-and-drop";
 import {GrClose} from "react-icons/gr"
 import {CampusMap} from "../scripts/api";
+import React from "react";
 
 interface Props {
     section: Section,
@@ -24,10 +25,10 @@ export default class SectionDisplay extends Component<Props, States> {
 
     render() {
         // TODO: refactor
-        let allTimes: JSX.Element[] = [];
+        let allTimes: React.JSX.Element[] = [];
         this.props.section.meetTimes.forEach((mTs: MeetTime[], day: string) => {
             if (mTs.length > 0) {
-                let times: JSX.Element[] = [];
+                let times: React.JSX.Element[] = [];
                 mTs.forEach((mT: MeetTime) => {
                     const begin: string = MeetTime.formatPeriod(mT.pBegin),
                         end: string = MeetTime.formatPeriod(mT.pEnd);

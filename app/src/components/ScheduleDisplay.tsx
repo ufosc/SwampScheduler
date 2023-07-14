@@ -4,10 +4,11 @@ import {MeetTime, Section} from "../scripts/soc";
 import {ReactFitty} from "react-fitty";
 import classNames from "classnames";
 import {API_Day, API_Days} from "../scripts/apiTypes";
+import {getSectionColor} from "../scripts/constants";
+import React from "react";
 
 interface Props {
-    schedule: Schedule,
-    courseColors: string[]
+    schedule: Schedule
 }
 
 interface States {
@@ -33,7 +34,7 @@ export default class ScheduleDisplay extends Component<Props, States> {
                     for (let p: number = mT.pBegin ?? 12; p <= mT.pEnd ?? -1; ++p)
                         blockSchedule.get(day)![p - 1] = blockSchedule.get(day)![p - 1] = {
                             meetTime: mT,
-                            courseColor: this.props.courseColors[s % this.props.courseColors.length],
+                            courseColor: getSectionColor(s),
                             courseNum: s + 1
                         };
                 }
@@ -64,7 +65,7 @@ export default class ScheduleDisplay extends Component<Props, States> {
                 const color: string = meetTimeInfo.courseColor;
                 const courseNum: number = meetTimeInfo.courseNum
 
-                let location: JSX.Element = <i>TBD</i>;
+                let location: React.JSX.Element = <i>TBD</i>;
                 if (mT.bldg && mT.room)
                     location = <>{mT.bldg} {mT.room}</>;
 
@@ -105,7 +106,7 @@ export default class ScheduleDisplay extends Component<Props, States> {
                     <div className={"flex gap-1"}>
                         {this.props.schedule.map((sec: Section, s: number) =>
                             <div className={classNames(
-                                ['border-solid', 'border-2', 'border-gray-400', this.props.courseColors[s], 'rounded', 'text-center', 'grow'])}>
+                                ['border-solid', 'border-2', 'border-gray-400', getSectionColor(s), 'rounded', 'text-center', 'grow'])}>
                                 <b>({s + 1})</b> Sec. {sec.number} [{sec.courseCode}]
                             </div>
                         )}
