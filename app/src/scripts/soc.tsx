@@ -1,4 +1,5 @@
 import {API_Course, API_Day, API_Days, API_Instructor, API_MeetTime, API_Section} from "@src/scripts/apiTypes";
+import {ProgramMap, Term, TermMap} from "@src/constants/soc";
 
 export class MeetTime {
     pBegin: number;
@@ -99,7 +100,9 @@ export class Course {
 }
 
 interface SOCInfo {
-    term: string,
+    termStr: string,
+    term: Term,
+    year: number
     program: string,
     scraped_at: Date
 }
@@ -121,11 +124,13 @@ export class SOC {
 
         // Store the SOC information
         const info: SOCInfo = {
-            program: infoJson.program,
-            term: infoJson.term,
-            scraped_at: new Date(infoJson.scraped_at * 1000)
+            termStr: infoJson.term,
+            term: TermMap.get(infoJson.term.substring(3))!,
+            year: parseInt(infoJson.term.charAt(0) + '0' + infoJson.term.substring(1, 3)),
+            program: ProgramMap.get(infoJson.program)!,
+            scraped_at: new Date(infoJson.scraped_at * 1000) // seconds --> milliseconds
         }
-        console.log(`Using SOC for term ${info.term} and program ${info.program} which was scraped at ${info.scraped_at.toLocaleString()}`);
+        console.log(`Using SOC for ${info.term} ${info.year}: ${info.program} [${info.termStr}] which was scraped on ${info.scraped_at.toLocaleString()}`);
 
         // Store the courses and their sections
         const courses: Course[] = [];

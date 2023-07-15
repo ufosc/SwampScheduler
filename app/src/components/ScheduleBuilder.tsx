@@ -111,11 +111,22 @@ export default class ScheduleBuilder extends Component<Props, States> {
 
         return (
             <div className="min-h-screen flex flex-col h-screen p-3">
-                {/* Title */}
-                <div>
-                    <p className="text-2xl text-slate-700 mb-2">Schedule Helper 📆</p>
-                    <hr className="my-1.5"></hr>
+                {/* Title & Term Selector */}
+                <div className="flex">
+                    <p className="text-2xl text-slate-700 inline-block">Schedule Helper 📆</p>
+
+                    <div className="grow"></div>
+
+                    <select id="term"
+                            className="bg-sky-500 hover:bg-sky-400 border border-blue-300 text-white text-sm rounded-lg p-2.5 mr-1"
+                            defaultValue={this.state.soc.info.termStr}>
+                        <option value={this.state.soc.info.termStr}>
+                            {this.state.soc.info.term} {this.state.soc.info.year}, {this.state.soc.info.program}
+                        </option>
+                    </select>
                 </div>
+
+                <hr className="my-1.5"></hr>
 
                 {/* Main of Builder */}
                 <main className="flex flex-row overflow-y-hidden h-full p-1">
