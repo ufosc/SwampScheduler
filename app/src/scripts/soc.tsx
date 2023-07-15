@@ -48,6 +48,7 @@ class Meetings extends Map<API_Day, MeetTime[]> {
 }
 
 export class Section {
+    uid: string;
     number: number;
     courseCode: string; // Only for display
     displayName: string;
@@ -55,7 +56,8 @@ export class Section {
     meetTimes: Meetings;
     finalExamDate: string;
 
-    constructor(sectionJSON: API_Section, courseCode: string) {
+    constructor(uid: string, sectionJSON: API_Section, courseCode: string) {
+        this.uid = uid;
         this.number = sectionJSON.classNumber;
         this.courseCode = courseCode;
         this.displayName = sectionJSON.display;
@@ -82,6 +84,7 @@ export class Section {
 }
 
 export class Course {
+    uid: string;
     code: string;
     id: string;
     name: string;
@@ -89,7 +92,8 @@ export class Course {
     prerequisites: string;
     sections: Section[];
 
-    constructor(courseJSON: API_Course) {
+    constructor(uid: string, courseJSON: API_Course) {
+        this.uid = uid;
         this.code = courseJSON.code;
         this.id = courseJSON.courseId;
         this.name = courseJSON.name;
@@ -134,11 +138,11 @@ export class SOC {
 
         // Store the courses and their sections
         const courses: Course[] = [];
-        coursesJson.forEach(function (courseJson: API_Course) {
+        coursesJson.forEach((courseJson: API_Course, courseInd: number) => {
             const courseCode: string = courseJson.code,
-                course: Course = new Course(courseJson);
-            courseJson.sections.forEach((sectionJson: API_Section) => {
-                course.sections.push(new Section(sectionJson, courseCode));
+                course: Course = new Course(SOC.formUID(courseInd), courseJson);
+            courseJson.sections.forEach((sectionJson: API_Section, sectionInd: number) => {
+                course.sections.push(new Section(SOC.formUID(courseInd, sectionInd), sectionJson, courseCode));
             });
 
             courses.push(course); // Add the course to the courses array
@@ -148,23 +152,51 @@ export class SOC {
     }
 
     /**
-     * Used to get a course from the SOC.
-     * @param uid -- The course's index in the SOC.
-     * @returns A promise for the course; null if it doesn't exist.
+     * Used to get a course/section from the SOC.
+     * @param uid -- The course/section's UID.
+     * @returns The course/section; null if there are no matches.
      */
-    async getCourseByUID(uid: number): Promise<Course | null> {
-        return this.courses.at(uid) ?? null;
+    get(uid: string): Course | Section | null {
+        const sepInd = uid.indexOf('#');
+        if (sepInd < 0) // No separator => Course
+            return this.courses.at(parseInt(uid)) ?? null; // Course resolve
+        else { // Separator => Section (in a Course)
+            const courseUID = uid.substring(0, sepInd),
+                sectionInd = parseInt(uid.substring(sepInd + 1));
+
+            const course = this.get(courseUID);
+            if (course instanceof Course)
+                return course.sections.at(sectionInd) ?? null; // Section resolve
+            return null;
+        }
     }
 
     /**
-     * Used to get a UID from a course from the SOC.
-     * @param course -- A `Course` object.
-     * @returns A promise for the UID; null if it doesn't exist.
+     * Used to form a course/section's UID from the SOC.
+     * @param courseInd -- The course/section's associated course index.
+     * @param sectionInd -- The section's section index.
+     * @returns The UID.
      */
-    async getUIDByCourse(course: Course): Promise<number | null> {
-        for (const [key, item] of this.courses.entries())
-            if (item === course)
-                return key;
+    private static formUID(courseInd: number, sectionInd: number | undefined = undefined) {
+        return sectionInd === undefined ? `${courseInd}` : `${courseInd}#${sectionInd}`;
+    }
+
+    /**
+     * Used to get a course/section's UID from the SOC.
+     * @param item -- A `Course` or `Section` object.
+     * @returns The UID; null if the item doesn't exist.
+     */
+    getUID(item: Course | Section): string | null {
+        for (const [courseInd, course] of this.courses.entries()) {
+            if (item instanceof Course) { // Looking for a course
+                if (course === item)
+                    return SOC.formUID(courseInd);
+            } else { // Looking for a section, look inside
+                for (const [sectionInd, section] of course.sections.entries())
+                    if (section === item)
+                        return SOC.formUID(courseInd, sectionInd);
+            }
+        }
         return null;
     }
 

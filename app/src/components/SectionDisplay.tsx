@@ -32,7 +32,7 @@ export default class SectionDisplay extends Component<Props, States> {
                     const begin: string = MeetTime.formatPeriod(mT.pBegin),
                         end: string = MeetTime.formatPeriod(mT.pEnd);
                     times.push(
-                        <>
+                        <span>
                             {CampusMap.createLink(
                                 mT.locationID,
                                 <abbr title={mT.bldg + " " + mT.room}>
@@ -40,7 +40,7 @@ export default class SectionDisplay extends Component<Props, States> {
                                 </abbr>
                             )}
                             {" "}
-                        </>
+                        </span>
                     );
                 });
                 allTimes.push(

@@ -8,7 +8,7 @@ interface Props {
 
 export default function MultipleCourseDisplay(props: Props) {
     const courses = props.courses.map((course: Course) =>
-        <CourseDisplay course={course}/>
+        <CourseDisplay key={course.uid} course={course}/>
     );
 
     return (

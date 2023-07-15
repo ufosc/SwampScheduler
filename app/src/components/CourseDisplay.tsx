@@ -8,7 +8,7 @@ interface Props {
 
 export default function CourseDisplay(props: Props) {
     const sectionDisplays = props.course.sections.map((section: Section) =>
-        <SectionDisplay section={section} draggable={true}/>
+        <SectionDisplay key={section.uid} section={section} draggable={true}/>
     );
 
     return (
