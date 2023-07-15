@@ -4,7 +4,7 @@ import {ReactFitty} from "react-fitty";
 import {API_Day, API_Days} from "@src/scripts/apiTypes";
 import {MeetTime, Section} from "@src/scripts/soc";
 import {Schedule} from "@src/scripts/generator";
-import {getSectionColor} from "@src/scripts/constants";
+import {getSectionColor} from "@src/constants";
 
 interface Props {
     schedule: Schedule
