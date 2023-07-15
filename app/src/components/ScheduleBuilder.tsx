@@ -5,8 +5,6 @@ import SectionPicker from "@src/components/SectionPicker";
 import MultipleSelectionDisplay from "@src/components/MultipleSelectionDisplay";
 import MultipleScheduleDisplay from "@src/components/MultipleScheduleDisplay";
 
-const SOC_URL: string = 'https://raw.githubusercontent.com/ufosc/Schedule_Helper/main/dev/schedule_of_courses/soc_scraped.json';
-
 const defaultSelections: Selection[] = [new Selection()];
 
 interface Props {
@@ -36,7 +34,7 @@ export default class ScheduleBuilder extends Component<Props, States> {
 
     componentDidMount() {
         // TODO: implement retry upon fetch error
-        SOC.fetchSOC(SOC_URL)
+        SOC.fetchSOC()
             .then(soc => this.setState({soc: soc, generator: new Generator(soc)}));
     }
 

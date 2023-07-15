@@ -98,20 +98,38 @@ export class Course {
     }
 }
 
+interface SOCInfo {
+    term: string,
+    program: string,
+    scraped_at: Date
+}
+
 export class SOC {
+    info: SOCInfo;
     courses: Course[];
 
-    private constructor(courses: Course[]) {
+    private constructor(info: SOCInfo, courses: Course[]) {
+        this.info = info;
         this.courses = courses;
     }
 
-    static async fetchSOC(url: string): Promise<SOC> {
-        const resp: Response = await fetch(url), // Fetch the file
-            socJson = await resp.json(); // Parse the json file
+    static async fetchSOC(): Promise<SOC> {
+        /** @link https://create-react-app.dev/docs/code-splitting/ */
+        const socJson: any = await import("@src/json/soc_scraped.json"),
+            infoJson = socJson.info,
+            coursesJson = socJson.courses;
+
+        // Store the SOC information
+        const info: SOCInfo = {
+            program: infoJson.program,
+            term: infoJson.term,
+            scraped_at: new Date(infoJson.scraped_at * 1000)
+        }
+        console.log(`Using SOC for term ${info.term} and program ${info.program} which was scraped at ${info.scraped_at.toLocaleString()}`);
 
         // Store the courses and their sections
         const courses: Course[] = [];
-        socJson.forEach(function (courseJson: API_Course) {
+        coursesJson.forEach(function (courseJson: API_Course) {
             const courseCode: string = courseJson.code,
                 course: Course = new Course(courseJson);
             courseJson.sections.forEach((sectionJson: API_Section) => {
@@ -121,7 +139,7 @@ export class SOC {
             courses.push(course); // Add the course to the courses array
         });
 
-        return new SOC(courses); // Return the SOC
+        return new SOC(info, courses); // Return the SOC
     }
 
     /**
