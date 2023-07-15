@@ -12,7 +12,7 @@ export default function MultipleCourseDisplay(props: Props) {
     );
 
     return (
-        <div>
+        <div className="my-1">
             {courses}
         </div>
     );
