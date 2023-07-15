@@ -56,7 +56,7 @@ export default class SectionDisplay extends Component<Props, States> {
             allTimes = [<>Online</>]
 
         return (
-            <Draggable className={"inline-block"} type={'section'} data={JSON.stringify(this.props.section)}
+            <Draggable className={"inline-block"} type={'uid'} data={this.props.section.uid}
                        enabled={this.props.draggable}>
                 <div className="m-1 text-sm"> {/* SECTION */}
                     <div className="w-full p-2 rounded-lg shadow-sm shadow-slate-400">

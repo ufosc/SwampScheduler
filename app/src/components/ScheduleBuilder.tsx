@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {Section, SOC} from "@src/scripts/soc";
+import {Course, Section, SOC} from "@src/scripts/soc";
 import {Generator, Schedule, Selection} from "@src/scripts/generator";
 import SectionPicker from "@src/components/SectionPicker";
 import MultipleSelectionDisplay from "@src/components/MultipleSelectionDisplay";
@@ -56,17 +56,26 @@ export default class ScheduleBuilder extends Component<Props, States> {
             console.log("New schedules", this.state.schedules);
     }
 
-    async handleDrop(ind: number, sectionNum: number) {
+    async handleDrop(ind: number, uid: string) {
         if (this.state.soc) { // Make sure SOC exists
-            // TODO: use unique section ID
-            const section: Section | null = await this.state.soc.getSection(sectionNum);
+            const item: Section | Course | null = await this.state.soc.get(uid);
+            console.log("Handling drop; will try to add", item);
 
-            if (section) { // Make sure a match was found (not null)
-                // Add section to specified selection if not in any selection
-                for (const sel of this.state.selections)
-                    if (sel.includes(section))
-                        return;
-                this.newSelection(ind, [section]);
+            if (item) { // Make sure a match was found (not null)
+                // Get the section(s) to try to add to selection
+                let sectionsToTryAdd: Section[];
+                if (item instanceof Course)
+                    sectionsToTryAdd = item.sections;
+                else
+                    sectionsToTryAdd = [item];
+
+                // Get the sections that have not been added to a selection
+                const sectionsToAdd: Section[] = sectionsToTryAdd.filter(
+                    section => !this.state.selections.some( // TODO: extract to a Selections class
+                        sel => sel.includes(section)
+                    )
+                );
+                this.newSelection(ind, sectionsToAdd); // Add the section that have not been added
             }
         }
     }

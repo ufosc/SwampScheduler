@@ -4,7 +4,7 @@ import SelectionDisplay from "@src/components/SelectionDisplay";
 
 interface Props {
     selections: Selection[],
-    handleDrop: (ind: number, sectionNum: number) => Promise<void>,
+    handleDrop: (ind: number, uid: string) => Promise<void>,
     newSelection: () => void,
     handleRemove: (sectionToRemove: Section) => void,
     handleDeleteSelection: (ind: number) => void
