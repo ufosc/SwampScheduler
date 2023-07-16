@@ -1,4 +1,4 @@
-import {Section, SOC} from "@src/scripts/soc";
+import {Section, SOC_Generic} from "@src/scripts/soc";
 
 export class Selection extends Array<Section> {
 }
@@ -18,10 +18,10 @@ export class Schedule extends Array<Section> {
 }
 
 export class Generator {
-    soc: SOC;
+    soc: SOC_Generic;
     selections: Selection[] = [];
 
-    constructor(soc: SOC) {
+    constructor(soc: SOC_Generic) {
         this.soc = soc;
     }
 

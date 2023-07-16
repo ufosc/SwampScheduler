@@ -103,6 +103,11 @@ export class Course {
     }
 }
 
+interface UIDSplit {
+    courseUID: string,
+    sectionUID: string | null
+}
+
 interface SOCInfo {
     termStr: string,
     term: Term,
@@ -111,16 +116,116 @@ interface SOCInfo {
     scraped_at: Date
 }
 
-export class SOC {
+export enum SOC_SearchType {
+    COURSE_CODE
+}
+
+export abstract class SOC_Generic {
     info: SOCInfo;
     courses: Course[];
 
-    private constructor(info: SOCInfo, courses: Course[]) {
+    /* CONSTRUCT & INITIALIZE */
+
+    protected constructor(info: SOCInfo, courses: Course[]) {
         this.info = info;
         this.courses = courses;
     }
 
-    static async fetchSOC(): Promise<SOC> {
+    static async initialize(): Promise<SOC_Generic> {
+        throw new Error("SOC initializer not implemented.");
+    };
+
+    /* UID */
+
+    /**
+     * Used to form a course/section's UID from the SOC.
+     * @param courseInd -- The course/section's associated course index.
+     * @param sectionInd -- The section's section index.
+     * @returns The UID.
+     */
+    public static formUID(courseInd: number, sectionInd: number | undefined = undefined) {
+        return sectionInd === undefined ? `${courseInd}` : `${courseInd}#${sectionInd}`;
+    }
+
+    /**
+     * Used to split a course/section's UID.
+     * @param uid -- The course/section's UID.
+     * @returns The split UID.
+     */
+    public static splitUID(uid: string): UIDSplit {
+        const sepInd = uid.indexOf('#');
+        if (sepInd < 0) // No separator => Course
+            return {courseUID: uid, sectionUID: null};
+
+        // Separator => Section (in a Course)
+        return {courseUID: uid.substring(0, sepInd), sectionUID: uid.substring(sepInd + 1)};
+    }
+
+    /**
+     * Used to get a course/section from the SOC.
+     * @param uid -- The course/section's UID.
+     * @returns The course/section; null if there are no matches.
+     */
+    get(uid: string): Course | Section | null {
+        const splitUID = SOC_Generic.splitUID(uid);
+        if (!splitUID.sectionUID) // Resolve course
+            return this.courses.at(parseInt(uid)) ?? null;
+        else { // Resolve section
+            const course = this.get(splitUID.courseUID);
+            if (course instanceof Course)
+                return course.sections.at(parseInt(splitUID.sectionUID)) ?? null; // Section resolve
+            return null;
+        }
+    }
+
+    /**
+     * Used to get a course/section's UID from the SOC.
+     * @param item -- A `Course` or `Section` object.
+     * @returns The UID; null if the item doesn't exist.
+     */
+    getUID(item: Course | Section): string | null {
+        for (const [courseInd, course] of this.courses.entries()) {
+            if (item instanceof Course) { // Looking for a course
+                if (course === item)
+                    return SOC_Generic.formUID(courseInd);
+            } else { // Looking for a section, look inside
+                for (const [sectionInd, section] of course.sections.entries())
+                    if (section === item)
+                        return SOC_Generic.formUID(courseInd, sectionInd);
+            }
+        }
+        return null;
+    }
+
+
+    /* UID UTILS */
+
+    /**
+     * Used to get the course that a section belongs to.
+     * @param sectionUID -- A `Section`'s UID.
+     * @returns The course; null if it doesn't exist.
+     */
+    getCourseBySectionUID(sectionUID: string): Course | null {
+        const splitUID = SOC_Generic.splitUID(sectionUID),
+            course = this.get(splitUID.courseUID);
+        if (course instanceof Course)
+            return course;
+        return null;
+    }
+
+    /* SEARCHING */
+
+    /**
+     * Note: Search for courses by a search type and phrase.
+     * @param searchBy -- The search type to use.
+     * @param phrase -- Ex. COT3100 (not case-sensitive)
+     * @returns A promise for all courses that match; null if one doesn't exist.
+     */
+    abstract searchCourses(searchBy: SOC_SearchType, phrase: string): Promise<Course[]>;
+}
+
+export class SOC_Scraped extends SOC_Generic {
+    static async initialize(): Promise<SOC_Scraped> {
         /** @link https://create-react-app.dev/docs/code-splitting/ */
         const socJson: any = await import("@src/json/soc_scraped.json"),
             infoJson = socJson.info,
@@ -140,125 +245,29 @@ export class SOC {
         const courses: Course[] = [];
         coursesJson.forEach((courseJson: API_Course, courseInd: number) => {
             const courseCode: string = courseJson.code,
-                course: Course = new Course(SOC.formUID(courseInd), courseJson);
+                course: Course = new Course(this.formUID(courseInd), courseJson);
             courseJson.sections.forEach((sectionJson: API_Section, sectionInd: number) => {
-                course.sections.push(new Section(SOC.formUID(courseInd, sectionInd), sectionJson, courseCode));
+                course.sections.push(new Section(SOC_Generic.formUID(courseInd, sectionInd), sectionJson, courseCode));
             });
 
             courses.push(course); // Add the course to the courses array
         });
 
-        return new SOC(info, courses); // Return the SOC
+        return new SOC_Scraped(info, courses); // Return the SOC
     }
-
-    /**
-     * Used to get a course/section from the SOC.
-     * @param uid -- The course/section's UID.
-     * @returns The course/section; null if there are no matches.
-     */
-    get(uid: string): Course | Section | null {
-        const sepInd = uid.indexOf('#');
-        if (sepInd < 0) // No separator => Course
-            return this.courses.at(parseInt(uid)) ?? null; // Course resolve
-        else { // Separator => Section (in a Course)
-            const courseUID = uid.substring(0, sepInd),
-                sectionInd = parseInt(uid.substring(sepInd + 1));
-
-            const course = this.get(courseUID);
-            if (course instanceof Course)
-                return course.sections.at(sectionInd) ?? null; // Section resolve
-            return null;
-        }
-    }
-
-    /**
-     * Used to form a course/section's UID from the SOC.
-     * @param courseInd -- The course/section's associated course index.
-     * @param sectionInd -- The section's section index.
-     * @returns The UID.
-     */
-    private static formUID(courseInd: number, sectionInd: number | undefined = undefined) {
-        return sectionInd === undefined ? `${courseInd}` : `${courseInd}#${sectionInd}`;
-    }
-
-    /**
-     * Used to get a course/section's UID from the SOC.
-     * @param item -- A `Course` or `Section` object.
-     * @returns The UID; null if the item doesn't exist.
-     */
-    getUID(item: Course | Section): string | null {
-        for (const [courseInd, course] of this.courses.entries()) {
-            if (item instanceof Course) { // Looking for a course
-                if (course === item)
-                    return SOC.formUID(courseInd);
-            } else { // Looking for a section, look inside
-                for (const [sectionInd, section] of course.sections.entries())
-                    if (section === item)
-                        return SOC.formUID(courseInd, sectionInd);
-            }
-        }
-        return null;
-    }
-
-    /**
-     * Used to get the course that a section belongs to.
-     * @param section -- A `Section` object
-     * @returns A promise for the course; null if it doesn't exist.
-     */
-    async getCourseBySection(section: Section): Promise<Course | null> {
-        for (const c of this.courses) {
-            for (const s of c.sections)
-                if (s === section)
-                    return c;
-        }
-        return null;
-    }
-
 
     /* SEARCHING & TESTING */
 
-    /**
-     * Note: Course codes are NOT unique! This should only be used for searching & testing purposes.
-     * @param courseCode -- Ex. COT3100 (not case-sensitive)
-     * @returns A promise for the first matching course; null if one doesn't exist.
-     */
-    async getCourse(courseCode: string): Promise<Course | null> {
-        const upperCode: string = courseCode.toUpperCase();
+    searchCourses(searchBy: SOC_SearchType, phrase: string): Promise<Course[]> {
+        if (searchBy == SOC_SearchType.COURSE_CODE) {
+            if (!phrase) // Empty search term should not return all courses
+                return Promise.resolve([]);
 
-        for (const c of this.courses)
-            if (c.code === upperCode)
-                return c;
-        return null;
-    }
-
-    /**
-     * Note: Course codes are NOT unique! This should only be used for searching & testing purposes.
-     * @param courseCodeSubstr -- Ex. COT or COT3 or 3100  (not case-sensitive)
-     * @returns A promise for an array of the matching courses (will return an empty array if "" is the substring given).
-     */
-    async getCoursesMatching(courseCodeSubstr: string): Promise<Course[]> {
-        const upperSubstr: string = courseCodeSubstr.toUpperCase();
-        if (upperSubstr === "")
-            return [];
-
-        let matchingCourses: Course[] = [];
-        for (const c of this.courses)
-            if (c.code.includes(upperSubstr))
-                matchingCourses.push(c)
-        return matchingCourses;
-    }
-
-    /**
-     * Note: Section numbers are NOT unique! This should only be used for searching & testing purposes.
-     * @param sectionNum -- Ex. 11490
-     * @returns A promise for the first matching section; null if one doesn't exist.
-     */
-    async getSection(sectionNum: number): Promise<Section | null> {
-        for (const c of this.courses) {
-            for (const s of c.sections)
-                if (s.number === sectionNum)
-                    return s;
+            const upperCode: string = phrase.toUpperCase();
+            return Promise.resolve(
+                this.courses.filter(c => c.code.includes(upperCode)) ?? null
+            );
         }
-        return null;
+        throw new Error("Unhandled search type.");
     }
 }

@@ -1,9 +1,9 @@
 import React, {ChangeEvent, useState} from "react";
-import {Course, SOC} from "@src/scripts/soc";
+import {Course, SOC_Generic, SOC_SearchType} from "@src/scripts/soc";
 import MultipleCourseDisplay from "@src/components/MultipleCourseDisplay";
 
 interface Props {
-    soc: SOC
+    soc: SOC_Generic
 }
 
 export default function SectionPicker(props: Props) {
@@ -11,7 +11,7 @@ export default function SectionPicker(props: Props) {
 
     const doSearch = async (searchText: string) => {
         // Find and set matching courses
-        let matchingCourses: Course[] = await props.soc.getCoursesMatching(searchText);
+        let matchingCourses: Course[] = await props.soc.searchCourses(SOC_SearchType.COURSE_CODE, searchText);
         setCourses(matchingCourses);
 
         // Report courses found

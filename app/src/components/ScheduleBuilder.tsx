@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {Course, Section, SOC} from "@src/scripts/soc";
+import {Course, Section, SOC_Generic, SOC_Scraped} from "@src/scripts/soc";
 import {Generator, Schedule, Selection} from "@src/scripts/generator";
 import SectionPicker from "@src/components/SectionPicker";
 import MultipleSelectionDisplay from "@src/components/MultipleSelectionDisplay";
@@ -11,7 +11,7 @@ interface Props {
 }
 
 interface States {
-    soc: SOC | null,
+    soc: SOC_Generic | null,
     generator: Generator | null,
     selections: Selection[],
     schedules: Schedule[],
@@ -34,7 +34,7 @@ export default class ScheduleBuilder extends Component<Props, States> {
 
     componentDidMount() {
         // TODO: implement retry upon fetch error
-        SOC.fetchSOC()
+        SOC_Scraped.initialize()
             .then(soc => this.setState({soc: soc, generator: new Generator(soc)}));
     }
 
