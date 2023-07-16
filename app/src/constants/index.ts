@@ -1,1 +1,1 @@
-export * from "@src/constants/colors";
+export * from "@src/constants/frontend";
