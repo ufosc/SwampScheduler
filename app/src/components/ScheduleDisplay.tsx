@@ -30,26 +30,26 @@ export default class ScheduleDisplay extends Component<Props, States> {
         this.props.schedule.forEach((section: Section, s: number) => {
             for (const [day, mTs] of section.meetTimes) {
                 for (const mT of mTs) {
-                    for (let p: number = mT.pBegin ?? 12; p <= mT.pEnd ?? -1; ++p)
+                    for (let p: number = mT.pBegin ?? 12; p <= mT.pEnd ?? -1; ++p) {
                         blockSchedule.get(day)![p - 1] = blockSchedule.get(day)![p - 1] = {
                             meetTime: mT,
                             courseColor: getSectionColor(s),
                             courseNum: s + 1
                         };
+                    }
                 }
             }
         });
 
-        // TODO: this is unnecessary
-        let arrays: Array<(MeetTimeInfo | null)[]> = [];
-        for (const [_, x] of blockSchedule)
-            arrays.push(x);
-
         let divs = [];
         for (let p = 0; p < 11; ++p) {
-            for (let d = 0; d < 5; ++d) {
+            for (const day of API_Days) {
+                // TODO: make this a checkbox or automatically change format to 6 days if schedule has a Saturday course
+                if (day == API_Day.Sat)
+                    continue;
+
                 //TODO: make this not absolutely horrible :)
-                const meetTimeInfo: MeetTimeInfo | null = arrays[d][p];
+                const meetTimeInfo: MeetTimeInfo | null = blockSchedule.get(day)![p];
 
                 if (meetTimeInfo == null) {
                     divs.push(
@@ -68,7 +68,7 @@ export default class ScheduleDisplay extends Component<Props, States> {
                 if (mT.bldg && mT.room)
                     location = <>{mT.bldg} {mT.room}</>;
 
-                if (mT.pBegin != mT.pEnd && (p == 0 || arrays[d][p - 1] == null || arrays[d][p - 1]!.meetTime != mT)) {
+                if (mT.pBegin != mT.pEnd && (p == 0 || blockSchedule.get(day)![p - 1] == null || blockSchedule.get(day)![p - 1]!.meetTime != mT)) {
                     // TODO: why do I have to do this garbage??
                     const spanMap: Map<number, string> = new Map<number, string>([
                         [2, 'row-span-2'],
@@ -87,7 +87,7 @@ export default class ScheduleDisplay extends Component<Props, States> {
                             </ReactFitty>
                         </div>
                     );
-                } else if (!(p > 0 && mT != null && arrays[d][p - 1] != null && arrays[d][p - 1]!.meetTime == mT))
+                } else if (!(p > 0 && mT != null && blockSchedule.get(day)![p - 1] != null && blockSchedule.get(day)![p - 1]!.meetTime == mT))
                     divs.push(
                         <div className={classNames(
                             ['border-solid', 'border-2', 'border-gray-400', color, 'rounded', 'whitespace-nowrap', 'text-center', 'h-6'])}>
