@@ -82,3 +82,19 @@ export interface API_Course {
     prerequisites: string,
     sections: API_Section[]
 }
+
+export interface API_Filter<C> {
+    CODE: C,
+    DESC: string,
+}
+
+export interface API_Filter_Sortable extends API_Filter<string> {
+    SORT_TERM: number
+}
+
+export interface API_Filters {
+    categories: API_Filter<string>[],
+    progLevels: API_Filter<string>[],
+    terms: API_Filter_Sortable[],
+    departments: API_Filter<number>[]
+}
