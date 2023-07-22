@@ -82,9 +82,11 @@ export default class ScheduleDisplay extends Component<Props, States> {
                     divs.push(
                         <div className={classNames(
                             ['border-solid', 'border-2', 'border-gray-400', color, 'rounded', 'whitespace-nowrap', 'text-center', span])}>
-                            <ReactFitty minSize={0} maxSize={14} className={"px-0.5"}>
-                                {location}<sup><b>{courseNum}</b></sup>
-                            </ReactFitty>
+                            <div className={"flex items-center h-full"}>
+                                <ReactFitty minSize={0} maxSize={14} className={"px-0.5"}>
+                                    {location}<sup><b>{courseNum}</b></sup>
+                                </ReactFitty>
+                            </div>
                         </div>
                     );
                 } else if (!(p > 0 && mT != null && blockSchedule.get(day)![p - 1] != null && blockSchedule.get(day)![p - 1]!.meetTime == mT))
