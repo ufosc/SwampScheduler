@@ -7,11 +7,14 @@ export class CampusMap {
         return (baseURL + locationID);
     }
 
-    // TODO: add alternate inner (if location is false-ish)
-    static createLink(locationID: string, inner: React.JSX.Element, _target: string = '_blank'): React.JSX.Element {
+    static createLink(locationID: string | null, locationStr: string, inner: React.JSX.Element, _target: string = '_blank'): React.JSX.Element {
         if (locationID) // Exists and is non-empty
-            return (<a href={CampusMap.getLocationURL(locationID)} target={_target}>{inner}</a>);
-        return (<a>{inner}</a>); // Don't add a link
+            return <a href={CampusMap.getLocationURL(locationID)} target={_target}>
+                <abbr title={locationStr}>
+                    {inner}
+                </abbr>
+            </a>;
+        return (<a>{inner}</a>); // Don't add a link, and don't add <abbr>
     }
 }
 

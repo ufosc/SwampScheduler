@@ -140,8 +140,9 @@ export abstract class SOC_Generic {
         };
     }
 
-    protected existsCourseWithID(courseID: string): boolean {
-        return this.courses.some(c => c.id === courseID);
+    protected existsCourse(courseID: string, courseName: string): boolean {
+        // There exists courses that are under the same course ID, but have different names (ex. MUN2800)
+        return this.courses.some(c => c.id == courseID && c.name == courseName);
     }
 }
 
@@ -247,7 +248,8 @@ export class SOC_API extends SOC_Generic {
                         courseInd: number = this.courses.length;
 
                     // Prevent duplicates
-                    if (!this.existsCourseWithID(courseID)) {
+                    const courseName = courseJson.name;
+                    if (!this.existsCourse(courseID, courseName)) {
                         const course: Course = new Course(SOC_API.formUID(courseInd), this.info.term, courseJson);
                         courseJson.sections.forEach((sectionJson: API_Section, sectionInd: number) => {
                             course.sections.push(new Section(SOC_API.formUID(courseInd, sectionInd), this.info.term, sectionJson, courseCode));

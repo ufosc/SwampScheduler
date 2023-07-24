@@ -6,6 +6,7 @@ import {MeetTime, Section} from "@src/scripts/soc";
 import {Schedule} from "@src/scripts/generator";
 import {getSectionColor} from "@src/constants";
 import {PERIOD_COUNTS} from "@src/constants/schedule";
+import {GrPersonalComputer} from "react-icons/gr";
 
 interface Props {
     schedule: Schedule
@@ -14,10 +15,12 @@ interface Props {
 interface States {
 }
 
+// TODO: reconsider what to store
 type MeetTimeInfo = {
     meetTime: MeetTime,
     courseColor: string,
-    courseNum: number
+    courseNum: number,
+    sectionIsOnline: boolean
 }
 
 export default class ScheduleDisplay extends Component<Props, States> {
@@ -37,13 +40,14 @@ export default class ScheduleDisplay extends Component<Props, States> {
         }
 
         schedule.forEach((section: Section, s: number) => {
-            for (const [day, mTs] of section.meetTimes) {
+            for (const [day, mTs] of section.meetings) {
                 for (const mT of mTs) {
                     for (let p: number = mT.pBegin ?? periodCounts.all; p <= mT.pEnd ?? -1; ++p) {
                         blockSchedule[day][p - 1] = {
                             meetTime: mT,
                             courseColor: getSectionColor(s),
-                            courseNum: s + 1
+                            courseNum: s + 1,
+                            sectionIsOnline: section.isOnline()
                         };
                     }
                 }
@@ -69,13 +73,16 @@ export default class ScheduleDisplay extends Component<Props, States> {
                     continue;
                 }
 
-                const mT: MeetTime = meetTimeInfo.meetTime;
-                const color: string = meetTimeInfo.courseColor;
-                const courseNum: number = meetTimeInfo.courseNum
+                const mT = meetTimeInfo.meetTime,
+                    color = meetTimeInfo.courseColor,
+                    courseNum = meetTimeInfo.courseNum,
+                    isOnline = meetTimeInfo.sectionIsOnline;
 
                 let location: React.JSX.Element = <i>TBD</i>;
                 if (mT.bldg && mT.room)
                     location = <>{mT.bldg} {mT.room}</>;
+                else if (isOnline)
+                    location = <>Online</>;
 
                 if (mT.pBegin != mT.pEnd && (p == 0 || blockSchedule[day][p - 1] == null || blockSchedule[day][p - 1]!.meetTime != mT)) {
                     // TODO: why do I have to do this garbage??
@@ -110,6 +117,7 @@ export default class ScheduleDisplay extends Component<Props, States> {
             }
         }
 
+        const onlineSections: Section[] = schedule.filter(s => s.isOnline());
         return (
             <div className={"text-sm"}>
                 <div className={"min-w-full w-5/12 my-1"}>
@@ -132,12 +140,33 @@ export default class ScheduleDisplay extends Component<Props, States> {
                                     <b>{MeetTime.formatPeriod(p, schedule.term)}</b>
                                 </div>
                             )}
+
+                            {onlineSections.length > 0 &&
+                                <div
+                                    className={"border-solid border-2 border-gray-400 bg-gray-200 rounded text-center w-full h-6 px-0.5"}>
+                                    <div className={"flex items-center justify-center"}>
+                                        <GrPersonalComputer/>️
+                                    </div>
+                                </div>}
                         </div>
                     </div>
 
                     <div className={"inline-block grow"}>
                         <div className={"grid grid-cols-5 grid-rows-11 gap-1"}>
                             {divs}
+                            {onlineSections.length > 0 &&
+                                <div className={"col-span-5"}>
+                                    <div className={"min-w-full w-5/12 h-full"}>
+                                        <div className={"flex gap-1"}>
+                                            {onlineSections.map((sec: Section) =>
+                                                <div className={classNames(
+                                                    ['border-solid', 'border-2', 'border-gray-400', getSectionColor(schedule.indexOf(sec)), 'rounded', 'text-center', 'grow'])}>
+                                                    {sec.displayName}<sup><b>{1 + schedule.indexOf(sec)}</b></sup>
+                                                </div>
+                                            )}
+                                        </div>
+                                    </div>
+                                </div>}
                         </div>
                     </div>
                 </div>

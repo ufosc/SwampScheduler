@@ -8,7 +8,7 @@ export class MeetTime {
     pEnd: number;
     bldg: string;
     room: string;
-    locationID: string;
+    locationID: string | null;
 
     constructor(term: Term, meetTimeJSON: API_MeetTime) {
         this.term = term;
@@ -21,6 +21,9 @@ export class MeetTime {
         // Assume length is one period if either pBegin or pEnd is NaN
         if (isNaN(this.pBegin)) this.pBegin = this.pEnd;
         if (isNaN(this.pEnd)) this.pEnd = this.pBegin;
+
+        // If the meeting is online, there is no location
+        if (this.locationID == "WEB") this.locationID = null;
     }
 
     private parsePeriod(period: string): number {
