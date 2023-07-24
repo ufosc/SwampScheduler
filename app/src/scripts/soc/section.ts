@@ -1,10 +1,11 @@
-import {API_Days, API_Instructor, API_Section} from "@src/scripts/apiTypes";
+import {API_Days, API_Instructor, API_Section, API_Section_Type} from "@src/scripts/apiTypes";
 import {Meetings, MeetTime} from "@src/scripts/soc";
 import {Term} from "@src/constants/soc";
 
 export class Section {
     uid: string;
     term: Term;
+    type: API_Section_Type;
     number: number;
     courseCode: string; // Only for display TODO: consider using getCourse with UID
     displayName: string;
@@ -15,6 +16,7 @@ export class Section {
     constructor(uid: string, term: Term, sectionJSON: API_Section, courseCode: string) {
         this.uid = uid;
         this.term = term;
+        this.type = sectionJSON.sectWeb;
         this.number = sectionJSON.classNumber;
         this.courseCode = courseCode;
         this.displayName = sectionJSON.display;

@@ -38,6 +38,13 @@ export interface API_Waitlist {
     total: number
 }
 
+export enum API_Section_Type {
+    PrimarilyClassroom = "PC",
+    Hybrid = "HB",
+    MostlyOnline = "PD",
+    Online = "AD"
+}
+
 export interface API_Section {
     number: string,
     classNumber: number,
@@ -51,7 +58,7 @@ export interface API_Section {
     dNote: string,
     genEd: string[],
     quest: string[],
-    sectWeb: string,
+    sectWeb: API_Section_Type,
     rotateTitle: string,
     deptCode: number,
     deptName: string,
