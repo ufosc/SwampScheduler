@@ -167,9 +167,9 @@ export class SOC_Scraped extends SOC_Generic {
         const courses: Course[] = [];
         coursesJson.forEach((courseJson: API_Course, courseInd: number) => {
             const courseCode: string = courseJson.code,
-                course: Course = new Course(this.formUID(courseInd), courseJson);
+                course: Course = new Course(this.formUID(courseInd), info.term, courseJson);
             courseJson.sections.forEach((sectionJson: API_Section, sectionInd: number) => {
-                course.sections.push(new Section(SOC_Generic.formUID(courseInd, sectionInd), sectionJson, courseCode));
+                course.sections.push(new Section(SOC_Generic.formUID(courseInd, sectionInd), info.term, sectionJson, courseCode));
             });
 
             courses.push(course); // Add the course to the courses array
@@ -248,9 +248,9 @@ export class SOC_API extends SOC_Generic {
 
                     // Prevent duplicates
                     if (!this.existsCourseWithID(courseID)) {
-                        const course: Course = new Course(SOC_API.formUID(courseInd), courseJson);
+                        const course: Course = new Course(SOC_API.formUID(courseInd), this.info.term, courseJson);
                         courseJson.sections.forEach((sectionJson: API_Section, sectionInd: number) => {
-                            course.sections.push(new Section(SOC_API.formUID(courseInd, sectionInd), sectionJson, courseCode));
+                            course.sections.push(new Section(SOC_API.formUID(courseInd, sectionInd), this.info.term, sectionJson, courseCode));
                         });
                         this.courses.push(course); // Add the course to the courses array
                     }

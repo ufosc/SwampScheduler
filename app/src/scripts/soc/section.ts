@@ -1,17 +1,20 @@
 import {API_Days, API_Instructor, API_Section} from "@src/scripts/apiTypes";
 import {Meetings, MeetTime} from "@src/scripts/soc";
+import {Term} from "@src/constants/soc";
 
 export class Section {
     uid: string;
+    term: Term;
     number: number;
-    courseCode: string; // Only for display
+    courseCode: string; // Only for display TODO: consider using getCourse with UID
     displayName: string;
     instructors: string[];
     meetTimes: Meetings;
     finalExamDate: string;
 
-    constructor(uid: string, sectionJSON: API_Section, courseCode: string) {
+    constructor(uid: string, term: Term, sectionJSON: API_Section, courseCode: string) {
         this.uid = uid;
+        this.term = term;
         this.number = sectionJSON.classNumber;
         this.courseCode = courseCode;
         this.displayName = sectionJSON.display;
@@ -20,13 +23,13 @@ export class Section {
         this.instructors = sectionJSON.instructors.map((i: API_Instructor) => i.name);
         for (const api_meetTime of sectionJSON.meetTimes) { // Go through meetTimes
             for (const day of api_meetTime.meetDays) // Add a MeetTime for each day with the same schedule
-                this.meetTimes.get(day)!.push(new MeetTime(api_meetTime));
+                this.meetTimes.get(day)!.push(new MeetTime(term, api_meetTime));
         }
         this.finalExamDate = sectionJSON.finalExam;
     }
 
+    // Returns true if any of the meet times conflict
     conflictsWith(other: Section) {
-        // Make sure none of the meet times for each day don't conflict
         return API_Days.some(day =>
             this.meetTimes.get(day)!.some(mT1 =>
                 other.meetTimes.get(day)!.some(mT2 =>

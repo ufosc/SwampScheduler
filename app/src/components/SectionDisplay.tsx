@@ -29,14 +29,12 @@ export default class SectionDisplay extends Component<Props, States> {
             if (mTs.length > 0) {
                 let times: React.JSX.Element[] = [];
                 mTs.forEach((mT: MeetTime) => {
-                    const begin: string = MeetTime.formatPeriod(mT.pBegin),
-                        end: string = MeetTime.formatPeriod(mT.pEnd);
                     times.push(
                         <span>
                             {CampusMap.createLink(
                                 mT.locationID,
                                 <abbr title={mT.bldg + " " + mT.room}>
-                                    {mT.pBegin == mT.pEnd ? begin : begin + "-" + end}
+                                    {mT.formatPeriods()}
                                 </abbr>
                             )}
                             {" "}
@@ -64,7 +62,7 @@ export default class SectionDisplay extends Component<Props, States> {
                             <b>{this.props.section.number}</b>
 
                             <button className={"mx-1"}
-                                    hidden={this.props.handleRemove == null}
+                                    hidden={!this.props.handleRemove}
                                     onClick={() => this.props.handleRemove(this.props.section)}
                             >
                                 <GrClose/>
