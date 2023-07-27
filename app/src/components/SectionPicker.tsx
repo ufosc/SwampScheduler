@@ -6,11 +6,12 @@ import {useQuery} from "react-query";
 import {getSearchByStringExample} from "@src/constants";
 
 interface Props {
-    soc: SOC_Generic
+    soc: SOC_Generic,
+    searchText: string,
+    setSearchText: (searchText: string) => void
 }
 
 export default function SectionPicker(props: Props) {
-    const [searchText, setSearchText] = useState<string>('');
     const [searchByString, setSearchByString] = useState<string>(getSearchByString(SearchBys[0]));
     const searchBy = getSearchBy(searchByString);
 
@@ -19,14 +20,14 @@ export default function SectionPicker(props: Props) {
     const {isFetching, data: courses} = useQuery<Course[]>(
         {
             initialData: [],
-            queryKey: [searchText], // Refetch when searchText is updated
+            queryKey: [props.searchText], // Refetch when searchText is updated
             queryFn: () => {
                 setAbortRef(new AbortController());
                 return props.soc instanceof SOC_API
-                    ? props.soc.fetchSearchCourses(searchBy, searchText, abortRef)
-                    : props.soc.searchCourses(searchBy, searchText)
+                    ? props.soc.fetchSearchCourses(searchBy, props.searchText, abortRef)
+                    : props.soc.searchCourses(searchBy, props.searchText)
             },
-            enabled: !!searchText, // Prevents query when searchText is empty
+            enabled: !!props.searchText, // Prevents query when searchText is empty
             notifyOnChangeProps: ['data', 'isFetching'], // Must re-render on isFetching change to update cursor
             refetchOnWindowFocus: false, // Turned off to prevent queries while debugging using console
             refetchOnReconnect: false // Not needed
@@ -34,11 +35,11 @@ export default function SectionPicker(props: Props) {
     );
     console.log(isFetching ? 'Fetching courses...' : 'Not fetching.');
 
-    // TODO: paginate courses, don't only show some
+    // TODO: paginate courses
+    // TODO: make it clearer when not fetching and there are no search results
     const displayCourses = (isFetching
-        ? (props.soc instanceof SOC_API ? props.soc.searchCourses(searchBy, searchText) : [])
-        : courses!)
-        .slice(0, 30);
+        ? (props.soc instanceof SOC_API ? props.soc.searchCourses(searchBy, props.searchText) : [])
+        : courses!).slice(0, 30);
     return (
         <div className={"h-full"} style={{cursor: isFetching ? "progress" : "default"}}>
             <div>
@@ -59,7 +60,8 @@ export default function SectionPicker(props: Props) {
                        type={"text"}
                        className={"bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5 mb-0.5"}
                        placeholder={getSearchByStringExample(searchByString)}
-                       onChange={e => setSearchText(e.target.value)}
+                       value={props.searchText}
+                       onChange={e => props.setSearchText(e.target.value)}
                        autoComplete={"off"}
                 />
             </div>

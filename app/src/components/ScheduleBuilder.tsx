@@ -4,24 +4,32 @@ import {Generator, Schedule, Selection} from "@src/scripts/generator";
 import SectionPicker from "@src/components/SectionPicker";
 import MultipleSelectionDisplay from "@src/components/MultipleSelectionDisplay";
 import MultipleScheduleDisplay from "@src/components/MultipleScheduleDisplay";
+import {UF_SOC_API} from "@src/scripts/api";
+import {API_Filters} from "@src/scripts/apiTypes";
+import {arrayEquals, filterNotEmpty} from "@src/scripts/utils";
 
-const defaultSelections: Selection[] = [new Selection()];
+const getDefaultSelections = () => [new Selection()];
+const defaultProgram = "CWSP";
 
 interface Props {
 }
 
 interface States {
+    filters: API_Filters | null,
     soc: SOC_Generic | null,
     generator: Generator | null,
+    searchText: string,
     selections: Selection[],
     schedules: Schedule[],
     showAddCourse: boolean
 }
 
 const defaultState: States = {
+    filters: null,
     soc: null,
     generator: null,
-    selections: defaultSelections,
+    searchText: "",
+    selections: getDefaultSelections(),
     schedules: [],
     showAddCourse: false
 };
@@ -32,15 +40,26 @@ export default class ScheduleBuilder extends Component<Props, States> {
         this.state = defaultState;
     }
 
+    reset() {
+        console.log("Resetting Schedule Builder");
+        this.setState({
+            searchText: "",
+            selections: getDefaultSelections(),
+            schedules: []
+        });
+    }
+
     componentDidMount() {
         // TODO: implement retry upon fetch error
-        SOC_API.initialize({termStr: '2238', programStr: 'CWSP'})
-            .then(soc => this.setState({soc: soc, generator: new Generator(soc)}));
+        UF_SOC_API.fetchFilters().then(async filters => {
+            this.setState({filters});
+            await this.setSOC(filters.terms[0].CODE, defaultProgram);
+        });
     }
 
     componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<States>) {
-        // If selections were changed, generate new schedules
-        if (this.state.selections != prevState.selections) {
+        // If a section was added/removed from a section, generate new schedules
+        if (!arrayEquals(filterNotEmpty(this.state.selections), filterNotEmpty(prevState.selections))) {
             if (this.state.generator) { // Make sure generator is not null
                 this.state.generator.loadSelections( // Generate schedules from non-empty selections
                     this.state.selections.filter((sel: Selection) => sel.length > 0)
@@ -48,12 +67,23 @@ export default class ScheduleBuilder extends Component<Props, States> {
                 this.state.generator.generateSchedules()
                     .then((schedules: Schedule[]) => this.setState({schedules: schedules}));
                 console.log("Selections were changed, so schedules have been regenerated", this.state.schedules);
+
+                // If schedules changed, log schedules
+                if (prevState.schedules != this.state.schedules)
+                    console.log("New schedules", this.state.schedules);
             }
         }
+    }
 
-        // If schedules changed, log schedules
-        if (prevState.schedules != this.state.schedules)
-            console.log("New schedules", this.state.schedules);
+    async setSOC(termStr: string, programStr: string) {
+        console.log(`Setting SOC to "${termStr}" for "${programStr}"`);
+        await SOC_API.initialize({termStr, programStr})
+            .then(soc => this.setState({
+                    soc: soc,
+                    generator: new Generator(soc)
+                })
+            );
+        this.reset(); // Make sure to only show info from the current SOC
     }
 
     async handleDrop(ind: number, uid: string) {
@@ -97,7 +127,7 @@ export default class ScheduleBuilder extends Component<Props, States> {
     handleDeleteSelection(ind: number) {
         let newSelections = this.state.selections.filter((sel, i) => (i != ind));
         if (newSelections.length == 0)
-            newSelections = defaultSelections;
+            newSelections = getDefaultSelections();
 
         this.setState({selections: newSelections});
     }
@@ -114,7 +144,7 @@ export default class ScheduleBuilder extends Component<Props, States> {
         if (this.state.soc === null)
             return (
                 <div>
-                    <h1>Loading SOC...</h1>
+                    <h1>Fetching Terms...</h1>
                 </div>
             );
 
@@ -127,11 +157,17 @@ export default class ScheduleBuilder extends Component<Props, States> {
                     <div className="grow"></div>
 
                     <select id="term"
-                            className="bg-sky-500 hover:bg-sky-400 border border-blue-300 text-white text-sm rounded-lg p-2.5 mr-1"
-                            defaultValue={this.state.soc.info.termStr}>
-                        <option value={this.state.soc.info.termStr}>
-                            {this.state.soc.info.term} {this.state.soc.info.year}, {this.state.soc.info.program}
-                        </option>
+                            className="bg-sky-500 hover:bg-sky-400 border border-blue-300 text-white text-sm rounded-lg p-2.5 mr-1 text-center"
+                            defaultValue={this.state.soc.info.termStr}
+                            onChange={e => this.setSOC(e.target.value, defaultProgram)}
+                            disabled={false}>
+                        {this.state.filters?.terms.map(t => {
+                                const {term, year} = SOC_Generic.decodeTermString(t.CODE);
+                                return <option value={t.CODE}>
+                                    {term} {year}
+                                </option>
+                            }
+                        )}
                     </select>
                 </div>
 
@@ -141,7 +177,11 @@ export default class ScheduleBuilder extends Component<Props, States> {
                 <main className="flex flex-row overflow-y-hidden h-full p-1">
                     {/* Picker */}
                     <div className="overflow-y-auto w-full">
-                        <SectionPicker soc={this.state.soc}/>
+                        <SectionPicker soc={this.state.soc}
+                                       searchText={this.state.searchText}
+                                       setSearchText={searchText => {
+                                           this.setState.bind(this)({searchText})
+                                       }}/>
                     </div>
 
                     {/* Selected */}
@@ -151,12 +191,13 @@ export default class ScheduleBuilder extends Component<Props, States> {
                                                   newSelection={this.newSelection.bind(this)}
                                                   handleRemove={this.handleRemove.bind(this)}
                                                   handleDeleteSelection={this.handleDeleteSelection.bind(this)}
+                                                  key={new Date().getTime()}
                         />
                     </div>
 
                     {/* Generated Schedules */}
                     <div className="overflow-y-auto w-full p-1">
-                        <MultipleScheduleDisplay schedules={this.state.schedules}/>
+                        <MultipleScheduleDisplay schedules={this.state.schedules} key={new Date().getTime()}/>
                     </div>
                 </main>
             </div>

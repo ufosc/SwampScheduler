@@ -23,19 +23,7 @@ enum UF_SOC_API_URL {
 }
 
 export class UF_SOC_API {
-    readonly filters: API_Filters;
-
-    private constructor(filters: API_Filters) {
-        this.filters = filters;
-    }
-
-    static async initialize(): Promise<UF_SOC_API> {
-        return new UF_SOC_API(
-            await UF_SOC_API.fetchFilters()
-        );
-    }
-
-    private static async fetchFilters(): Promise<API_Filters> {
+    static async fetchFilters(): Promise<API_Filters> {
         return await fetch(UF_SOC_API_URL.FILTERS)
             .then(r => r.json());
     }
