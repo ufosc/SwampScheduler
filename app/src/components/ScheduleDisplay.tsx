@@ -136,14 +136,14 @@ export default class ScheduleDisplay extends Component<Props, States> {
                         <div className={"grid grid-cols-1 gap-y-1"}>
                             {[...Array(periodCounts.all).keys()].map(p => p + 1).map(p =>
                                 <div
-                                    className={"border-solid border-2 border-gray-400 bg-gray-200 rounded text-center w-full h-6 px-0.5"}>
+                                    className={"border-solid border-2 border-gray-400 bg-gray-200 rounded text-center w-full h-6 px-0.5 min-w-full"}>
                                     <b>{MeetTime.formatPeriod(p, schedule.term)}</b>
                                 </div>
                             )}
 
                             {onlineSections.length > 0 &&
                                 <div
-                                    className={"border-solid border-2 border-gray-400 bg-gray-200 rounded text-center w-full h-6 px-0.5"}>
+                                    className={"border-solid border-2 border-gray-400 bg-gray-200 rounded text-center w-full h-6 px-0.5 min-w-full"}>
                                     <div className={"flex items-center justify-center"}>
                                         <GrPersonalComputer/>️
                                     </div>
