@@ -3,7 +3,7 @@ import {Course, SOC_API, SOC_Generic} from "@src/scripts/soc";
 import MultipleCourseDisplay from "@src/components/MultipleCourseDisplay";
 import {getSearchBy, getSearchByString, SearchBys} from "@src/constants/soc";
 import {useQuery} from "react-query";
-import {getSearchByStringExample} from "@src/constants";
+import {getSearchByStringExample} from "@src/constants/frontend";
 
 interface Props {
     soc: SOC_Generic,
