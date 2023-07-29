@@ -1,5 +1,6 @@
 import React from "react";
 import {API_Filters} from "@src/scripts/apiTypes";
+import {fetchCORS} from "@src/scripts/utils";
 
 export class CampusMap {
     static getLocationURL(locationID: string): string {
@@ -24,7 +25,7 @@ enum UF_SOC_API_URL {
 
 export class UF_SOC_API {
     static async fetchFilters(): Promise<API_Filters> {
-        return await fetch(UF_SOC_API_URL.FILTERS)
+        return await fetchCORS(UF_SOC_API_URL.FILTERS)
             .then(r => r.json());
     }
 }

@@ -2,6 +2,7 @@ import {API_Course, API_Section} from "@src/scripts/apiTypes";
 import {getProgram, getProgramString, getSearchByString, getTerm, Program, SearchBy, Term} from "@src/constants/soc";
 import {CancellablePromise, Cancellation} from "real-cancellable-promise";
 import {Course, Section} from "@src/scripts/soc";
+import {fetchCORS} from "@src/scripts/utils";
 
 interface SOCInfo {
     termStr: string,
@@ -236,7 +237,7 @@ export class SOC_API extends SOC_Generic {
             + `&category=${getProgramString(this.info.program)}`
             + `&last-control-number=${lcn}`
             + `&${getSearchByString(searchBy)}=${phrase}`;
-        return fetch(searchURL, {signal: controller.signal})
+        return fetchCORS(searchURL, {signal: controller.signal})
             .then(async r => await r.json())
             .then(async j => {
                 const {COURSES, LASTCONTROLNUMBER, RETRIEVEDROWS, TOTALROWS} = j[0];
