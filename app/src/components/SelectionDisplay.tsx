@@ -3,7 +3,7 @@ import {Section} from "@src/scripts/soc";
 import SectionDisplay from "@src/components/SectionDisplay";
 // @ts-ignore
 import {Droppable} from "react-drag-and-drop";
-import {Selection} from "@src/scripts/generator";
+import {Selection} from "@src/scripts/scheduleGenerator";
 import {GrClose} from "react-icons/gr"
 
 interface Props {

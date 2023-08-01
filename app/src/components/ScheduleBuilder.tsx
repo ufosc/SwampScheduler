@@ -1,12 +1,13 @@
 import React, {Component} from "react";
 import {Course, Section, SOC_API, SOC_Generic} from "@src/scripts/soc";
-import {Generator, Schedule, Selection} from "@src/scripts/generator";
+import {Schedule, ScheduleGenerator, Selection} from "@src/scripts/scheduleGenerator";
 import SectionPicker from "@src/components/SectionPicker";
 import MultipleSelectionDisplay from "@src/components/MultipleSelectionDisplay";
 import MultipleScheduleDisplay from "@src/components/MultipleScheduleDisplay";
 import {UF_SOC_API} from "@src/scripts/api";
 import {API_Filters} from "@src/scripts/apiTypes";
-import {arrayEquals, filterNotEmpty} from "@src/scripts/utils";
+import {arrayEquals, filterNotEmpty, take} from "@src/scripts/utils";
+import {LIMIT_VALUES, LIMITS} from "@src/constants/scheduleGenerator";
 
 const getDefaultSelections = () => [new Selection()];
 const defaultProgram = "CWSP";
@@ -17,7 +18,8 @@ interface Props {
 interface States {
     filters: API_Filters | null,
     soc: SOC_Generic | null,
-    generator: Generator | null,
+    generator: ScheduleGenerator | null,
+    limit: number,
     searchText: string,
     selections: Selection[],
     schedules: Schedule[],
@@ -28,6 +30,7 @@ const defaultState: States = {
     filters: null,
     soc: null,
     generator: null,
+    limit: LIMIT_VALUES[0],
     searchText: "",
     selections: getDefaultSelections(),
     schedules: [],
@@ -58,19 +61,22 @@ export default class ScheduleBuilder extends Component<Props, States> {
     }
 
     componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<States>) {
-        // If a section was added/removed from a section, generate new schedules
-        if (!arrayEquals(filterNotEmpty(this.state.selections), filterNotEmpty(prevState.selections))) {
+        // If limit was changed or a section was added/removed from a section, generate new schedules
+        if (this.state.limit != prevState.limit || !arrayEquals(filterNotEmpty(this.state.selections), filterNotEmpty(prevState.selections))) {
             if (this.state.generator) { // Make sure generator is not null
                 this.state.generator.loadSelections( // Generate schedules from non-empty selections
                     this.state.selections.filter((sel: Selection) => sel.length > 0)
                 );
-                this.state.generator.generateSchedules()
-                    .then((schedules: Schedule[]) => this.setState({schedules: schedules}));
-                console.log("Selections were changed, so schedules have been regenerated", this.state.schedules);
+
+                const newSchedules: Schedule[] = [...take(this.state.limit, this.state.generator.yieldSchedules())];
+                this.setState({schedules: newSchedules});
+                console.log("Selections were changed, so schedules have been regenerated", newSchedules);
 
                 // If schedules changed, log schedules
-                if (prevState.schedules != this.state.schedules)
-                    console.log("New schedules", this.state.schedules);
+                if (prevState.schedules != newSchedules)
+                    console.log("New schedules", newSchedules);
+                else
+                    console.log("Same schedules");
             }
         }
     }
@@ -80,7 +86,7 @@ export default class ScheduleBuilder extends Component<Props, States> {
         await SOC_API.initialize({termStr, programStr})
             .then(soc => this.setState({
                     soc: soc,
-                    generator: new Generator(soc)
+                    generator: new ScheduleGenerator(soc)
                 })
             );
         this.reset(); // Make sure to only show info from the current SOC
@@ -140,11 +146,17 @@ export default class ScheduleBuilder extends Component<Props, States> {
     }
 
     render() {
-        // Show loading screen if SOC has not been fetched
-        if (this.state.soc === null)
+        // Show loading screen if filters/terms haven't been fetched yet
+        if (this.state.filters === null)
             return (
                 <div>
-                    <h1>Fetching Terms...</h1>
+                    <h1>Fetching latest semester information...</h1>
+                </div>
+            );
+        if (this.state.soc === null) // Make sure SOC is set
+            return (
+                <div>
+                    <h1>Setting latest Schedule of Courses...</h1>
                 </div>
             );
 
@@ -168,6 +180,14 @@ export default class ScheduleBuilder extends Component<Props, States> {
                                 </option>
                             }
                         )}
+                    </select>
+
+                    <select id="limit"
+                            className="bg-sky-500 hover:bg-sky-400 border border-blue-300 text-white text-sm rounded-lg p-2.5 mr-1 text-center"
+                            defaultValue={this.state.limit}
+                            onChange={e => this.setState({limit: Number(e.target.value)})}
+                            disabled={false}>
+                        {LIMITS.map(([num, str]) => <option value={num}>Generate ≤{str}</option>)}
                     </select>
                 </div>
 

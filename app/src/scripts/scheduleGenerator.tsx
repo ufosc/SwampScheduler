@@ -21,7 +21,7 @@ export class Schedule extends Array<Section> {
     }
 }
 
-export class Generator {
+export class ScheduleGenerator {
     soc: SOC_Generic;
     selections: Selection[] = [];
 
@@ -34,20 +34,30 @@ export class Generator {
         console.log("Loaded selections", this.selections);
     }
 
-    async generateSchedules(selectionInd: number = 0, currSchedule: Schedule = new Schedule(this.soc.info.term), schedules: Schedule[] = []): Promise<Schedule[]> {
-        // Return if schedule is complete (or given no selections)
-        if (selectionInd == this.selections.length) {
-            if (this.selections.length > 0) // Add "schedule" if selections were given (prevents returning an empty schedule when no selections are given)
-                schedules.push(currSchedule);
-            return schedules;
+    * yieldSchedules(selectionInd: number = 0, currSchedule: Schedule = new Schedule(this.soc.info.term)): Generator<Schedule, Schedule | undefined, undefined> {
+        // Return if there are no selections
+        if (this.selections.length < 1) {
+            console.log("No selections, not generating");
+            return undefined;
         }
+
+        // Return if schedule is complete
+        if (selectionInd == this.selections.length)
+            return currSchedule;
 
         // Go through all the sections for the selection, and see if each could generate a new schedule
         let selection: Selection = this.selections[selectionInd];
         for (const sectionToAdd of selection) {
-            if (currSchedule.fits(sectionToAdd)) // If it fits the current schedule, add it and keep going
-                await this.generateSchedules(selectionInd + 1, new Schedule(currSchedule.term, [...currSchedule, sectionToAdd]), schedules);
+            if (currSchedule.fits(sectionToAdd)) { // If it fits the current schedule, add it and keep going
+                const gen = this.yieldSchedules(selectionInd + 1, new Schedule(currSchedule.term, [...currSchedule, sectionToAdd]));
+
+                let newSchedule: IteratorResult<Schedule>;
+                do {
+                    newSchedule = gen.next();
+                    if (newSchedule.value)
+                        yield newSchedule.value;
+                } while (!newSchedule.done)
+            }
         }
-        return schedules;
     }
 }

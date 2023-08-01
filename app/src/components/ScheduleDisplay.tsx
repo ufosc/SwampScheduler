@@ -3,7 +3,7 @@ import classNames from "classnames";
 import {ReactFitty} from "react-fitty";
 import {API_Day, API_Days} from "@src/scripts/apiTypes";
 import {MeetTime, Section} from "@src/scripts/soc";
-import {Schedule} from "@src/scripts/generator";
+import {Schedule} from "@src/scripts/scheduleGenerator";
 import {getSectionColor} from "@src/constants/frontend";
 import {PERIOD_COUNTS} from "@src/constants/schedule";
 import {GrPersonalComputer} from "react-icons/gr";

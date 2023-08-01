@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {Schedule} from "@src/scripts/generator";
+import {Schedule} from "@src/scripts/scheduleGenerator";
 import ScheduleDisplay from "@src/components/ScheduleDisplay";
 
 const NUM_PER_PAGE = 25;

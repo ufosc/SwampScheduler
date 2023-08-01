@@ -1,4 +1,4 @@
-import {Selection} from "@src/scripts/generator";
+import {Selection} from "@src/scripts/scheduleGenerator";
 import {Section} from "@src/scripts/soc";
 import SelectionDisplay from "@src/components/SelectionDisplay";
 

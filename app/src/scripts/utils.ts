@@ -20,6 +20,13 @@ export function fetchCORS(input: RequestInfo | URL, init?: RequestInit) {
     );
 }
 
+export function* take<T>(max: number, iterable: Iterable<T>): Generator<T> {
+    for (const item of iterable) {
+        if (max-- <= 0) return;
+        yield item;
+    }
+}
+
 export function filterNotEmpty<T>(arr: Array<T[]>): Array<T[]> {
     return arr.filter(val => val.length > 0);
 }
