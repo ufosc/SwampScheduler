@@ -1,4 +1,6 @@
 import React from "react";
+import {API_Filters} from "@src/scripts/apiTypes";
+import {fetchCORS} from "@src/scripts/utils";
 
 export class CampusMap {
     static getLocationURL(locationID: string): string {
@@ -6,10 +8,24 @@ export class CampusMap {
         return (baseURL + locationID);
     }
 
-    // TODO: add alternate inner (if location is false-ish)
-    static createLink(locationID: string, inner: React.JSX.Element, _target: string = '_blank'): React.JSX.Element {
+    static createLink(locationID: string | null, locationStr: string, inner: React.JSX.Element, _target: string = '_blank'): React.JSX.Element {
         if (locationID) // Exists and is non-empty
-            return (<a href={CampusMap.getLocationURL(locationID)} target={_target}>{inner}</a>);
-        return (<a>{inner}</a>); // Don't add a link
+            return <a href={CampusMap.getLocationURL(locationID)} target={_target}>
+                <abbr title={locationStr}>
+                    {inner}
+                </abbr>
+            </a>;
+        return (<a>{inner}</a>); // Don't add a link, and don't add <abbr>
+    }
+}
+
+enum UF_SOC_API_URL {
+    FILTERS = "https://one.uf.edu/apix/soc/filters"
+}
+
+export class UF_SOC_API {
+    static async fetchFilters(): Promise<API_Filters> {
+        return await fetchCORS(UF_SOC_API_URL.FILTERS)
+            .then(r => r.json());
     }
 }

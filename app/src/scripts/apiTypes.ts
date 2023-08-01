@@ -38,6 +38,13 @@ export interface API_Waitlist {
     total: number
 }
 
+export enum API_Section_Type {
+    PrimarilyClassroom = "PC",
+    Hybrid = "HB",
+    MostlyOnline = "PD",
+    Online = "AD"
+}
+
 export interface API_Section {
     number: string,
     classNumber: number,
@@ -51,7 +58,7 @@ export interface API_Section {
     dNote: string,
     genEd: string[],
     quest: string[],
-    sectWeb: string,
+    sectWeb: API_Section_Type,
     rotateTitle: string,
     deptCode: number,
     deptName: string,
@@ -81,4 +88,20 @@ export interface API_Course {
     description: string,
     prerequisites: string,
     sections: API_Section[]
+}
+
+export interface API_Filter<C> {
+    CODE: C,
+    DESC: string,
+}
+
+export interface API_Filter_Sortable extends API_Filter<string> {
+    SORT_TERM: number
+}
+
+export interface API_Filters {
+    categories: API_Filter<string>[],
+    progLevels: API_Filter<string>[],
+    terms: API_Filter_Sortable[],
+    departments: API_Filter<number>[]
 }

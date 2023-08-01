@@ -1,13 +1,17 @@
-import {Section, SOC} from "@src/scripts/soc";
+import {Section, SOC_Generic} from "@src/scripts/soc";
+import {Term} from "@src/constants/soc";
 
 export class Selection extends Array<Section> {
 }
 
 export class Schedule extends Array<Section> {
-    constructor(sections: Section[] = []) {
+    term: Term;
+
+    constructor(term: Term, sections: Section[] = []) {
         super();
         if (sections.length > 0)
             this.push(...sections);
+        this.term = term;
     }
 
     fits(sectionToAdd: Section): boolean {
@@ -18,10 +22,10 @@ export class Schedule extends Array<Section> {
 }
 
 export class Generator {
-    soc: SOC;
+    soc: SOC_Generic;
     selections: Selection[] = [];
 
-    constructor(soc: SOC) {
+    constructor(soc: SOC_Generic) {
         this.soc = soc;
     }
 
@@ -30,7 +34,7 @@ export class Generator {
         console.log("Loaded selections", this.selections);
     }
 
-    async generateSchedules(selectionInd: number = 0, currSchedule: Schedule = new Schedule(), schedules: Schedule[] = []): Promise<Schedule[]> {
+    async generateSchedules(selectionInd: number = 0, currSchedule: Schedule = new Schedule(this.soc.info.term), schedules: Schedule[] = []): Promise<Schedule[]> {
         // Return if schedule is complete (or given no selections)
         if (selectionInd == this.selections.length) {
             if (this.selections.length > 0) // Add "schedule" if selections were given (prevents returning an empty schedule when no selections are given)
@@ -42,7 +46,7 @@ export class Generator {
         let selection: Selection = this.selections[selectionInd];
         for (const sectionToAdd of selection) {
             if (currSchedule.fits(sectionToAdd)) // If it fits the current schedule, add it and keep going
-                await this.generateSchedules(selectionInd + 1, new Schedule([...currSchedule, sectionToAdd]), schedules);
+                await this.generateSchedules(selectionInd + 1, new Schedule(currSchedule.term, [...currSchedule, sectionToAdd]), schedules);
         }
         return schedules;
     }

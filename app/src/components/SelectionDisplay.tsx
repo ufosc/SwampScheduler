@@ -45,4 +45,3 @@ export default function SelectionDisplay(props: Props) {
         </div>
     );
 }
-

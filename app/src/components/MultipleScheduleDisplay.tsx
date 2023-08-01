@@ -17,7 +17,7 @@ export default function MultipleScheduleDisplay(props: Props) {
     return (
         <div>
             <p className={"text-center"}>
-                <b><u>{props.schedules.length}</u> Schedules Generated</b>
+                <b><u>{props.schedules.length.toLocaleString()}</u> Schedules Generated</b>
             </p>
 
             {schedulesToShow.map((schedule: Schedule, i: number) =>

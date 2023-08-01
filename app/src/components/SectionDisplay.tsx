@@ -25,19 +25,16 @@ export default class SectionDisplay extends Component<Props, States> {
     render() {
         // TODO: refactor
         let allTimes: React.JSX.Element[] = [];
-        this.props.section.meetTimes.forEach((mTs: MeetTime[], day: string) => {
+        this.props.section.meetings.forEach((mTs: MeetTime[], day: string) => {
             if (mTs.length > 0) {
                 let times: React.JSX.Element[] = [];
                 mTs.forEach((mT: MeetTime) => {
-                    const begin: string = MeetTime.formatPeriod(mT.pBegin),
-                        end: string = MeetTime.formatPeriod(mT.pEnd);
                     times.push(
                         <span>
                             {CampusMap.createLink(
                                 mT.locationID,
-                                <abbr title={mT.bldg + " " + mT.room}>
-                                    {mT.pBegin == mT.pEnd ? begin : begin + "-" + end}
-                                </abbr>
+                                `${mT.bldg} ${mT.room}`,
+                                <>{mT.formatPeriods()}</>
                             )}
                             {" "}
                         </span>
@@ -51,9 +48,10 @@ export default class SectionDisplay extends Component<Props, States> {
             }
         });
 
-        // TODO: not necessarily true (times may not have been assigned, yet)
-        if (allTimes.length == 0)
-            allTimes = [<>Online</>]
+        if (this.props.section.isOnline())
+            allTimes.unshift(<b>Online</b>);
+        else if (allTimes.length == 0) // Not online, but no times have been assigned
+            allTimes = [<>TBD</>]
 
         return (
             <Draggable className={"inline-block"} type={'uid'} data={this.props.section.uid}
@@ -64,7 +62,7 @@ export default class SectionDisplay extends Component<Props, States> {
                             <b>{this.props.section.number}</b>
 
                             <button className={"mx-1"}
-                                    hidden={this.props.handleRemove == null}
+                                    hidden={!this.props.handleRemove}
                                     onClick={() => this.props.handleRemove(this.props.section)}
                             >
                                 <GrClose/>
