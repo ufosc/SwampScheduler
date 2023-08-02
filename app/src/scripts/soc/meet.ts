@@ -1,6 +1,6 @@
-import {API_Day, API_Days, API_MeetTime} from "@scripts/apiTypes";
-import {Term} from "@constants/soc";
-import {PERIOD_COUNTS} from "@constants/schedule";
+import { API_Day, API_Days, API_MeetTime } from "@scripts/apiTypes";
+import { Term } from "@constants/soc";
+import { PERIOD_COUNTS } from "@constants/schedule";
 
 export class MeetTime {
     term: Term;
@@ -28,7 +28,7 @@ export class MeetTime {
 
     private parsePeriod(period: string): number {
         if (period) {
-            if (period.charAt(0) == 'E') {
+            if (period.charAt(0) == "E") {
                 const periodCounts = PERIOD_COUNTS[this.term];
                 return periodCounts.regular + parseInt(period.substring(1));
             }
@@ -39,25 +39,34 @@ export class MeetTime {
 
     static formatPeriod(p: number, term: Term) {
         const periodCounts = PERIOD_COUNTS[term];
-        return p > periodCounts.regular ? `E${p - periodCounts.regular}` : `${p}`;
+        return p > periodCounts.regular
+            ? `E${p - periodCounts.regular}`
+            : `${p}`;
     }
 
     formatPeriods(): string {
         return this.pBegin == this.pEnd
             ? MeetTime.formatPeriod(this.pBegin, this.term)
-            : `${MeetTime.formatPeriod(this.pBegin, this.term)}-${MeetTime.formatPeriod(this.pEnd, this.term)}`;
+            : `${MeetTime.formatPeriod(
+                  this.pBegin,
+                  this.term,
+              )}-${MeetTime.formatPeriod(this.pEnd, this.term)}`;
     }
 
     // Returns true if the meet times conflict (overlap)
     conflictsWith(other: MeetTime): boolean {
-        return (this.pBegin <= other.pEnd)
-            && (this.pEnd >= other.pBegin);
+        return this.pBegin <= other.pEnd && this.pEnd >= other.pBegin;
     }
 }
 
 // TODO: Make this Record<API_Day, MeetTime[]>
 export class Meetings extends Map<API_Day, MeetTime[]> {
-    constructor(meetTimes: [API_Day, MeetTime[]][] = API_Days.map((day: API_Day) => [day, []])) {
+    constructor(
+        meetTimes: [API_Day, MeetTime[]][] = API_Days.map((day: API_Day) => [
+            day,
+            [],
+        ]),
+    ) {
         super(meetTimes);
     }
 }

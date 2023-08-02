@@ -1,25 +1,26 @@
-import {Selection} from "@scripts/scheduleGenerator";
-import {Section} from "@scripts/soc";
+import { Selection } from "@scripts/scheduleGenerator";
+import { Section } from "@scripts/soc";
 import SelectionDisplay from "@components/SelectionDisplay";
 
 interface Props {
-    selections: Selection[],
-    handleDrop: (ind: number, uid: string) => Promise<void>,
-    newSelection: () => void,
-    handleRemove: (sectionToRemove: Section) => void,
-    handleDeleteSelection: (ind: number) => void
+    selections: Selection[];
+    handleDrop: (ind: number, uid: string) => Promise<void>;
+    newSelection: () => void;
+    handleRemove: (sectionToRemove: Section) => void;
+    handleDeleteSelection: (ind: number) => void;
 }
 
 export default function MultipleSelectionDisplay(props: Props) {
     // TODO: don't use index?
-    const selectionDisplays = props.selections.map((sel, i) =>
-        <SelectionDisplay ind={i}
-                          selection={sel}
-                          handleDrop={props.handleDrop}
-                          handleRemove={props.handleRemove}
-                          handleDeleteSelection={props.handleDeleteSelection}
+    const selectionDisplays = props.selections.map((sel, i) => (
+        <SelectionDisplay
+            ind={i}
+            selection={sel}
+            handleDrop={props.handleDrop}
+            handleRemove={props.handleRemove}
+            handleDeleteSelection={props.handleDeleteSelection}
         />
-    );
+    ));
 
     return (
         <div>

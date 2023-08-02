@@ -1,12 +1,12 @@
-import {useState} from "react";
-import {Schedule} from "@scripts/scheduleGenerator";
+import { useState } from "react";
+import { Schedule } from "@scripts/scheduleGenerator";
 import ScheduleDisplay from "@components/ScheduleDisplay";
 
 const NUM_PER_PAGE = 25;
 
 interface Props {
-    schedules: Schedule[]
-    numPerPage?: number
+    schedules: Schedule[];
+    numPerPage?: number;
 }
 
 export default function MultipleScheduleDisplay(props: Props) {
@@ -17,23 +17,31 @@ export default function MultipleScheduleDisplay(props: Props) {
     return (
         <div>
             <p className={"text-center"}>
-                <b><u>{props.schedules.length.toLocaleString()}</u> Schedules Generated</b>
+                <b>
+                    <u>{props.schedules.length.toLocaleString()}</u> Schedules
+                    Generated
+                </b>
             </p>
 
-            {schedulesToShow.map((schedule: Schedule, i: number) =>
+            {schedulesToShow.map((schedule: Schedule, i: number) => (
                 <div>
                     <u>Schedule #{i + 1}</u>
-                    <ScheduleDisplay schedule={schedule}/>
+                    <ScheduleDisplay schedule={schedule} />
+                </div>
+            ))}
+
+            {maxSchedulesToShow < props.schedules.length && (
+                <div className={"text-center"}>
+                    <button
+                        className={
+                            "bg-gray-300 hover:bg-gray-400 text-gray-800 py-2 px-3 rounded inline-flex items-center"
+                        }
+                        onClick={() => setNumPages(numPages + 1)}
+                    >
+                        View More
+                    </button>
                 </div>
             )}
-
-            {maxSchedulesToShow < props.schedules.length
-                && <div className={"text-center"}>
-                    <button
-                        className={"bg-gray-300 hover:bg-gray-400 text-gray-800 py-2 px-3 rounded inline-flex items-center"}
-                        onClick={() => setNumPages(numPages + 1)}>View More
-                    </button>
-                </div>}
         </div>
     );
 }

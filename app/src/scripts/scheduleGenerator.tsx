@@ -1,23 +1,19 @@
-import {Section, SOC_Generic} from "@scripts/soc";
-import {Term} from "@constants/soc";
+import { Section, SOC_Generic } from "@scripts/soc";
+import { Term } from "@constants/soc";
 
-export class Selection extends Array<Section> {
-}
+export class Selection extends Array<Section> {}
 
 export class Schedule extends Array<Section> {
     term: Term;
 
     constructor(term: Term, sections: Section[] = []) {
         super();
-        if (sections.length > 0)
-            this.push(...sections);
+        if (sections.length > 0) this.push(...sections);
         this.term = term;
     }
 
     fits(sectionToAdd: Section): boolean {
-        return this.every(
-            (sec: Section) => !sectionToAdd.conflictsWith(sec)
-        );
+        return this.every((sec: Section) => !sectionToAdd.conflictsWith(sec));
     }
 }
 
@@ -34,7 +30,10 @@ export class ScheduleGenerator {
         console.log("Loaded selections", this.selections);
     }
 
-    * yieldSchedules(selectionInd: number = 0, currSchedule: Schedule = new Schedule(this.soc.info.term)): Generator<Schedule, Schedule | undefined, undefined> {
+    *yieldSchedules(
+        selectionInd: number = 0,
+        currSchedule: Schedule = new Schedule(this.soc.info.term),
+    ): Generator<Schedule, Schedule | undefined, undefined> {
         // Return if there are no selections
         if (this.selections.length < 1) {
             console.log("No selections, not generating");
@@ -42,21 +41,26 @@ export class ScheduleGenerator {
         }
 
         // Return if schedule is complete
-        if (selectionInd == this.selections.length)
-            return currSchedule;
+        if (selectionInd == this.selections.length) return currSchedule;
 
         // Go through all the sections for the selection, and see if each could generate a new schedule
         const selection: Selection = this.selections[selectionInd];
         for (const sectionToAdd of selection) {
-            if (currSchedule.fits(sectionToAdd)) { // If it fits the current schedule, add it and keep going
-                const gen = this.yieldSchedules(selectionInd + 1, new Schedule(currSchedule.term, [...currSchedule, sectionToAdd]));
+            if (currSchedule.fits(sectionToAdd)) {
+                // If it fits the current schedule, add it and keep going
+                const gen = this.yieldSchedules(
+                    selectionInd + 1,
+                    new Schedule(currSchedule.term, [
+                        ...currSchedule,
+                        sectionToAdd,
+                    ]),
+                );
 
                 let newSchedule: IteratorResult<Schedule>;
                 do {
                     newSchedule = gen.next();
-                    if (newSchedule.value)
-                        yield newSchedule.value;
-                } while (!newSchedule.done)
+                    if (newSchedule.value) yield newSchedule.value;
+                } while (!newSchedule.done);
             }
         }
     }

@@ -1,4 +1,6 @@
-export const LIMIT_VALUES = [1E3, 5E4, 2E5, 1E6, 2E6, Infinity];
+export const LIMIT_VALUES = [1e3, 5e4, 2e5, 1e6, 2e6, Infinity];
 
-export const LIMITS: Array<[number, string]>
-    = LIMIT_VALUES.map(val => [val, val == Infinity ? "∞" : val.toLocaleString()]);
+export const LIMITS: Array<[number, string]> = LIMIT_VALUES.map((val) => [
+    val,
+    val == Infinity ? "∞" : val.toLocaleString(),
+]);
