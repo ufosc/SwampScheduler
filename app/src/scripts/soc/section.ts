@@ -1,6 +1,6 @@
-import {API_Days, API_Instructor, API_Section, API_Section_Type} from "@src/scripts/apiTypes";
-import {Meetings, MeetTime} from "@src/scripts/soc";
-import {Term} from "@src/constants/soc";
+import {API_Days, API_Instructor, API_Section, API_Section_Type} from "@scripts/apiTypes";
+import {Meetings, MeetTime} from "@scripts/soc";
+import {Term} from "@constants/soc";
 
 export class Section {
     uid: string;

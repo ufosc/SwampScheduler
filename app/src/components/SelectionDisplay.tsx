@@ -1,9 +1,9 @@
-import React from "react";
-import {Section} from "@src/scripts/soc";
-import SectionDisplay from "@src/components/SectionDisplay";
+import {Section} from "@scripts/soc";
+import SectionDisplay from "@components/SectionDisplay";
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import {Droppable} from "react-drag-and-drop";
-import {Selection} from "@src/scripts/scheduleGenerator";
+import {Selection} from "@scripts/scheduleGenerator";
 import {GrClose} from "react-icons/gr"
 
 interface Props {

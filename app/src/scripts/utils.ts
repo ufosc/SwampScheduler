@@ -1,11 +1,6 @@
-import config from "@src/json/config.json";
-
-const {REACT_APP_CORS_API_KEY} = process.env;
-
 export function fetchCORS(input: RequestInfo | URL, init?: RequestInit) {
-    const cors_api_key: string = process.env["NODE_ENV"] == "development" ?
-        config.DEV_CORS_API_KEY :
-        REACT_APP_CORS_API_KEY as string;
+    // noinspection JSUnresolvedReference
+    const {VITE_CORS_API_KEY: cors_api_key} = import.meta.env;
     if (!cors_api_key)
         throw new Error("CORS API key is missing");
 

@@ -1,4 +1,4 @@
-import {Term} from "@src/constants/soc";
+import {Term} from "@constants/soc";
 
 export interface PeriodCount {
     regular: number,

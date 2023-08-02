@@ -1,41 +1,37 @@
 {
-  "name": "schedule-helper-react",
-  "version": "0.1.0",
+  "name": "schedule-helper",
   "private": true,
+  "version": "0.0.0",
+  "type": "module",
   "scripts": {
-    "start": "craco start",
-    "build": "craco build",
-    "test": "craco test",
-    "clean": "rm -rf node_modules"
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "preview": "vite preview"
   },
   "dependencies": {
-    "@types/react": "^18.0.0",
-    "@types/react-dom": "^18.0.0",
-    "classnames": "^2.3.0",
+    "classnames": "^2.3.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-drag-and-drop": "^3.0.0",
-    "react-fitty": "^1.0.0",
-    "react-icons": "^4.8.1",
-    "react-scripts": "^5.0.0",
-    "typescript": "^4.9.5",
-    "real-cancellable-promise": "^1.2.0",
-    "react-query": "^3.39.0"
+    "react-fitty": "^1.0.1",
+    "react-icons": "^4.10.1",
+    "react-query": "^3.39.3",
+    "real-cancellable-promise": "^1.2.0"
   },
   "devDependencies": {
-    "tailwindcss": "^3.3.0",
-    "@craco/craco": "^7.1.0"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+    "@types/react": "^18.2.15",
+    "@types/react-dom": "^18.2.7",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "@vitejs/plugin-react-swc": "^3.3.2",
+    "autoprefixer": "^10.4.14",
+    "eslint": "^8.45.0",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.3",
+    "postcss": "^8.4.27",
+    "tailwindcss": "^3.3.3",
+    "typescript": "^5.0.2",
+    "vite": "^4.4.5"
   }
 }

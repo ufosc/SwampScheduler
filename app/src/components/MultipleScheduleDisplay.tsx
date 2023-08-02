@@ -1,6 +1,6 @@
-import React, {useState} from "react";
-import {Schedule} from "@src/scripts/scheduleGenerator";
-import ScheduleDisplay from "@src/components/ScheduleDisplay";
+import {useState} from "react";
+import {Schedule} from "@scripts/scheduleGenerator";
+import ScheduleDisplay from "@components/ScheduleDisplay";
 
 const NUM_PER_PAGE = 25;
 

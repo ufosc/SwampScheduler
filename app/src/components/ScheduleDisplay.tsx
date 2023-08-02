@@ -1,11 +1,13 @@
 import React, {Component} from "react";
 import classNames from "classnames";
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 import {ReactFitty} from "react-fitty";
-import {API_Day, API_Days} from "@src/scripts/apiTypes";
-import {MeetTime, Section} from "@src/scripts/soc";
-import {Schedule} from "@src/scripts/scheduleGenerator";
-import {getSectionColor} from "@src/constants/frontend";
-import {PERIOD_COUNTS} from "@src/constants/schedule";
+import {API_Day, API_Days} from "@scripts/apiTypes";
+import {MeetTime, Section} from "@scripts/soc";
+import {Schedule} from "@scripts/scheduleGenerator";
+import {getSectionColor} from "@constants/frontend";
+import {PERIOD_COUNTS} from "@constants/schedule";
 import {GrPersonalComputer} from "react-icons/gr";
 
 interface Props {
@@ -54,7 +56,7 @@ export default class ScheduleDisplay extends Component<Props, States> {
             }
         });
 
-        let divs = [];
+        const divs = [];
         for (let p = 0; p < periodCounts.all; ++p) {
             for (const day of API_Days) {
                 // TODO: make this a checkbox or automatically change format to 6 days if schedule has a Saturday course
@@ -93,7 +95,7 @@ export default class ScheduleDisplay extends Component<Props, States> {
                         [5, 'row-span-5'],
                         [6, 'row-span-6']
                     ]);
-                    let span: string = spanMap.get(Math.min(1 + (mT.pEnd - mT.pBegin), 6))!; // TODO: error handling for NaN
+                    const span: string = spanMap.get(Math.min(1 + (mT.pEnd - mT.pBegin), 6))!; // TODO: error handling for NaN
 
                     divs.push(
                         <div className={classNames(

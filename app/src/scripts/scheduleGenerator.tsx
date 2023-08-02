@@ -1,5 +1,5 @@
-import {Section, SOC_Generic} from "@src/scripts/soc";
-import {Term} from "@src/constants/soc";
+import {Section, SOC_Generic} from "@scripts/soc";
+import {Term} from "@constants/soc";
 
 export class Selection extends Array<Section> {
 }
@@ -46,7 +46,7 @@ export class ScheduleGenerator {
             return currSchedule;
 
         // Go through all the sections for the selection, and see if each could generate a new schedule
-        let selection: Selection = this.selections[selectionInd];
+        const selection: Selection = this.selections[selectionInd];
         for (const sectionToAdd of selection) {
             if (currSchedule.fits(sectionToAdd)) { // If it fits the current schedule, add it and keep going
                 const gen = this.yieldSchedules(selectionInd + 1, new Schedule(currSchedule.term, [...currSchedule, sectionToAdd]));

@@ -1,6 +1,6 @@
-import React from "react";
-import {Course, Section} from "@src/scripts/soc";
-import SectionDisplay from "@src/components/SectionDisplay";
+import {Course, Section} from "@scripts/soc";
+import SectionDisplay from "@components/SectionDisplay";
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import {Draggable} from "react-drag-and-drop";
 

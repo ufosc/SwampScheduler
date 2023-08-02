@@ -1,6 +1,6 @@
-import {API_Day, API_Days, API_MeetTime} from "@src/scripts/apiTypes";
-import {Term} from "@src/constants/soc";
-import {PERIOD_COUNTS} from "@src/constants/schedule";
+import {API_Day, API_Days, API_MeetTime} from "@scripts/apiTypes";
+import {Term} from "@constants/soc";
+import {PERIOD_COUNTS} from "@constants/schedule";
 
 export class MeetTime {
     term: Term;

@@ -1,9 +1,10 @@
 import React, {Component} from "react";
-import {MeetTime, Section} from "@src/scripts/soc";
+import {MeetTime, Section} from "@scripts/soc";
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import {Draggable} from "react-drag-and-drop";
 import {GrClose} from "react-icons/gr"
-import {CampusMap} from "@src/scripts/api";
+import {CampusMap} from "@scripts/api";
 
 interface Props {
     section: Section,
@@ -27,7 +28,7 @@ export default class SectionDisplay extends Component<Props, States> {
         let allTimes: React.JSX.Element[] = [];
         this.props.section.meetings.forEach((mTs: MeetTime[], day: string) => {
             if (mTs.length > 0) {
-                let times: React.JSX.Element[] = [];
+                const times: React.JSX.Element[] = [];
                 mTs.forEach((mT: MeetTime) => {
                     times.push(
                         <span>

@@ -1,13 +1,13 @@
-import React, {Component} from "react";
-import {Course, Section, SOC_API, SOC_Generic} from "@src/scripts/soc";
-import {Schedule, ScheduleGenerator, Selection} from "@src/scripts/scheduleGenerator";
-import SectionPicker from "@src/components/SectionPicker";
-import MultipleSelectionDisplay from "@src/components/MultipleSelectionDisplay";
-import MultipleScheduleDisplay from "@src/components/MultipleScheduleDisplay";
-import {UF_SOC_API} from "@src/scripts/api";
-import {API_Filters} from "@src/scripts/apiTypes";
-import {arrayEquals, filterNotEmpty, take} from "@src/scripts/utils";
-import {LIMIT_VALUES, LIMITS} from "@src/constants/scheduleGenerator";
+import {Component} from "react";
+import {Course, Section, SOC_API, SOC_Generic} from "@scripts/soc";
+import {Schedule, ScheduleGenerator, Selection} from "@scripts/scheduleGenerator";
+import SectionPicker from "@components/SectionPicker";
+import MultipleSelectionDisplay from "@components/MultipleSelectionDisplay";
+import MultipleScheduleDisplay from "@components/MultipleScheduleDisplay";
+import {UF_SOC_API} from "@scripts/api";
+import {API_Filters} from "@scripts/apiTypes";
+import {arrayEquals, filterNotEmpty, take} from "@scripts/utils";
+import {LIMIT_VALUES, LIMITS} from "@constants/scheduleGenerator";
 
 const getDefaultSelections = () => [new Selection()];
 const defaultProgram = "CWSP";
@@ -60,7 +60,7 @@ export default class ScheduleBuilder extends Component<Props, States> {
         });
     }
 
-    componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<States>) {
+    componentDidUpdate(_prevProps: Readonly<Props>, prevState: Readonly<States>) {
         // If limit was changed or a section was added/removed from a section, generate new schedules
         if (this.state.limit != prevState.limit || !arrayEquals(filterNotEmpty(this.state.selections), filterNotEmpty(prevState.selections))) {
             if (this.state.generator) { // Make sure generator is not null
@@ -123,7 +123,7 @@ export default class ScheduleBuilder extends Component<Props, States> {
             return;
         }
 
-        let newSelections = this.state.selections.map((sel, i) => {
+        const newSelections = this.state.selections.map((sel, i) => {
             if (i == ind) return [...sel, ...sectionsToAdd];
             return sel;
         });
@@ -131,7 +131,7 @@ export default class ScheduleBuilder extends Component<Props, States> {
     }
 
     handleDeleteSelection(ind: number) {
-        let newSelections = this.state.selections.filter((sel, i) => (i != ind));
+        let newSelections = this.state.selections.filter((_sel, i) => (i != ind));
         if (newSelections.length == 0)
             newSelections = getDefaultSelections();
 
@@ -139,7 +139,7 @@ export default class ScheduleBuilder extends Component<Props, States> {
     }
 
     handleRemove(sectionToRemove: Section) {
-        let newSelections = this.state.selections.map((sel) =>
+        const newSelections = this.state.selections.map((sel) =>
             sel.filter((sec) => (sec != sectionToRemove))
         );
         this.setState({selections: newSelections});

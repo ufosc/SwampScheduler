@@ -1,6 +1,6 @@
-import {API_Course} from "@src/scripts/apiTypes";
-import {Section} from "@src/scripts/soc";
-import {Term} from "@src/constants/soc";
+import {API_Course} from "@scripts/apiTypes";
+import {Section} from "@scripts/soc";
+import {Term} from "@constants/soc";
 
 export class Course {
     uid: string;

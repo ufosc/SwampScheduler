@@ -1,8 +1,8 @@
-import {API_Course, API_Section} from "@src/scripts/apiTypes";
-import {getProgram, getProgramString, getSearchByString, getTerm, Program, SearchBy, Term} from "@src/constants/soc";
+import {API_Course, API_Section} from "@scripts/apiTypes";
+import {getProgram, getProgramString, getSearchByString, getTerm, Program, SearchBy, Term} from "@constants/soc";
 import {CancellablePromise, Cancellation} from "real-cancellable-promise";
-import {Course, Section} from "@src/scripts/soc";
-import {fetchCORS} from "@src/scripts/utils";
+import {Course, Section} from "@scripts/soc";
+import {fetchCORS} from "@scripts/utils";
 
 interface SOCInfo {
     termStr: string,
@@ -30,7 +30,7 @@ export abstract class SOC_Generic {
 
     static async initialize(): Promise<SOC_Generic> {
         throw new Error("SOC initializer not implemented.");
-    };
+    }
 
     /* UID */
 
@@ -147,41 +147,6 @@ export abstract class SOC_Generic {
     }
 }
 
-export class SOC_Scraped extends SOC_Generic {
-    static async initialize(): Promise<SOC_Scraped> {
-        /** @link https://create-react-app.dev/docs/code-splitting/ */
-        const socJson: any = await import("@src/json/soc_scraped.json"),
-            infoJson = socJson.info,
-            coursesJson = socJson.courses;
-
-        // Store the SOC information
-        const termStringInfo = this.decodeTermString(infoJson.term),
-            info: SOCInfo = {
-                termStr: infoJson.term,
-                term: termStringInfo.term,
-                year: termStringInfo.year,
-                program: getProgram(infoJson.program),
-                scraped_at: new Date(infoJson.scraped_at * 1000) // seconds --> milliseconds
-            }
-        console.log(`Using SOC for ${info.term} ${info.year}: ${info.program} [${info.termStr}] which was scraped on ${info.scraped_at.toLocaleString()}`);
-
-        // Store the courses and their sections
-        const courses: Course[] = [];
-        coursesJson.forEach((courseJson: API_Course, courseInd: number) => {
-            const courseCode: string = courseJson.code,
-                course: Course = new Course(this.formUID(courseInd), info.term, courseJson);
-            courseJson.sections.forEach((sectionJson: API_Section, sectionInd: number) => {
-                course.sections.push(new Section(SOC_Generic.formUID(courseInd, sectionInd), info.term, sectionJson, courseCode));
-            });
-
-            courses.push(course); // Add the course to the courses array
-        });
-
-        return new SOC_Scraped(info, courses); // Return the SOC
-    }
-}
-
-
 export class SOC_API extends SOC_Generic {
     static async initialize({termStr, programStr}: {
         termStr: string | undefined,
@@ -240,7 +205,7 @@ export class SOC_API extends SOC_Generic {
         return fetchCORS(searchURL, {signal: controller.signal})
             .then(async r => await r.json())
             .then(async j => {
-                const {COURSES, LASTCONTROLNUMBER, RETRIEVEDROWS, TOTALROWS} = j[0];
+                const {COURSES, LASTCONTROLNUMBER, RETRIEVEDROWS} = j[0];
 
                 // Add each course, if appropriate
                 COURSES.forEach((courseJson: API_Course) => {

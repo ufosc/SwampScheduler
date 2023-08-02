@@ -1,6 +1,6 @@
-import {Selection} from "@src/scripts/scheduleGenerator";
-import {Section} from "@src/scripts/soc";
-import SelectionDisplay from "@src/components/SelectionDisplay";
+import {Selection} from "@scripts/scheduleGenerator";
+import {Section} from "@scripts/soc";
+import SelectionDisplay from "@components/SelectionDisplay";
 
 interface Props {
     selections: Selection[],

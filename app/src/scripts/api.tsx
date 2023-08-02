@@ -1,6 +1,6 @@
 import React from "react";
-import {API_Filters} from "@src/scripts/apiTypes";
-import {fetchCORS} from "@src/scripts/utils";
+import {API_Filters} from "@scripts/apiTypes";
+import {fetchCORS} from "@scripts/utils";
 
 export class CampusMap {
     static getLocationURL(locationID: string): string {
