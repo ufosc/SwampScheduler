@@ -9,7 +9,6 @@ export class Course {
     id: string;
     name: string;
     description: string;
-    prerequisites: string;
     sections: Section[];
 
     constructor(uid: string, term: Term, courseJSON: API_Course) {
@@ -19,7 +18,6 @@ export class Course {
         this.id = courseJSON.courseId;
         this.name = courseJSON.name;
         this.description = courseJSON.description;
-        this.prerequisites = courseJSON.prerequisites;
         this.sections = [];
     }
 }

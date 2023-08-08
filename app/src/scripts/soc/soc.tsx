@@ -96,26 +96,6 @@ export abstract class SOC_Generic {
         }
     }
 
-    /**
-     * Used to get a course/section's UID from the SOC.
-     * @param item -- A `Course` or `Section` object.
-     * @returns The UID; null if the item doesn't exist.
-     */
-    getUID(item: Course | Section): string | null {
-        for (const [courseInd, course] of this.courses.entries()) {
-            if (item instanceof Course) {
-                // Looking for a course
-                if (course === item) return SOC_Generic.formUID(courseInd);
-            } else {
-                // Looking for a section, look inside
-                for (const [sectionInd, section] of course.sections.entries())
-                    if (section === item)
-                        return SOC_Generic.formUID(courseInd, sectionInd);
-            }
-        }
-        return null;
-    }
-
     /* UID UTILS */
 
     /**

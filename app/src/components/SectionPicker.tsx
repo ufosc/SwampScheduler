@@ -21,7 +21,7 @@ export default function SectionPicker(props: Props) {
     const [abortRef, setAbortRef] = useState(new AbortController());
     const { isFetching, data: courses } = useQuery<Course[]>({
         initialData: [],
-        queryKey: [props.searchText], // Refetch when searchText is updated
+        queryKey: [props.searchText], // Re-fetch when searchText is updated
         queryFn: () => {
             setAbortRef(new AbortController());
             return props.soc instanceof SOC_API
@@ -39,14 +39,13 @@ export default function SectionPicker(props: Props) {
     });
     console.log(isFetching ? "Fetching courses..." : "Not fetching.");
 
-    // TODO: paginate courses
     // TODO: make it clearer when not fetching and there are no search results
     const displayCourses = (
         isFetching
             ? props.soc instanceof SOC_API
                 ? props.soc.searchCourses(searchBy, props.searchText)
                 : []
-            : courses!
+            : courses ?? []
     ).slice(0, 30);
     return (
         <div

@@ -118,7 +118,7 @@ export default class ScheduleBuilder extends Component<Props, States> {
     async handleDrop(ind: number, uid: string) {
         if (this.state.soc) {
             // Make sure SOC exists
-            const item: Section | Course | null = await this.state.soc.get(uid);
+            const item: Section | Course | null = this.state.soc.get(uid);
             console.log("Handling drop; will try to add", item);
 
             if (item) {
