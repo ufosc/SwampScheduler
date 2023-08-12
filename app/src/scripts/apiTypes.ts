@@ -51,7 +51,7 @@ export interface API_Section {
     gradBasis: number;
     acadCareer: number;
     display: string;
-    credits: number;
+    credits: number | "VAR";
     credits_min: number;
     credits_max: number;
     note: string;
