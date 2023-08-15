@@ -254,16 +254,14 @@ export default class ScheduleDisplay extends Component<Props, States> {
                                     <div className={"min-w-full w-5/12 h-full"}>
                                         <div className={"flex gap-1"}>
                                             {onlineSections.map(
-                                                (sec: Section) => (
+                                                (sec: Section, ind: number) => (
                                                     <div
                                                         className={classNames([
                                                             "border-solid",
                                                             "border-2",
                                                             "border-gray-400",
                                                             getSectionColor(
-                                                                schedule.indexOf(
-                                                                    sec,
-                                                                ),
+                                                                ind,
                                                             ),
                                                             "rounded",
                                                             "text-center",
@@ -272,12 +270,7 @@ export default class ScheduleDisplay extends Component<Props, States> {
                                                     >
                                                         {sec.displayName}
                                                         <sup>
-                                                            <b>
-                                                                {1 +
-                                                                    schedule.indexOf(
-                                                                        sec,
-                                                                    )}
-                                                            </b>
+                                                            <b>{1 + ind}</b>
                                                         </sup>
                                                     </div>
                                                 ),

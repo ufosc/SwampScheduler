@@ -16,11 +16,7 @@ export default function CourseDisplay(props: Props) {
     return (
         <div>
             {/* COURSE INFORMATION */}
-            <Draggable
-                className={"inline-block"}
-                type={"uid"}
-                data={props.course.uid}
-            >
+            <Draggable type={"uid"} data={props.course.uid}>
                 <div className="m-1">
                     <div className="w-full p-2 rounded-lg shadow-sm shadow-slate-400">
                         {/* Course Code & Name */}
