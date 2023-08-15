@@ -47,7 +47,7 @@ export default class SectionDisplay extends Component<Props, States> {
             }
         });
 
-        if (this.props.section.isOnline()) allTimes.unshift(<b>Online</b>);
+        if (this.props.section.isOnline) allTimes.unshift(<b>Online</b>);
         else if (allTimes.length == 0)
             // Not online, but no times have been assigned
             allTimes = [<>TBD</>];

@@ -69,7 +69,7 @@ export class Section {
         );
     }
 
-    isOnline(): boolean {
+    get isOnline(): boolean {
         return (
             this.type == API_Section_Type.Online ||
             this.type == API_Section_Type.MostlyOnline

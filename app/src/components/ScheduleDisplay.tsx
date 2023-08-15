@@ -52,7 +52,7 @@ export default class ScheduleDisplay extends Component<Props, States> {
                             meetTime: mT,
                             courseColor: getSectionColor(s),
                             courseNum: s + 1,
-                            sectionIsOnline: section.isOnline(),
+                            sectionIsOnline: section.isOnline,
                         };
                     }
                 }
@@ -184,7 +184,7 @@ export default class ScheduleDisplay extends Component<Props, States> {
             }
         }
 
-        const onlineSections: Section[] = schedule.filter((s) => s.isOnline());
+        const onlineSections: Section[] = schedule.filter((s) => s.isOnline);
         return (
             <div className={"text-sm"}>
                 <div className={"min-w-full w-5/12 my-1"}>
