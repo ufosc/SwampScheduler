@@ -3,7 +3,7 @@ import { MeetTime, Section } from "@scripts/soc";
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import { Draggable } from "react-drag-and-drop";
-import { GrClose } from "react-icons/gr";
+import { GrClose, GrLock } from "react-icons/gr";
 import { CampusMap } from "@scripts/api";
 
 interface Props {
@@ -78,7 +78,14 @@ export default class SectionDisplay extends Component<Props, States> {
                         </div>
 
                         <div className={"text-slate-400"}>
-                            <p>{this.props.section.displayName}</p>
+                            <p className={"flex items-center gap-1"}>
+                                {this.props.section.deptControlled && (
+                                    <abbr title={"Departmentally Controlled"}>
+                                        <GrLock />
+                                    </abbr>
+                                )}
+                                {this.props.section.displayName}
+                            </p>
                             <p>
                                 <i>
                                     {this.props.section.instructors.join(", ")}

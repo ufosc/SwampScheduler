@@ -15,6 +15,7 @@ export class Section {
     number: number;
     courseCode: string; // Only for display TODO: consider using getCourse with UID
     displayName: string;
+    deptControlled: boolean = false;
     instructors: string[];
     credits: MinMax<number>;
     meetings: Meetings;
@@ -51,9 +52,11 @@ export class Section {
                 this.meetings.get(day)!.push(new MeetTime(term, api_meetTime));
         }
 
-        // Fallback displayName to something identifiable
-        if (this.displayName == "Departmentally Controlled")
+        // Check if is a controlled section, if so change displayName to something "identifiable"
+        if (this.displayName == "Departmentally Controlled") {
+            this.deptControlled = true;
             this.displayName = courseCode;
+        }
     }
 
     // Returns true if any of the meet times conflict
