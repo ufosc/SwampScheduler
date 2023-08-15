@@ -6,6 +6,7 @@ import {
 } from "@scripts/apiTypes";
 import { Meetings, MeetTime } from "@scripts/soc";
 import { Term } from "@constants/soc";
+import { MinMax } from "@scripts/utils.ts";
 
 export class Section {
     uid: string;
@@ -15,6 +16,7 @@ export class Section {
     courseCode: string; // Only for display TODO: consider using getCourse with UID
     displayName: string;
     instructors: string[];
+    credits: MinMax<number>;
     meetings: Meetings;
     finalExamDate: string;
 
@@ -31,6 +33,10 @@ export class Section {
         this.courseCode = courseCode;
         this.displayName = sectionJSON.display;
         this.instructors = [];
+        this.credits = new MinMax<number>(
+            sectionJSON.credits_min,
+            sectionJSON.credits_max,
+        );
         this.meetings = new Meetings(); // Must be initialized
         this.instructors = sectionJSON.instructors.map(
             (i: API_Instructor) => i.name,

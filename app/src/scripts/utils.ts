@@ -26,3 +26,17 @@ export function filterNotEmpty<T>(arr: Array<T[]>): Array<T[]> {
 export function arrayEquals<T>(a: Array<T>, b: Array<T>) {
     return a.length === b.length && a.every((val, ind) => val === b[ind]);
 }
+
+export class MinMax<T> {
+    readonly min: T;
+    readonly max: T;
+
+    constructor(min: T, max: T) {
+        this.min = min;
+        this.max = max;
+    }
+
+    get displayString(): string {
+        return this.min == this.max ? `${this.min}` : `${this.min}-${this.max}`;
+    }
+}
