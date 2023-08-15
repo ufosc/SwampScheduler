@@ -36,7 +36,7 @@ export class MinMax<T> {
         this.max = max;
     }
 
-    get displayString(): string {
+    get display(): string {
         return this.min == this.max ? `${this.min}` : `${this.min}-${this.max}`;
     }
 }

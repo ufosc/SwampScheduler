@@ -64,8 +64,13 @@ export default class SectionDisplay extends Component<Props, States> {
                     {/* SECTION */}
                     <div className="w-full p-2 rounded-lg shadow-sm shadow-slate-400">
                         <div className={"text-slate-600 flex justify-between"}>
-                            <b>{this.props.section.number}</b>
-
+                            <div className={"flex items-center gap-1"}>
+                                <b>{this.props.section.number}</b>
+                                <span className={"text-xs align-middle"}>
+                                    ({this.props.section.credits.display}{" "}
+                                    Credits)
+                                </span>
+                            </div>
                             <button
                                 className={"mx-1"}
                                 hidden={!this.props.handleRemove}

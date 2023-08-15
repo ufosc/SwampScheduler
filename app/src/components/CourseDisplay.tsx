@@ -30,6 +30,13 @@ export default function CourseDisplay(props: Props) {
                                 {props.course.description}
                             </p>
                         </div>
+
+                        {/* Additional Information */}
+                        <div className={"text-center text-slate-700 text-xs"}>
+                            <i>
+                                ({props.course.credits.display} Credits)
+                            </i>
+                        </div>
                     </div>
                 </div>
             </Draggable>
