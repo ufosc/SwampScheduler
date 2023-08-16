@@ -1,4 +1,4 @@
-import { API_Day, API_Days, API_MeetTime } from "@scripts/apiTypes";
+import { API_Day, API_MeetTime } from "@scripts/apiTypes";
 import { Term } from "@constants/soc";
 import { PERIOD_COUNTS } from "@constants/schedule";
 
@@ -59,14 +59,15 @@ export class MeetTime {
     }
 }
 
-// TODO: Make this Record<API_Day, MeetTime[]>
-export class Meetings extends Map<API_Day, MeetTime[]> {
-    constructor(
-        meetTimes: [API_Day, MeetTime[]][] = API_Days.map((day: API_Day) => [
-            day,
-            [],
-        ]),
-    ) {
-        super(meetTimes);
-    }
+export type Meetings = Record<API_Day, MeetTime[]>;
+
+export function noMeetings(): Meetings {
+    return {
+        [API_Day.Mon]: [],
+        [API_Day.Tue]: [],
+        [API_Day.Wed]: [],
+        [API_Day.Thu]: [],
+        [API_Day.Fri]: [],
+        [API_Day.Sat]: [],
+    };
 }

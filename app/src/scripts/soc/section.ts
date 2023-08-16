@@ -4,7 +4,7 @@ import {
     API_Section,
     API_Section_Type,
 } from "@scripts/apiTypes";
-import { Meetings, MeetTime } from "@scripts/soc";
+import { Meetings, MeetTime, noMeetings } from "@scripts/soc";
 import { Term } from "@constants/soc";
 import { MinMax } from "@scripts/utils.ts";
 
@@ -18,7 +18,7 @@ export class Section {
     deptControlled: boolean = false;
     instructors: string[];
     credits: MinMax<number>;
-    meetings: Meetings;
+    meetings: Meetings = noMeetings();
     finalExamDate: string;
 
     constructor(
@@ -38,19 +38,16 @@ export class Section {
             sectionJSON.credits_min,
             sectionJSON.credits_max,
         );
-        this.meetings = new Meetings(); // Must be initialized
-        this.instructors = sectionJSON.instructors.map(
-            (i: API_Instructor) => i.name,
-        );
-        this.finalExamDate = sectionJSON.finalExam;
-
-        // TODO: maybe put this in Meetings?
         // Add every meeting
         for (const api_meetTime of sectionJSON.meetTimes) {
             // Go through meetTimes
             for (const day of api_meetTime.meetDays) // Add a MeetTime for each day with the same schedule
-                this.meetings.get(day)!.push(new MeetTime(term, api_meetTime));
+                this.meetings[day].push(new MeetTime(term, api_meetTime));
         }
+        this.instructors = sectionJSON.instructors.map(
+            (i: API_Instructor) => i.name,
+        );
+        this.finalExamDate = sectionJSON.finalExam;
 
         // Check if is a controlled section, if so change displayName to something "identifiable"
         if (this.displayName == "Departmentally Controlled") {
@@ -62,13 +59,9 @@ export class Section {
     // Returns true if any of the meet times conflict
     conflictsWith(other: Section): boolean {
         return API_Days.some((day) =>
-            this.meetings
-                .get(day)!
-                .some((mT1) =>
-                    other.meetings
-                        .get(day)!
-                        .some((mT2) => mT1.conflictsWith(mT2)),
-                ),
+            this.meetings[day].some((mT1) =>
+                other.meetings[day].some((mT2) => mT1.conflictsWith(mT2)),
+            ),
         );
     }
 

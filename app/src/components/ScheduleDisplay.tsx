@@ -40,24 +40,24 @@ export default class ScheduleDisplay extends Component<Props, States> {
             [API_Day.Sat]: new Array(periodCounts.all).fill(null),
         };
 
-        schedule.forEach((section: Section, s: number) => {
-            for (const [day, mTs] of section.meetings) {
-                for (const mT of mTs) {
+        schedule.forEach((section: Section, s: number) =>
+            API_Days.forEach((day) =>
+                section.meetings[day].forEach((mT) => {
+                    const info: MeetTimeInfo = {
+                        meetTime: mT,
+                        courseColor: getSectionColor(s),
+                        courseNum: s + 1,
+                        sectionIsOnline: section.isOnline,
+                    };
                     for (
-                        let p: number = mT.pBegin ?? periodCounts.all;
+                        let p = mT.pBegin ?? periodCounts.all;
                         p <= mT.pEnd ?? -1;
                         ++p
-                    ) {
-                        blockSchedule[day][p - 1] = {
-                            meetTime: mT,
-                            courseColor: getSectionColor(s),
-                            courseNum: s + 1,
-                            sectionIsOnline: section.isOnline,
-                        };
-                    }
-                }
-            }
-        });
+                    )
+                        blockSchedule[day][p - 1] = info;
+                }),
+            ),
+        );
 
         const divs = [];
         for (let p = 0; p < periodCounts.all; ++p) {

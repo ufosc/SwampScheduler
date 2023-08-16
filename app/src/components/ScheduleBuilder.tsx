@@ -10,7 +10,7 @@ import MultipleSelectionDisplay from "@components/MultipleSelectionDisplay";
 import MultipleScheduleDisplay from "@components/MultipleScheduleDisplay";
 import { UF_SOC_API } from "@scripts/api";
 import { API_Filters } from "@scripts/apiTypes";
-import { arrayEquals, filterNotEmpty, take } from "@scripts/utils";
+import { arrayEquals, notEmpty, take } from "@scripts/utils";
 import { LIMIT_VALUES, LIMITS } from "@constants/scheduleGenerator";
 
 const getDefaultSelections = () => [new Selection()];
@@ -71,8 +71,8 @@ export default class ScheduleBuilder extends Component<Props, States> {
         if (
             this.state.limit != prevState.limit ||
             !arrayEquals(
-                filterNotEmpty(this.state.selections),
-                filterNotEmpty(prevState.selections),
+                this.state.selections.filter(notEmpty),
+                prevState.selections.filter(notEmpty),
             )
         ) {
             if (this.state.generator) {

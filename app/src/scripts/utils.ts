@@ -19,8 +19,16 @@ export function* take<T>(max: number, iterable: Iterable<T>): Generator<T> {
     }
 }
 
-export function filterNotEmpty<T>(arr: Array<T[]>): Array<T[]> {
-    return arr.filter((val) => val.length > 0);
+interface Countable {
+    length: number;
+}
+
+export function notEmpty<T extends Countable>(val: T): boolean {
+    return val.length > 0;
+}
+
+export function notNullish<T>(value: T | null | undefined): value is T {
+    return value !== null && value !== undefined;
 }
 
 export function arrayEquals<T>(a: Array<T>, b: Array<T>) {
