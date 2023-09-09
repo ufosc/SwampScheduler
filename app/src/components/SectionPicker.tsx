@@ -98,6 +98,11 @@ export default function SectionPicker(props: Props) {
                     value={searchText}
                     onChange={(e) => setSearchText(e.target.value)}
                     autoComplete={"off"}
+                    onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                            searchCourse();
+                        }
+                    }}
                 />
 
                 <button
