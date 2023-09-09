@@ -23,8 +23,8 @@ export default function MultipleScheduleDisplay(props: Props) {
                 </b>
             </p>
 
-            {schedulesToShow.map((schedule: Schedule, i: number) => (
-                <div>
+            {schedulesToShow.map((schedule: Schedule, i) => (
+                <div key={i}>
                     <u>Schedule #{i + 1}</u>
                     <ScheduleDisplay schedule={schedule} />
                 </div>
