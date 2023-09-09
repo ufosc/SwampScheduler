@@ -63,6 +63,18 @@ export default function SectionPicker(props: Props) {
     //         : courses ?? []
     // ).slice(0, 30);
 
+    const renderCourses = () => {
+        if (isFetching) {
+            return <p>Loading...</p>;
+        }
+
+        if (courses) {
+            return <MultipleCourseDisplay courses={courses.slice(0, 30)} />;
+        }
+
+        return [];
+    };
+
     return (
         <div
             className={"h-full"}
@@ -107,9 +119,7 @@ export default function SectionPicker(props: Props) {
                 </button>
             </div>
 
-            {courses && (
-                <MultipleCourseDisplay courses={courses.slice(0, 30)} />
-            )}
+            {renderCourses()}
         </div>
     );
 }
