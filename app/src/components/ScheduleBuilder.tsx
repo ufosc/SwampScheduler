@@ -206,12 +206,12 @@ export default class ScheduleBuilder extends Component<Props, States> {
                         }
                         disabled={false}
                     >
-                        {this.state.filters?.terms.map((t) => {
+                        {this.state.filters?.terms.map((t, idx) => {
                             const { term, year } = SOC_Generic.decodeTermString(
                                 t.CODE,
                             );
                             return (
-                                <option value={t.CODE}>
+                                <option value={t.CODE} key={idx}>
                                     {term} {year}
                                 </option>
                             );
@@ -227,8 +227,10 @@ export default class ScheduleBuilder extends Component<Props, States> {
                         }
                         disabled={false}
                     >
-                        {LIMITS.map(([num, str]) => (
-                            <option value={num}>Generate ≤{str}</option>
+                        {LIMITS.map(([num, str], idx) => (
+                            <option value={num} key={idx}>
+                                Generate ≤{str}
+                            </option>
                         ))}
                     </select>
                 </div>
