@@ -27,20 +27,9 @@ export default function SectionPicker(props: Props) {
         // queryKey: [props.searchText], // Re-fetch when searchText is updated
         queryFn: () => {
             setAbortRef(new AbortController());
-
-            if (props.soc instanceof SOC_API) {
-                return props.soc.fetchSearchCourses(
-                    searchBy,
-                    searchText,
-                    abortRef,
-                );
-            } else {
-                return [];
-            }
-
-            // return props.soc instanceof SOC_API
-            //     ? props.soc.fetchSearchCourses(searchBy, searchText, abortRef)
-            //     : props.soc.searchCourses(searchBy, searchText);
+            return props.soc instanceof SOC_API
+                ? props.soc.fetchSearchCourses(searchBy, searchText, abortRef)
+                : props.soc.searchCourses(searchBy, searchText);
         },
         enabled: false,
         // enabled: !!props.searchText, // Prevents query when searchText is empty
