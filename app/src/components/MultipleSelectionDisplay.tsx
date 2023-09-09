@@ -14,6 +14,7 @@ export default function MultipleSelectionDisplay(props: Props) {
     // TODO: don't use index?
     const selectionDisplays = props.selections.map((sel, i) => (
         <SelectionDisplay
+            key={i}
             ind={i}
             selection={sel}
             handleDrop={props.handleDrop}
