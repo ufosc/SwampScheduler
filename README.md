@@ -1,4 +1,4 @@
-# Schedule Helper
+# 🐊 Swamp Scheduler 📆
 
 A web app to help students at the University of Florida plan classes for the semester.
 
@@ -24,4 +24,4 @@ To run the development server locally:
 
 ## License
 
-GNU Affero General Public License v3.0 - Robert Conde
+GNU Affero General Public License v3.0
