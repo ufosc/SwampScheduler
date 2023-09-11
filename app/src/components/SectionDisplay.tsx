@@ -36,7 +36,7 @@ export default class SectionDisplay extends Component<Props, States> {
                         <span>
                             {CampusMap.createLink(
                                 mT.locationID,
-                                `${mT.bldg} ${mT.room}`,
+                                `${mT.location}`,
                                 <>{mT.formatPeriods()}</>,
                             )}{" "}
                         </span>

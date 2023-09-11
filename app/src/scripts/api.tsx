@@ -10,12 +10,11 @@ export class CampusMap {
 
     static createLink(
         locationID: string | null,
-        locationStr: string,
+        locationStr: string | null,
         inner: React.JSX.Element,
         _target: string = "_blank",
     ): React.JSX.Element {
-        if (locationID)
-            // Exists and is non-empty
+        if (locationID && locationStr)
             return (
                 <a href={CampusMap.getLocationURL(locationID)} target={_target}>
                     <abbr title={locationStr}>{inner}</abbr>

@@ -4,23 +4,29 @@ import { PERIOD_COUNTS } from "@constants/schedule";
 
 export class MeetTime {
     term: Term;
-    pBegin: number;
-    pEnd: number;
+    periodBegin: number;
+    periodEnd: number;
+    timeBegin: string;
+    timeEnd: string;
     bldg: string;
     room: string;
+    isOnline: boolean;
     locationID: string | null;
 
-    constructor(term: Term, meetTimeJSON: API_MeetTime) {
+    constructor(term: Term, meetTimeJSON: API_MeetTime, isOnline: boolean) {
         this.term = term;
-        this.pBegin = this.parsePeriod(meetTimeJSON.meetPeriodBegin);
-        this.pEnd = this.parsePeriod(meetTimeJSON.meetPeriodEnd);
+        this.periodBegin = this.parsePeriod(meetTimeJSON.meetPeriodBegin);
+        this.periodEnd = this.parsePeriod(meetTimeJSON.meetPeriodEnd);
+        this.timeBegin = meetTimeJSON.meetTimeBegin;
+        this.timeEnd = meetTimeJSON.meetTimeEnd;
         this.bldg = meetTimeJSON.meetBuilding;
         this.room = meetTimeJSON.meetRoom;
+        this.isOnline = isOnline;
         this.locationID = meetTimeJSON.meetBldgCode;
 
-        // Assume length is one period if either pBegin or pEnd is NaN
-        if (isNaN(this.pBegin)) this.pBegin = this.pEnd;
-        if (isNaN(this.pEnd)) this.pEnd = this.pBegin;
+        // Assume length is one period if either periodBegin or periodEnd is NaN
+        if (isNaN(this.periodBegin)) this.periodBegin = this.periodEnd;
+        if (isNaN(this.periodEnd)) this.periodEnd = this.periodBegin;
 
         // If the meeting is online, there is no location
         if (this.locationID == "WEB") this.locationID = null;
@@ -45,17 +51,26 @@ export class MeetTime {
     }
 
     formatPeriods(): string {
-        return this.pBegin == this.pEnd
-            ? MeetTime.formatPeriod(this.pBegin, this.term)
+        return this.periodBegin == this.periodEnd
+            ? MeetTime.formatPeriod(this.periodBegin, this.term)
             : `${MeetTime.formatPeriod(
-                  this.pBegin,
+                  this.periodBegin,
                   this.term,
-              )}-${MeetTime.formatPeriod(this.pEnd, this.term)}`;
+              )}-${MeetTime.formatPeriod(this.periodEnd, this.term)}`;
+    }
+
+    get location(): string | null {
+        if (this.bldg && this.room) return `${this.bldg} ${this.room}`;
+        if (this.isOnline) return "Online";
+        return null;
     }
 
     // Returns true if the meet times conflict (overlap)
     conflictsWith(other: MeetTime): boolean {
-        return this.pBegin <= other.pEnd && this.pEnd >= other.pBegin;
+        return (
+            this.periodBegin <= other.periodEnd &&
+            this.periodEnd >= other.periodBegin
+        );
     }
 }
 
