@@ -189,7 +189,7 @@ export default class ScheduleBuilder extends Component<Props, States> {
                 {/* Title & Term Selector */}
                 <div className="flex">
                     <p className="text-2xl text-slate-700 inline-block">
-                        Schedule Helper 📆
+                        🐊 Swamp Scheduler 📆
                     </p>
 
                     <div className="grow"></div>

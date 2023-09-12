@@ -42,7 +42,9 @@ export class Section {
         for (const api_meetTime of sectionJSON.meetTimes) {
             // Go through meetTimes
             for (const day of api_meetTime.meetDays) // Add a MeetTime for each day with the same schedule
-                this.meetings[day].push(new MeetTime(term, api_meetTime));
+                this.meetings[day].push(
+                    new MeetTime(term, api_meetTime, this.isOnline),
+                );
         }
         this.instructors = sectionJSON.instructors.map(
             (i: API_Instructor) => i.name,

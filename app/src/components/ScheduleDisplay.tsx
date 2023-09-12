@@ -50,8 +50,8 @@ export default class ScheduleDisplay extends Component<Props, States> {
                         sectionIsOnline: section.isOnline,
                     };
                     for (
-                        let p = mT.pBegin ?? periodCounts.all;
-                        p <= mT.pEnd ?? -1;
+                        let p = mT.periodBegin ?? periodCounts.all;
+                        p <= mT.periodEnd ?? -1;
                         ++p
                     )
                         blockSchedule[day][p - 1] = info;
@@ -88,20 +88,13 @@ export default class ScheduleDisplay extends Component<Props, States> {
 
                 const mT = meetTimeInfo.meetTime,
                     color = meetTimeInfo.courseColor,
-                    courseNum = meetTimeInfo.courseNum,
-                    isOnline = meetTimeInfo.sectionIsOnline;
+                    courseNum = meetTimeInfo.courseNum;
 
                 let location: React.JSX.Element = <i>TBD</i>;
-                if (mT.bldg && mT.room)
-                    location = (
-                        <>
-                            {mT.bldg} {mT.room}
-                        </>
-                    );
-                else if (isOnline) location = <>Online</>;
+                if (mT.location) location = <>{mT.location}</>;
 
                 if (
-                    mT.pBegin != mT.pEnd &&
+                    mT.periodBegin != mT.periodEnd &&
                     (p == 0 ||
                         blockSchedule[day][p - 1] == null ||
                         blockSchedule[day][p - 1]!.meetTime != mT)
@@ -118,7 +111,7 @@ export default class ScheduleDisplay extends Component<Props, States> {
                         [6, "row-span-6"],
                     ]);
                     const span: string = spanMap.get(
-                        Math.min(1 + (mT.pEnd - mT.pBegin), 6),
+                        Math.min(1 + (mT.periodEnd - mT.periodBegin), 6),
                     )!; // TODO: error handling for NaN
 
                     divs.push(
