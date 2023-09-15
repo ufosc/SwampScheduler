@@ -24,7 +24,6 @@ export default function SectionPicker(props: Props) {
         refetch: fetchCourses,
     } = useQuery<Course[]>({
         initialData: [],
-        // queryKey: [props.searchText], // Re-fetch when searchText is updated
         queryFn: () => {
             setAbortRef(new AbortController());
             return props.soc instanceof SOC_API
@@ -32,37 +31,14 @@ export default function SectionPicker(props: Props) {
                 : props.soc.searchCourses(searchBy, searchText);
         },
         enabled: false,
-        // enabled: !!props.searchText, // Prevents query when searchText is empty
         notifyOnChangeProps: ["data", "isFetching"], // Must re-render on isFetching change to update cursor
         refetchOnWindowFocus: false, // Turned off to prevent queries while debugging using console
         refetchOnReconnect: false, // Not needed
     });
-    // console.log(isFetching ? "Fetching courses..." : "Not fetching.");
 
-    const searchCourse = () => {
-        fetchCourses();
-    };
-
-    // TODO: make it clearer when not fetching and there are no search results
-    // const displayCourses = (
-    //     isFetching
-    //         ? props.soc instanceof SOC_API
-    //             ? props.soc.searchCourses(searchBy, props.searchText)
-    //             : []
-    //         : courses ?? []
-    // ).slice(0, 30);
-
-    const renderCourses = () => {
-        if (isFetching) {
-            return <p>Loading...</p>;
-        }
-
-        if (courses) {
-            return <MultipleCourseDisplay courses={courses.slice(0, 30)} />;
-        }
-
-        return [];
-    };
+    let coursesToDisplay = <p>Loading...</p>;
+    if (!isFetching)
+        coursesToDisplay = <MultipleCourseDisplay courses={courses ?? []} />;
 
     return (
         <div
@@ -100,20 +76,20 @@ export default function SectionPicker(props: Props) {
                     autoComplete={"off"}
                     onKeyDown={(e) => {
                         if (e.key === "Enter") {
-                            searchCourse();
+                            fetchCourses();
                         }
                     }}
                 />
 
                 <button
-                    onClick={searchCourse}
-                    className="bg-sky-500 hover:bg-sky-400 border border-blue-300 text-white text-sm rounded-lg p-2.5 mr-1"
+                    onClick={() => fetchCourses()}
+                    className="bg-sky-500 hover:bg-sky-400 border border-blue-300 text-white text-sm rounded-lg p-2.5 ml-1"
                 >
                     Search
                 </button>
             </div>
 
-            {renderCourses()}
+            {coursesToDisplay}
         </div>
     );
 }
