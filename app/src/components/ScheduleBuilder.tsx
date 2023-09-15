@@ -203,12 +203,12 @@ export default class ScheduleBuilder extends Component<Props, States> {
                         }
                         disabled={false}
                     >
-                        {this.state.filters?.terms.map((t, idx) => {
+                        {this.state.filters?.terms.map((t) => {
                             const { term, year } = SOC_Generic.decodeTermString(
                                 t.CODE,
                             );
                             return (
-                                <option value={t.CODE} key={idx}>
+                                <option value={t.CODE} key={t.CODE}>
                                     {term} {year}
                                 </option>
                             );
