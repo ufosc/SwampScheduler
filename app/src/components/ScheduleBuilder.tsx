@@ -224,8 +224,8 @@ export default class ScheduleBuilder extends Component<Props, States> {
                         }
                         disabled={false}
                     >
-                        {LIMITS.map(([num, str], idx) => (
-                            <option value={num} key={idx}>
+                        {LIMITS.map(([num, str]) => (
+                            <option value={num} key={num}>
                                 Generate ≤{str}
                             </option>
                         ))}

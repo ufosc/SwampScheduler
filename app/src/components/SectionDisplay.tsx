@@ -28,12 +28,12 @@ export default class SectionDisplay extends Component<Props, States> {
         const section = this.props.section;
 
         // TODO: refactor
-        let allTimes: React.JSX.Element[] = API_Days.map((day, i) =>
+        let allTimes: React.JSX.Element[] = API_Days.map((day, d) =>
             section.meetings[day].length > 0 ? (
-                <div className="mx-1" key={i}>
+                <div className="mx-1" key={d}>
                     <b>{day}:</b>{" "}
-                    {section.meetings[day].map((mT, idx) => (
-                        <span key={idx}>
+                    {section.meetings[day].map((mT, m) => (
+                        <span key={m}>
                             {CampusMap.createLink(
                                 mT.locationID,
                                 `${mT.location}`,
