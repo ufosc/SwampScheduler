@@ -4,6 +4,7 @@ import SelectionDisplay from "@components/SelectionDisplay";
 
 interface Props {
     selections: Selection[];
+    hoveredCourse: string | null;
     handleDrop: (ind: number, uid: string) => Promise<void>;
     newSelection: () => void;
     handleRemove: (sectionToRemove: Section) => void;
@@ -19,6 +20,7 @@ export default function MultipleSelectionDisplay(props: Props) {
             handleDrop={props.handleDrop}
             handleRemove={props.handleRemove}
             handleDeleteSelection={props.handleDeleteSelection}
+            hoveredCourse={props.hoveredCourse}
         />
     ));
 

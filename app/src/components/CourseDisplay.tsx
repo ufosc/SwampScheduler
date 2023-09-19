@@ -6,11 +6,15 @@ import { Draggable } from "react-drag-and-drop";
 
 interface Props {
     course: Course;
+    handleHoverCourse: (courseCode: string) => void;
+    handleUnhoverCourse: () => void;
 }
 
 export default function CourseDisplay(props: Props) {
     const sectionDisplays = props.course.sections.map((section: Section) => (
-        <SectionDisplay key={section.uid} section={section} draggable={true} />
+        <SectionDisplay key={section.uid} section={section} draggable={true} hoveredCourse={null} handleRemove={function (): void {
+            throw new Error("Course should not be able to be removed from course display.");
+        } }/> // pass in null hover status because this should never be highlighted when something else is hovered
     ));
 
     return (
@@ -18,7 +22,7 @@ export default function CourseDisplay(props: Props) {
             {/* COURSE INFORMATION */}
             <Draggable type={"uid"} data={props.course.uid}>
                 <div className="m-1">
-                    <div className="w-full p-2 rounded-lg shadow-sm shadow-slate-400">
+                    <div className="w-full p-2 rounded-lg shadow-sm shadow-slate-400" onMouseEnter={() => props.handleHoverCourse(props.course.code)} onMouseLeave={() => props.handleUnhoverCourse()}>
                         {/* Course Code & Name */}
                         <p className="text-slate-700 underline">
                             <b>{props.course.code}</b> {props.course.name}

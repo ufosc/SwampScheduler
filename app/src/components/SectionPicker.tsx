@@ -9,6 +9,8 @@ interface Props {
     soc: SOC_Generic;
     searchText: string;
     setSearchText: (searchText: string) => void;
+    handleHoverCourse: (courseCode: string) => void;
+    handleUnhoverCourse: () => void;
 }
 
 export default function SectionPicker(props: Props) {
@@ -84,7 +86,11 @@ export default function SectionPicker(props: Props) {
                 />
             </div>
 
-            <MultipleCourseDisplay courses={displayCourses} />
+            <MultipleCourseDisplay
+                courses={displayCourses}
+                handleHoverCourse={props.handleHoverCourse}
+                handleUnhoverCourse={props.handleUnhoverCourse}
+            />
         </div>
     );
 }
