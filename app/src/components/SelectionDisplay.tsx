@@ -19,8 +19,12 @@ export default function SelectionDisplay(props: Props) {
         props.handleDrop(props.ind, uid).then();
     };
 
-    const sectionDisplays = props.selection.map((section: Section) => (
-        <SectionDisplay section={section} handleRemove={props.handleRemove} />
+    const sectionDisplays = props.selection.map((section: Section, idx) => (
+        <SectionDisplay
+            key={idx}
+            section={section}
+            handleRemove={props.handleRemove}
+        />
     ));
 
     return (

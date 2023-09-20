@@ -13,7 +13,9 @@ interface Props {
 export default function MultipleSelectionDisplay(props: Props) {
     // TODO: don't use index?
     const selectionDisplays = props.selections.map((sel, i) => (
+        // TODO: add a unique to each selection and use the id as the key
         <SelectionDisplay
+            key={i}
             ind={i}
             selection={sel}
             handleDrop={props.handleDrop}

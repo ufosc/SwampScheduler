@@ -23,7 +23,6 @@ interface States {
     soc: SOC_Generic | null;
     generator: ScheduleGenerator | null;
     limit: number;
-    searchText: string;
     selections: Selection[];
     schedules: Schedule[];
     showAddCourse: boolean;
@@ -34,7 +33,6 @@ const defaultState: States = {
     soc: null,
     generator: null,
     limit: LIMIT_VALUES[0],
-    searchText: "",
     selections: getDefaultSelections(),
     schedules: [],
     showAddCourse: false,
@@ -49,7 +47,6 @@ export default class ScheduleBuilder extends Component<Props, States> {
     reset() {
         console.log("Resetting Schedule Builder");
         this.setState({
-            searchText: "",
             selections: getDefaultSelections(),
             schedules: [],
         });
@@ -211,7 +208,7 @@ export default class ScheduleBuilder extends Component<Props, States> {
                                 t.CODE,
                             );
                             return (
-                                <option value={t.CODE}>
+                                <option value={t.CODE} key={t.CODE}>
                                     {term} {year}
                                 </option>
                             );
@@ -228,7 +225,9 @@ export default class ScheduleBuilder extends Component<Props, States> {
                         disabled={false}
                     >
                         {LIMITS.map(([num, str]) => (
-                            <option value={num}>Generate ≤{str}</option>
+                            <option value={num} key={num}>
+                                Generate ≤{str}
+                            </option>
                         ))}
                     </select>
                 </div>
@@ -239,13 +238,7 @@ export default class ScheduleBuilder extends Component<Props, States> {
                 <main className="flex flex-row overflow-y-hidden h-full p-1">
                     {/* Picker */}
                     <div className="overflow-y-auto w-full">
-                        <SectionPicker
-                            soc={this.state.soc}
-                            searchText={this.state.searchText}
-                            setSearchText={(searchText) => {
-                                this.setState.bind(this)({ searchText });
-                            }}
-                        />
+                        <SectionPicker soc={this.state.soc} />
                     </div>
 
                     {/* Selected */}
