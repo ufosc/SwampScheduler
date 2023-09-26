@@ -3,6 +3,8 @@ import CourseDisplay from "@components/CourseDisplay";
 
 interface Props {
     courses: Course[];
+    handleHoverSection: (courseID: string | null) => void;
+    handleUnhoverSection: () => void;
     handleHoverCourse: (courseId: string) => void;
     handleUnhoverCourse: () => void;
 }
@@ -12,6 +14,8 @@ export default function MultipleCourseDisplay(props: Props) {
         <CourseDisplay
             key={course.uid}
             course={course}
+            handleHoverSection={props.handleHoverSection}
+            handleUnhoverSection={props.handleUnhoverSection}
             handleHoverCourse={props.handleHoverCourse}
             handleUnhoverCourse={props.handleUnhoverCourse}
         />

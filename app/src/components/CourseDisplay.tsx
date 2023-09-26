@@ -6,16 +6,25 @@ import { Draggable } from "react-drag-and-drop";
 
 interface Props {
     course: Course;
+    handleHoverSection: (courseID: string | null) => void;
+    handleUnhoverSection: () => void;
     handleHoverCourse: (courseID: string) => void;
     handleUnhoverCourse: () => void;
 }
 
 export default function CourseDisplay(props: Props) {
     const sectionDisplays = props.course.sections.map((section: Section) => (
-        <SectionDisplay key={section.uid} section={section} draggable={true} hoveredCourseID={null} handleRemove={function (): void {
-            throw new Error("Course should not be able to be removed from course display.");
-        } }/> // pass in null hover status because this should never be highlighted when something else is hovered
-    ));
+        <SectionDisplay
+        key={section.uid}
+        section={section}
+        draggable={true}
+        // pass in null hover status because this should never be highlighted when something else is hovered
+        hoveredSectionUid={null}
+        hoveredCourseId={null}
+        handleRemove={function (): void {throw new Error("Course should not be able to be removed from course display.");}}
+        handleHoverSection={props.handleHoverSection}
+        handleUnhoverSection={props.handleUnhoverSection}
+        />));
 
     return (
         <div>

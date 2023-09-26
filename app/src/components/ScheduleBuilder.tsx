@@ -27,7 +27,10 @@ interface States {
     selections: Selection[];
     schedules: Schedule[];
     showAddCourse: boolean;
-    // string of either the course code being hovered
+    // string of the courseUID#sectionUID being hovered, corresponding to a given SectionDisplay element
+    // null when no section is being hovered
+    hoveredSectionUid: string | null;
+    // string of the course ID being hovered, corresponding to a given CourseDisplay element
     // null when no course is being hovered that would require a highlight change somewhere else
     hoveredCourseId: string | null;
 }
@@ -41,6 +44,7 @@ const defaultState: States = {
     selections: getDefaultSelections(),
     schedules: [],
     showAddCourse: false,
+    hoveredSectionUid: null,
     hoveredCourseId: null
 };
 
@@ -175,6 +179,13 @@ export default class ScheduleBuilder extends Component<Props, States> {
         this.setState({ selections: newSelections });
     }
 
+    handleHoverSection(sectionId: string | null) {
+        this.setState({hoveredSectionUid: sectionId});
+    }
+    handleUnhoverSection() {
+        this.setState({hoveredSectionUid: null})
+    }
+
     handleHoverCourse(courseId: string) {
         this.setState({hoveredCourseId: courseId});
     }
@@ -256,6 +267,8 @@ export default class ScheduleBuilder extends Component<Props, States> {
                             setSearchText={(searchText) => {
                                 this.setState.bind(this)({ searchText });
                             }}
+                            handleHoverSection={this.handleHoverSection.bind(this)}
+                            handleUnhoverSection={this.handleUnhoverSection.bind(this)}
                             handleHoverCourse={this.handleHoverCourse.bind(this)}
                             handleUnhoverCourse={this.handleUnhoverCourse.bind(this)}
                         />
@@ -264,8 +277,9 @@ export default class ScheduleBuilder extends Component<Props, States> {
                     {/* Selected */}
                     <div className="overflow-y-auto w-full p-1">
                         <MultipleSelectionDisplay
-                            hoveredCourseId={this.state.hoveredCourseId}
                             selections={this.state.selections}
+                            hoveredCourseId={this.state.hoveredCourseId}
+                            hoveredSectionUid={this.state.hoveredSectionUid}
                             handleDrop={this.handleDrop.bind(this)}
                             newSelection={this.newSelection.bind(this)}
                             handleRemove={this.handleRemove.bind(this)}
@@ -273,6 +287,9 @@ export default class ScheduleBuilder extends Component<Props, States> {
                                 this,
                             )}
                             key={new Date().getTime()}
+                            // These functions do not do anything because we do not highlight a section in the middle after hovering over it
+                            handleHoverSection={(_uid) => null}
+                            handleUnhoverSection={() => null}
                         />
                     </div>
 

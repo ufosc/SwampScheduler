@@ -11,12 +11,19 @@ import { notNullish } from "@scripts/utils.ts";
 interface Props {
     section: Section;
     draggable: boolean;
-    hoveredCourseID: string | null;
+    hoveredSectionUid: string | null;
+    hoveredCourseId: string | null;
     handleRemove: (sectionToRemove: Section) => void;
+    handleHoverSection: (courseID: string | null) => void;
+    handleUnhoverSection: () => void;
 }
 
 export default function SectionDisplay(props: Props) {
     const section = props.section;
+
+    function needsHighlight(): boolean {
+        return (props.hoveredSectionUid == props.section.uid) || (props.hoveredCourseId == SOC_Generic.getCourseID(props.section.uid));
+    }
 
     // TODO: refactor
     let allTimes: React.JSX.Element[] = API_Days.map((day) =>
@@ -52,7 +59,11 @@ export default function SectionDisplay(props: Props) {
                 {" "}
                 {/* SECTION */}
                 {/*Note that there is a white border when the section is not highlighted because otherwise the graphics will shift between having a border and not having a border, which shifts the size of the section blocks*/}
-                <div className={props.hoveredCourseID == SOC_Generic.getCourseID(props.section.uid) ? "w-full p-2 rounded-lg shadow-sm shadow-slate-400 bg-slate-200 border border-blue-300" : "w-full p-2 rounded-lg shadow-sm shadow-slate-400 border border-white"}>
+                <div
+                    className={needsHighlight() ? "w-full p-2 rounded-lg shadow-sm shadow-slate-400 bg-slate-200 border border-blue-300" : "w-full p-2 rounded-lg shadow-sm shadow-slate-400 border border-white"}
+                    onMouseEnter={() => props.handleHoverSection(props.section.uid)}
+                    onMouseLeave={() => props.handleUnhoverSection()}
+                >
                     <div className={"text-slate-600 flex justify-between"}>
                         <div className={"flex items-center gap-1"}>
                             <b>{section.number}</b>
@@ -90,3 +101,4 @@ export default function SectionDisplay(props: Props) {
         </Draggable>
     );
 }
+

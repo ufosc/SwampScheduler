@@ -5,10 +5,13 @@ import SelectionDisplay from "@components/SelectionDisplay";
 interface Props {
     selections: Selection[];
     hoveredCourseId: string | null;
+    hoveredSectionUid: string | null;
     handleDrop: (ind: number, uid: string) => Promise<void>;
     newSelection: () => void;
     handleRemove: (sectionToRemove: Section) => void;
     handleDeleteSelection: (ind: number) => void;
+    handleHoverSection: (courseID: string | null) => void;
+    handleUnhoverSection: () => void;
 }
 
 export default function MultipleSelectionDisplay(props: Props) {
@@ -17,10 +20,13 @@ export default function MultipleSelectionDisplay(props: Props) {
         <SelectionDisplay
             ind={i}
             selection={sel}
+            hoveredSectionUid={props.hoveredSectionUid}
+            hoveredCourseId={props.hoveredCourseId}
             handleDrop={props.handleDrop}
             handleRemove={props.handleRemove}
             handleDeleteSelection={props.handleDeleteSelection}
-            hoveredCourseId={props.hoveredCourseId}
+            handleHoverSection={props.handleHoverSection}
+            handleUnhoverSection={props.handleUnhoverSection}
         />
     ));
 
