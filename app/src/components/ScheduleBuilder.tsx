@@ -29,7 +29,7 @@ interface States {
     showAddCourse: boolean;
     // string of either the course code being hovered
     // null when no course is being hovered that would require a highlight change somewhere else
-    hoveredCourse: string | null;
+    hoveredCourseId: string | null;
 }
 
 const defaultState: States = {
@@ -41,7 +41,7 @@ const defaultState: States = {
     selections: getDefaultSelections(),
     schedules: [],
     showAddCourse: false,
-    hoveredCourse: null
+    hoveredCourseId: null
 };
 
 export default class ScheduleBuilder extends Component<Props, States> {
@@ -175,11 +175,11 @@ export default class ScheduleBuilder extends Component<Props, States> {
         this.setState({ selections: newSelections });
     }
 
-    handleHoverCourse(code: string) {
-        this.setState({hoveredCourse: code});
+    handleHoverCourse(courseId: string) {
+        this.setState({hoveredCourseId: courseId});
     }
     handleUnhoverCourse() {
-        this.setState({hoveredCourse: null})
+        this.setState({hoveredCourseId: null})
     }
 
     render() {
@@ -264,7 +264,7 @@ export default class ScheduleBuilder extends Component<Props, States> {
                     {/* Selected */}
                     <div className="overflow-y-auto w-full p-1">
                         <MultipleSelectionDisplay
-                            hoveredCourse={this.state.hoveredCourse}
+                            hoveredCourseId={this.state.hoveredCourseId}
                             selections={this.state.selections}
                             handleDrop={this.handleDrop.bind(this)}
                             newSelection={this.newSelection.bind(this)}

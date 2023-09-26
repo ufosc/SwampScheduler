@@ -76,6 +76,24 @@ export abstract class SOC_Generic {
     }
 
     /**
+     * Used to get the course ID from a course/section's UID.
+     * @param uid -- The course's UID.
+     * @returns The course ID.
+     */
+    static getCourseID(uid: string): string {
+        return SOC_Generic.splitUID(uid).courseUID;
+    }
+
+        /**
+     * Used to get a section's ID from its UID.
+     * @param uid -- The section's UID.
+     * @returns The section ID, or null if the passed UID does not correspond to a section
+     */
+        static getSectionID(uid: string): string | null {
+            return SOC_Generic.splitUID(uid).sectionUID;
+        }
+
+    /**
      * Used to get a course/section from the SOC.
      * @param uid -- The course/section's UID.
      * @returns The course/section; null if there are no matches.

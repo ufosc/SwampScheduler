@@ -9,7 +9,7 @@ interface Props {
     soc: SOC_Generic;
     searchText: string;
     setSearchText: (searchText: string) => void;
-    handleHoverCourse: (courseCode: string) => void;
+    handleHoverCourse: (courseId: string) => void;
     handleUnhoverCourse: () => void;
 }
 

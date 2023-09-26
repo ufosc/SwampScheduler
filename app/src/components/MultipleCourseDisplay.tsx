@@ -3,7 +3,7 @@ import CourseDisplay from "@components/CourseDisplay";
 
 interface Props {
     courses: Course[];
-    handleHoverCourse: (courseCode: string) => void;
+    handleHoverCourse: (courseId: string) => void;
     handleUnhoverCourse: () => void;
 }
 

@@ -1,5 +1,5 @@
 import React from "react";
-import { Section } from "@scripts/soc";
+import { Section, SOC_Generic } from "@scripts/soc";
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import { Draggable } from "react-drag-and-drop";
@@ -11,16 +11,9 @@ import { notNullish } from "@scripts/utils.ts";
 interface Props {
     section: Section;
     draggable: boolean;
-    hoveredCourse: string | null;
+    hoveredCourseID: string | null;
     handleRemove: (sectionToRemove: Section) => void;
 }
-
-interface States {}
-
-const defaultProps = {
-    draggable: false,
-    handleRemove: null,
-};
 
 export default function SectionDisplay(props: Props) {
     const section = props.section;
@@ -58,7 +51,8 @@ export default function SectionDisplay(props: Props) {
             <div className="m-1 text-sm">
                 {" "}
                 {/* SECTION */}
-                <div className={props.hoveredCourse == section.courseCode ? "w-full p-2 rounded-lg shadow-sm shadow-slate-400 bg-slate-200" : "w-full p-2 rounded-lg shadow-sm shadow-slate-400"}>
+                {/*Note that there is a white border when the section is not highlighted because otherwise the graphics will shift between having a border and not having a border, which shifts the size of the section blocks*/}
+                <div className={props.hoveredCourseID == SOC_Generic.getCourseID(props.section.uid) ? "w-full p-2 rounded-lg shadow-sm shadow-slate-400 bg-slate-200 border border-blue-300" : "w-full p-2 rounded-lg shadow-sm shadow-slate-400 border border-white"}>
                     <div className={"text-slate-600 flex justify-between"}>
                         <div className={"flex items-center gap-1"}>
                             <b>{section.number}</b>
@@ -95,5 +89,4 @@ export default function SectionDisplay(props: Props) {
             </div>
         </Draggable>
     );
-
 }
