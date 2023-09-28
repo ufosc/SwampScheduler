@@ -28,11 +28,11 @@ interface States {
     schedules: Schedule[];
     showAddCourse: boolean;
     // string of the courseUID#sectionUID being hovered, corresponding to a given SectionDisplay element
-    // null when no section is being hovered
-    hoveredSectionUid: string | null;
-    // string of the course ID being hovered, corresponding to a given CourseDisplay element
-    // null when no course is being hovered that would require a highlight change somewhere else
-    hoveredCourseId: string | null;
+    // null when no section on the left is being hovered
+    hoveredElementSectionUid: string | null;
+    // string of the course ID of the element being hovered.
+    // null when no element is being hovered that would require a highlight change for all elements with the same course
+    hoveredElementCourseId: string | null;
 }
 
 const defaultState: States = {
@@ -44,8 +44,8 @@ const defaultState: States = {
     selections: getDefaultSelections(),
     schedules: [],
     showAddCourse: false,
-    hoveredSectionUid: null,
-    hoveredCourseId: null
+    hoveredElementSectionUid: null,
+    hoveredElementCourseId: null
 };
 
 export default class ScheduleBuilder extends Component<Props, States> {
@@ -179,18 +179,28 @@ export default class ScheduleBuilder extends Component<Props, States> {
         this.setState({ selections: newSelections });
     }
 
-    handleHoverSection(sectionId: string | null) {
-        this.setState({hoveredSectionUid: sectionId});
-    }
-    handleUnhoverSection() {
-        this.setState({hoveredSectionUid: null})
+    // Stores both the course and section for an element, which is used to highlight
+    // only elements that are the same exact section
+    storeHoveredElementSection(sectionId: string | null) {
+        if (this.state.hoveredElementSectionUid != sectionId) {
+            this.setState({ hoveredElementSectionUid: sectionId });
+        }
     }
 
-    handleHoverCourse(courseId: string) {
-        this.setState({hoveredCourseId: courseId});
+    forgetHoveredElementSection() {
+        this.setState({ hoveredElementSectionUid: null })
     }
-    handleUnhoverCourse() {
-        this.setState({hoveredCourseId: null})
+
+    // Stores just the course information of an element, which is used to highlight
+    // all other elements of the same course
+    storeHoveredElementCourse(courseId: string) {
+        if (this.state.hoveredElementCourseId != courseId) {
+            this.setState({ hoveredElementCourseId: courseId });
+        }
+    }
+
+    forgetHoveredElementCourse() {
+        this.setState({ hoveredElementCourseId: null })
     }
 
     render() {
@@ -267,10 +277,10 @@ export default class ScheduleBuilder extends Component<Props, States> {
                             setSearchText={(searchText) => {
                                 this.setState.bind(this)({ searchText });
                             }}
-                            handleHoverSection={this.handleHoverSection.bind(this)}
-                            handleUnhoverSection={this.handleUnhoverSection.bind(this)}
-                            handleHoverCourse={this.handleHoverCourse.bind(this)}
-                            handleUnhoverCourse={this.handleUnhoverCourse.bind(this)}
+                            storeHoveredElementSection={this.storeHoveredElementSection.bind(this)}
+                            forgetHoveredElementSection={this.forgetHoveredElementSection.bind(this)}
+                            storeHoveredElementCourse={this.storeHoveredElementCourse.bind(this)}
+                            forgetHoveredElementCourse={this.forgetHoveredElementCourse.bind(this)}
                         />
                     </div>
 
@@ -278,8 +288,8 @@ export default class ScheduleBuilder extends Component<Props, States> {
                     <div className="overflow-y-auto w-full p-1">
                         <MultipleSelectionDisplay
                             selections={this.state.selections}
-                            hoveredCourseId={this.state.hoveredCourseId}
-                            hoveredSectionUid={this.state.hoveredSectionUid}
+                            hoveredElementCourseId={this.state.hoveredElementCourseId}
+                            hoveredElementSectionUid={this.state.hoveredElementSectionUid}
                             handleDrop={this.handleDrop.bind(this)}
                             newSelection={this.newSelection.bind(this)}
                             handleRemove={this.handleRemove.bind(this)}
@@ -288,8 +298,10 @@ export default class ScheduleBuilder extends Component<Props, States> {
                             )}
                             key={new Date().getTime()}
                             // These functions do not do anything because we do not highlight a section in the middle after hovering over it
-                            handleHoverSection={(_uid) => null}
-                            handleUnhoverSection={() => null}
+                            storeHoveredElementSection={(_uid) => null}
+                            forgetHoveredElementSection={() => null}
+                            storeHoveredElementCourse={this.storeHoveredElementCourse.bind(this)}
+                            forgetHoveredElementCourse={this.forgetHoveredElementCourse.bind(this)}
                         />
                     </div>
 

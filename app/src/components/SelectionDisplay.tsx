@@ -9,13 +9,15 @@ import { GrClose } from "react-icons/gr";
 interface Props {
     ind: number;
     selection: Selection;
-    hoveredSectionUid: string | null;
-    hoveredCourseId: string | null;
+    hoveredElementSectionUid: string | null;
+    hoveredElementCourseId: string | null;
     handleDrop: (ind: number, uid: string) => Promise<void>;
     handleRemove: (sectionToRemove: Section) => void;
     handleDeleteSelection: (ind: number) => void;
-    handleHoverSection: (courseID: string | null) => void;
-    handleUnhoverSection: () => void;
+    storeHoveredElementSection: (courseID: string | null) => void;
+    forgetHoveredElementSection: () => void;
+    storeHoveredElementCourse: (courseID: string) => void;
+    forgetHoveredElementCourse: () => void;
 }
 
 export default function SelectionDisplay(props: Props) {
@@ -27,11 +29,13 @@ export default function SelectionDisplay(props: Props) {
         <SectionDisplay 
             section={section} 
             draggable={false}
-            hoveredSectionUid={props.hoveredSectionUid} 
-            hoveredCourseId={props.hoveredCourseId} 
+            hoveredElementSectionUid={props.hoveredElementSectionUid}
+            hoveredElementCourseId={props.hoveredElementCourseId}
             handleRemove={props.handleRemove}
-            handleHoverSection={props.handleHoverSection}
-            handleUnhoverSection={props.handleUnhoverSection}
+            storeHoveredElementSection={props.storeHoveredElementSection}
+            forgetHoveredElementSection={props.forgetHoveredElementSection}
+            storeHoveredElementCourse={props.storeHoveredElementCourse}
+            forgetHoveredElementCourse={props.forgetHoveredElementCourse}
         />
     ));
 

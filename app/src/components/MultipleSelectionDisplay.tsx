@@ -4,14 +4,16 @@ import SelectionDisplay from "@components/SelectionDisplay";
 
 interface Props {
     selections: Selection[];
-    hoveredCourseId: string | null;
-    hoveredSectionUid: string | null;
+    hoveredElementCourseId: string | null;
+    hoveredElementSectionUid: string | null;
     handleDrop: (ind: number, uid: string) => Promise<void>;
     newSelection: () => void;
     handleRemove: (sectionToRemove: Section) => void;
     handleDeleteSelection: (ind: number) => void;
-    handleHoverSection: (courseID: string | null) => void;
-    handleUnhoverSection: () => void;
+    storeHoveredElementSection: (courseID: string | null) => void;
+    forgetHoveredElementSection: () => void;
+    storeHoveredElementCourse: (courseID: string) => void;
+    forgetHoveredElementCourse: () => void;
 }
 
 export default function MultipleSelectionDisplay(props: Props) {
@@ -20,13 +22,15 @@ export default function MultipleSelectionDisplay(props: Props) {
         <SelectionDisplay
             ind={i}
             selection={sel}
-            hoveredSectionUid={props.hoveredSectionUid}
-            hoveredCourseId={props.hoveredCourseId}
+            hoveredElementSectionUid={props.hoveredElementSectionUid}
+            hoveredElementCourseId={props.hoveredElementCourseId}
             handleDrop={props.handleDrop}
             handleRemove={props.handleRemove}
             handleDeleteSelection={props.handleDeleteSelection}
-            handleHoverSection={props.handleHoverSection}
-            handleUnhoverSection={props.handleUnhoverSection}
+            storeHoveredElementSection={props.storeHoveredElementSection}
+            forgetHoveredElementSection={props.forgetHoveredElementSection}
+            storeHoveredElementCourse={props.storeHoveredElementCourse}
+            forgetHoveredElementCourse={props.forgetHoveredElementCourse}
         />
     ));
 

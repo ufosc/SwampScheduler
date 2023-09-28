@@ -9,10 +9,10 @@ interface Props {
     soc: SOC_Generic;
     searchText: string;
     setSearchText: (searchText: string) => void;
-    handleHoverSection: (courseID: string | null) => void;
-    handleUnhoverSection: () => void;
-    handleHoverCourse: (courseId: string) => void;
-    handleUnhoverCourse: () => void;
+    storeHoveredElementSection: (courseID: string | null) => void;
+    forgetHoveredElementSection: () => void;
+    storeHoveredElementCourse: (courseId: string) => void;
+    forgetHoveredElementCourse: () => void;
 }
 
 export default function SectionPicker(props: Props) {
@@ -90,10 +90,10 @@ export default function SectionPicker(props: Props) {
 
             <MultipleCourseDisplay
                 courses={displayCourses}
-                handleHoverSection={props.handleHoverSection}
-                handleUnhoverSection={props.handleUnhoverSection}
-                handleHoverCourse={props.handleHoverCourse}
-                handleUnhoverCourse={props.handleUnhoverCourse}
+                storeHoveredElementSection={props.storeHoveredElementSection}
+                forgetHoveredElementSection={props.forgetHoveredElementSection}
+                storeHoveredElementCourse={props.storeHoveredElementCourse}
+                forgetHoveredElementCourse={props.forgetHoveredElementCourse}
             />
         </div>
     );

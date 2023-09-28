@@ -6,10 +6,10 @@ import { Draggable } from "react-drag-and-drop";
 
 interface Props {
     course: Course;
-    handleHoverSection: (courseID: string | null) => void;
-    handleUnhoverSection: () => void;
-    handleHoverCourse: (courseID: string) => void;
-    handleUnhoverCourse: () => void;
+    storeHoveredElementSection: (courseID: string | null) => void;
+    forgetHoveredElementSection: () => void;
+    storeHoveredElementCourse: (courseID: string) => void;
+    forgetHoveredElementCourse: () => void;
 }
 
 export default function CourseDisplay(props: Props) {
@@ -19,11 +19,14 @@ export default function CourseDisplay(props: Props) {
         section={section}
         draggable={true}
         // pass in null hover status because this should never be highlighted when something else is hovered
-        hoveredSectionUid={null}
-        hoveredCourseId={null}
+        hoveredElementSectionUid={null}
+        hoveredElementCourseId={null}
         handleRemove={function (): void {throw new Error("Course should not be able to be removed from course display.");}}
-        handleHoverSection={props.handleHoverSection}
-        handleUnhoverSection={props.handleUnhoverSection}
+        storeHoveredElementSection={props.storeHoveredElementSection}
+        forgetHoveredElementSection={props.forgetHoveredElementSection}
+        // Pass in empty functions because hovering a section on the left shouldn't affect the "course hover" status
+        storeHoveredElementCourse={(_uid: string): void => {}}
+        forgetHoveredElementCourse={(): void => {}}
         />));
 
     return (
@@ -31,7 +34,7 @@ export default function CourseDisplay(props: Props) {
             {/* COURSE INFORMATION */}
             <Draggable type={"uid"} data={props.course.uid}>
                 <div className="m-1">
-                    <div className="w-full p-2 rounded-lg shadow-sm shadow-slate-400" onMouseEnter={() => props.handleHoverCourse(SOC_Generic.getCourseID(props.course.uid))} onMouseLeave={() => props.handleUnhoverCourse()}>
+                    <div className="w-full p-2 rounded-lg shadow-sm shadow-slate-400" onMouseEnter={() => props.storeHoveredElementCourse(SOC_Generic.getCourseID(props.course.uid))} onMouseLeave={() => props.forgetHoveredElementCourse()}>
                         {/* Course Code & Name */}
                         <p className="text-slate-700 underline">
                             <b>{props.course.code}</b> {props.course.name}

@@ -11,18 +11,30 @@ import { notNullish } from "@scripts/utils.ts";
 interface Props {
     section: Section;
     draggable: boolean;
-    hoveredSectionUid: string | null;
-    hoveredCourseId: string | null;
+    hoveredElementSectionUid: string | null;
+    hoveredElementCourseId: string | null;
     handleRemove: (sectionToRemove: Section) => void;
-    handleHoverSection: (courseID: string | null) => void;
-    handleUnhoverSection: () => void;
+    storeHoveredElementSection: (courseID: string | null) => void;
+    forgetHoveredElementSection: () => void;
+    storeHoveredElementCourse: (courseID: string) => void;
+    forgetHoveredElementCourse: () => void;
 }
 
 export default function SectionDisplay(props: Props) {
     const section = props.section;
 
-    function needsHighlight(): boolean {
-        return (props.hoveredSectionUid == props.section.uid) || (props.hoveredCourseId == SOC_Generic.getCourseID(props.section.uid));
+    const storeHoveredElementSection = (): void => {
+        props.storeHoveredElementSection(props.section.uid)
+        props.storeHoveredElementCourse(SOC_Generic.getCourseID(props.section.uid));
+    }
+
+    const forgetHoveredElementSection = (): void => {
+        props.forgetHoveredElementSection();
+        props.forgetHoveredElementCourse();
+    }
+
+    const needsHighlight= (): boolean => {
+        return (props.hoveredElementSectionUid == props.section.uid) || (props.hoveredElementCourseId == SOC_Generic.getCourseID(props.section.uid));
     }
 
     // TODO: refactor
@@ -61,8 +73,8 @@ export default function SectionDisplay(props: Props) {
                 {/*Note that there is a white border when the section is not highlighted because otherwise the graphics will shift between having a border and not having a border, which shifts the size of the section blocks*/}
                 <div
                     className={needsHighlight() ? "w-full p-2 rounded-lg shadow-sm shadow-slate-400 bg-slate-200 border border-blue-300" : "w-full p-2 rounded-lg shadow-sm shadow-slate-400 border border-white"}
-                    onMouseEnter={() => props.handleHoverSection(props.section.uid)}
-                    onMouseLeave={() => props.handleUnhoverSection()}
+                    onMouseEnter={() => storeHoveredElementSection()}
+                    onMouseLeave={() => forgetHoveredElementSection()}
                 >
                     <div className={"text-slate-600 flex justify-between"}>
                         <div className={"flex items-center gap-1"}>
