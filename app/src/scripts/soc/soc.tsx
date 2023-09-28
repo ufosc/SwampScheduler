@@ -131,6 +131,9 @@ export abstract class SOC_Generic {
             return this.courses.filter((c) =>
                 c.name.toUpperCase().includes(upperPhrase),
             );
+        } else if (searchBy === SearchBy.INSTRUCTOR) {
+            console.log(this.courses);
+            return this.courses.filter((c) => c.sections.some((s) => s.instructors.some((inst) => inst.toUpperCase().indexOf(upperPhrase) != -1)));
         }
         throw new Error("Unhandled SearchBy.");
     }
@@ -161,9 +164,9 @@ export class SOC_API extends SOC_Generic {
             termStr: string | undefined;
             programStr: string | undefined;
         } = {
-            termStr: undefined,
-            programStr: undefined,
-        },
+                termStr: undefined,
+                programStr: undefined,
+            },
     ): Promise<SOC_API> {
         if (!termStr || !programStr)
             throw new Error("Term or program string was not provided.");
@@ -216,8 +219,7 @@ export class SOC_API extends SOC_Generic {
             return Promise.resolve();
         }
         console.log(
-            `Fetching by ${searchBy} for "${phrase}"${
-                lcn > 0 ? ` @ #${lcn}` : ""
+            `Fetching by ${searchBy} for "${phrase}"${lcn > 0 ? ` @ #${lcn}` : ""
             }`,
         );
 
