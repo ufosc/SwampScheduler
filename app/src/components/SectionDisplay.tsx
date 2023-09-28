@@ -10,10 +10,10 @@ import { notNullish } from "@scripts/utils.ts";
 
 interface Props {
     section: Section;
-    draggable: boolean;
+    draggable?: boolean;
+    handleRemove?: (sectionToRemove: Section) => void;
     hoveredElementSectionUid: string | null;
     hoveredElementCourseId: string | null;
-    handleRemove: (sectionToRemove: Section) => void;
     storeHoveredElementSection: (courseID: string | null) => void;
     forgetHoveredElementSection: () => void;
     storeHoveredElementCourse: (courseID: string) => void;
@@ -37,16 +37,15 @@ export default function SectionDisplay(props: Props) {
         return (props.hoveredElementSectionUid == props.section.uid) || (props.hoveredElementCourseId == SOC_Generic.getCourseID(props.section.uid));
     }
 
-    // TODO: refactor
-    let allTimes: React.JSX.Element[] = API_Days.map((day) =>
+    const allTimes: React.JSX.Element[] = API_Days.map((day, d) =>
         section.meetings[day].length > 0 ? (
-            <div className="mx-1">
+            <div className="mx-1" key={d}>
                 <b>{day}:</b>{" "}
-                {section.meetings[day].map((mT) => (
-                    <span>
+                {section.meetings[day].map((mT, m) => (
+                    <span key={m}>
                         {CampusMap.createLink(
                             mT.locationID,
-                            `${mT.bldg} ${mT.room}`,
+                            `${mT.location}`,
                             <>{mT.formatPeriods()}</>,
                         )}{" "}
                     </span>
@@ -54,11 +53,6 @@ export default function SectionDisplay(props: Props) {
             </div>
         ) : null,
     ).filter(notNullish);
-
-    if (section.isOnline) allTimes.unshift(<b>Online</b>);
-    else if (allTimes.length == 0)
-        // Not online, but no times have been assigned
-        allTimes = [<>TBD</>];
 
     return (
         <Draggable
@@ -86,7 +80,9 @@ export default function SectionDisplay(props: Props) {
                         <button
                             className={"mx-1"}
                             hidden={!props.handleRemove}
-                            onClick={() => props.handleRemove(section)}
+                            onClick={() =>
+                                props.handleRemove && props.handleRemove(section)
+                            }
                         >
                             <GrClose />
                         </button>

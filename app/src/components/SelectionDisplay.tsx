@@ -25,13 +25,14 @@ export default function SelectionDisplay(props: Props) {
         props.handleDrop(props.ind, uid).then();
     };
 
-    const sectionDisplays = props.selection.map((section: Section) => (
-        <SectionDisplay 
-            section={section} 
+    const sectionDisplays = props.selection.map((section: Section, idx) => (
+        <SectionDisplay
             draggable={false}
+            key={idx}
+            section={section}
+            handleRemove={props.handleRemove}
             hoveredElementSectionUid={props.hoveredElementSectionUid}
             hoveredElementCourseId={props.hoveredElementCourseId}
-            handleRemove={props.handleRemove}
             storeHoveredElementSection={props.storeHoveredElementSection}
             forgetHoveredElementSection={props.forgetHoveredElementSection}
             storeHoveredElementCourse={props.storeHoveredElementCourse}
