@@ -131,6 +131,14 @@ export abstract class SOC_Generic {
             return this.courses.filter((c) =>
                 c.name.toUpperCase().includes(upperPhrase),
             );
+        } else if (searchBy === SearchBy.INSTRUCTOR) {
+            return this.courses.filter((c) =>
+                c.sections.some((s) =>
+                    s.instructors.some((inst) =>
+                        inst.toUpperCase().includes(upperPhrase),
+                    ),
+                ),
+            );
         }
         throw new Error("Unhandled SearchBy.");
     }
