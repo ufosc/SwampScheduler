@@ -1,6 +1,7 @@
 # 🐊 Swamp Scheduler 📆
 
-An open-source web app developed to help students at the University of Florida plan for classes next semester. [It's available now!](https://osc.rconde.xyz/)
+An open-source web app developed to help students at the University of Florida plan for classes next
+semester. [It's available now!](https://osc.rconde.xyz/)
 
 Made with :heart: by [UF's Open Source Club](https://ufosc.org).
 
@@ -72,7 +73,7 @@ This project is built using a variety of exciting technologies, including:
     - Review the [Tailwind CSS documentation](https://tailwindcss.com/docs) for understanding utility-first styling and
       theming.
 - **Vite:** Simply used as a build tool and development server.
-  - Learn how to set up, configure, and use Vite from [Vite’s official guide](https://vitejs.dev/guide/).
+    - Learn how to set up, configure, and use Vite from [Vite’s official guide](https://vitejs.dev/guide/).
 
 ### How It All Works
 
@@ -84,13 +85,14 @@ Be sure to read (yes, read) some of our code. Everything works better when we al
 
 There are lots of things that can be done, and a lot of them are on our back-burner.
 
-Take a look at what [issues (enhancements, bug fixes, and ideas)](https://github.com/ufosc/SwampScheduler/issues) are open. If you find one you like, assign yourself and
+Take a look at what [issues (enhancements, bug fixes, and ideas)](https://github.com/ufosc/SwampScheduler/issues) are
+open. If you find one you like, assign yourself and
 be sure to talk to other people about what you're doing (it helps us, the [maintainers](#Maintainers) best allocate our
 resources).
 
 ## Maintainers
 
-We're your Technical Leads, Product Managers, and Mentors all-in-one. Be sure to say hi.
+We're your Technical Leads, Product Managers, and Mentors all-in-one:
 
 - [Robert Conde](https://github.com/RobertConde)
 - [Brian Nielsen](https://github.com/bnielsen1)
