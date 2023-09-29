@@ -15,7 +15,7 @@ export function getSectionColor(sectionInd: number): string {
 const SearchByStringExampleMap = new Map([
     ["course-code", "MAS3114"],
     ["course-title", "Linear Algebra"],
-    ["instructor", "Huang"]
+    ["instructor", "Huang"],
 ]);
 
 export function getSearchByStringExample(searchByStr: string): string {

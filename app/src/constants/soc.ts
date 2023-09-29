@@ -64,15 +64,19 @@ export function getProgramString(program: Program): string {
 export enum SearchBy {
     COURSE_CODE = "Course Code",
     COURSE_TITLE = "Course Title",
-    INSTRUCTOR = "Instructor"
+    INSTRUCTOR = "Instructor",
 }
 
-export const SearchBys = [SearchBy.COURSE_CODE, SearchBy.COURSE_TITLE, SearchBy.INSTRUCTOR];
+export const SearchBys = [
+    SearchBy.COURSE_CODE,
+    SearchBy.COURSE_TITLE,
+    SearchBy.INSTRUCTOR,
+];
 
 const SearchByStringMap = new Map([
     ["course-code", SearchBy.COURSE_CODE],
     ["course-title", SearchBy.COURSE_TITLE],
-    ["instructor", SearchBy.INSTRUCTOR]
+    ["instructor", SearchBy.INSTRUCTOR],
 ]);
 
 export function getSearchBy(searchByStr: string): SearchBy {
