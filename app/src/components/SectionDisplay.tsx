@@ -47,7 +47,7 @@ export default function SectionDisplay({
                 {" "}
                 {/* SECTION */}
                 <div className="w-full p-2 rounded-lg shadow-sm shadow-slate-400">
-                    <div className={"text-slate-600 flex justify-between"}>
+                    <div className={"text-slate-600 dark:text-white flex justify-between"}>
                         <div className={"flex items-center gap-1"}>
                             <b>{section.number}</b>
                             <span className={"text-xs align-middle"}>
@@ -65,7 +65,7 @@ export default function SectionDisplay({
                         </button>
                     </div>
 
-                    <div className={"text-slate-400"}>
+                    <div className={"text-slate-400 dark:text-white"}>
                         <p className={"flex items-center gap-1"}>
                             {section.deptControlled && (
                                 <abbr title={"Departmentally Controlled"}>
