@@ -3,7 +3,7 @@
 An open-source web app developed to help students at the University of Florida plan for classes next
 semester. [It's available now!](https://osc.rconde.xyz/)
 
-Made with :heart: by [UF's Open Source Club](https://ufosc.org).
+Made with :heart: by [UF's Open Source Club](https://ufosc.org) ([@ufosc](https://github.com/ufosc/)).
 
 ## Table of Contents
 
