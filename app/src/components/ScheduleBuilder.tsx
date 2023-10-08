@@ -6,6 +6,7 @@ import {
     Selection,
 } from "@scripts/scheduleGenerator";
 import SectionPicker from "@components/SectionPicker";
+import ThemeToggle from "./ThemeToggle";
 import MultipleSelectionDisplay from "@components/MultipleSelectionDisplay";
 import MultipleScheduleDisplay from "@components/MultipleScheduleDisplay";
 import { UF_SOC_API } from "@scripts/api";
@@ -26,7 +27,6 @@ interface States {
     selections: Selection[];
     schedules: Schedule[];
     showAddCourse: boolean;
-    darkMode: boolean; // Added dark mode state
 }
 
 const defaultState: States = {
@@ -37,7 +37,6 @@ const defaultState: States = {
     selections: getDefaultSelections(),
     schedules: [],
     showAddCourse: false,
-    darkMode: false, // Initialized dark mode state as false
 };
 
 export default class ScheduleBuilder extends Component<Props, States> {
@@ -170,11 +169,6 @@ export default class ScheduleBuilder extends Component<Props, States> {
         this.setState({ selections: newSelections });
     }
 
-    // Toggle dark mode method
-    toggleDarkMode = () => {
-        this.setState((prevState) => ({ darkMode: !prevState.darkMode }));
-    }
-
     render() {
         // Show loading screen if filters/terms haven't been fetched yet
         if (this.state.filters === null)
@@ -192,10 +186,10 @@ export default class ScheduleBuilder extends Component<Props, States> {
             );
 
         return (
-            <div className={`min-h-screen flex flex-col h-screen p-3 ${this.state.darkMode ? 'dark' : ''}`}>
+            <div className="min-h-screen flex flex-col h-screen p-3">
                 {/* Title & Term Selector */}
                 <div className="flex">
-                    <p className="text-2xl text-slate-700 dark:text-slate-100 inline-block">
+                    <p className="text-2xl text-slate-700 inline-block dark:text-white">
                         🐊 Swamp Scheduler 📆
                     </p>
 
@@ -203,7 +197,7 @@ export default class ScheduleBuilder extends Component<Props, States> {
 
                     <select
                         id="term"
-                        className="bg-sky-500 hover:bg-sky-400 border border-blue-300 text-white text-sm rounded-lg p-2.5 mr-1 text-center"
+                        className="bg-sky-500 hover:bg-sky-400 border border-blue-300 text-white text-sm rounded-lg p-2.5 mr-1 text-center dark:border-transparent"
                         defaultValue={this.state.soc.info.termStr}
                         onChange={(e) =>
                             this.setSOC(e.target.value, defaultProgram)
@@ -224,7 +218,7 @@ export default class ScheduleBuilder extends Component<Props, States> {
 
                     <select
                         id="limit"
-                        className="bg-sky-500 hover:bg-sky-400 border border-blue-300 text-white text-sm rounded-lg p-2.5 mr-1 text-center"
+                        className="bg-sky-500 hover:bg-sky-400 border border-blue-300 text-white text-sm rounded-lg p-2.5 mr-1 text-center dark:border-transparent"
                         defaultValue={this.state.limit}
                         onChange={(e) =>
                             this.setState({ limit: Number(e.target.value) })
@@ -237,17 +231,10 @@ export default class ScheduleBuilder extends Component<Props, States> {
                             </option>
                         ))}
                     </select>
-                    <button
-                    onClick={this.toggleDarkMode}
-                    className="bg-sky-500 hover:bg-sky-400 border border-blue-300 text-white text-sm rounded-lg p-2.5 mr-1 text-center"
-                >
-                    Toggle Dark Mode
-                </button>
+                    <ThemeToggle />
                 </div>
 
                 <hr className="my-1.5"></hr>
-
-                
 
                 {/* Main of Builder */}
                 <main className="flex flex-row overflow-y-hidden h-full p-1">

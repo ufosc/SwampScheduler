@@ -20,19 +20,19 @@ export default function CourseDisplay(props: Props) {
                 <div className="m-1">
                     <div className="w-full p-2 rounded-lg shadow-sm shadow-slate-400">
                         {/* Course Code & Name */}
-                        <p className="text-slate-700 dark:text-white underline">
+                        <p className="text-slate-700 underline dark:text-white">
                             <b>{props.course.code}</b> {props.course.name}
                         </p>
 
                         {/* Description */}
                         <div className="mx-2">
-                            <p className="text-slate-700 dark:text-white text-sm">
+                            <p className="text-slate-700 text-sm dark:text-white">
                                 {props.course.description}
                             </p>
                         </div>
 
                         {/* Additional Information */}
-                        <div className={"text-center text-slate-700 dark:text-white text-xs"}>
+                        <div className={"text-center text-slate-700 text-xs dark:text-white"}>
                             <i>({props.course.credits.display} Credits)</i>
                         </div>
                     </div>

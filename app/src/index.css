@@ -2,7 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
-.dark {
-    background-color: #1a1a1a;
-    color: #ffffff;
-}
+
+@media (prefers-color-scheme: dark) {
+    .dark {
+        background-color: #1a1a1a;
+    }
+  }
