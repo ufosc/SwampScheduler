@@ -10,8 +10,6 @@ interface Props {
     newSelection: () => void;
     handleRemove: (sectionToRemove: Section) => void;
     handleDeleteSelection: (ind: number) => void;
-    storeHoveredElementSection: (courseID: string | null) => void;
-    forgetHoveredElementSection: () => void;
     storeHoveredElementCourse: (courseID: string) => void;
     forgetHoveredElementCourse: () => void;
 }
@@ -29,8 +27,9 @@ export default function MultipleSelectionDisplay(props: Props) {
             handleDrop={props.handleDrop}
             handleRemove={props.handleRemove}
             handleDeleteSelection={props.handleDeleteSelection}
-            storeHoveredElementSection={props.storeHoveredElementSection}
-            forgetHoveredElementSection={props.forgetHoveredElementSection}
+            // These functions do not do anything because we should not highlight a section in the middle after hovering over it
+            storeHoveredElementSection={(_uid) => null}
+            forgetHoveredElementSection={() => null}
             storeHoveredElementCourse={props.storeHoveredElementCourse}
             forgetHoveredElementCourse={props.forgetHoveredElementCourse}
         />

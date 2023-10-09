@@ -292,9 +292,6 @@ export default class ScheduleBuilder extends Component<Props, States> {
                                 this,
                             )}
                             key={new Date().getTime()}
-                            // These functions do not do anything because we do not highlight a section in the middle after hovering over it
-                            storeHoveredElementSection={(_uid) => null}
-                            forgetHoveredElementSection={() => null}
                             storeHoveredElementCourse={this.storeHoveredElementCourse.bind(this)}
                             forgetHoveredElementCourse={this.forgetHoveredElementCourse.bind(this)}
                         />
