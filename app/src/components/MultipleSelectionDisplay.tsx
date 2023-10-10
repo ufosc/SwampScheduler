@@ -1,5 +1,5 @@
 import { Selection } from "@scripts/scheduleGenerator";
-import { Section } from "@scripts/soc";
+import { Section, Course } from "@scripts/soc";
 import SelectionDisplay from "@components/SelectionDisplay";
 
 interface Props {
@@ -8,6 +8,7 @@ interface Props {
     newSelection: () => void;
     handleRemove: (sectionToRemove: Section) => void;
     handleDeleteSelection: (ind: number) => void;
+    getCourseBySectionUID?: (sectionUID: string) => Course | null;
 }
 
 export default function MultipleSelectionDisplay(props: Props) {
@@ -21,6 +22,7 @@ export default function MultipleSelectionDisplay(props: Props) {
             handleDrop={props.handleDrop}
             handleRemove={props.handleRemove}
             handleDeleteSelection={props.handleDeleteSelection}
+            getCourseBySectionUID={props.getCourseBySectionUID}
         />
     ));
 

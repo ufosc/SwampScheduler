@@ -1,4 +1,4 @@
-import { Section } from "@scripts/soc";
+import { Section, Course } from "@scripts/soc";
 import SectionDisplay from "@components/SectionDisplay";
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
@@ -12,6 +12,7 @@ interface Props {
     handleDrop: (ind: number, uid: string) => Promise<void>;
     handleRemove: (sectionToRemove: Section) => void;
     handleDeleteSelection: (ind: number) => void;
+    getCourseBySectionUID?: (sectionUID: string) => Course | null;
 }
 
 export default function SelectionDisplay(props: Props) {
@@ -24,6 +25,7 @@ export default function SelectionDisplay(props: Props) {
             key={idx}
             section={section}
             handleRemove={props.handleRemove}
+            getCourseBySectionUID={props.getCourseBySectionUID}
         />
     ));
 
