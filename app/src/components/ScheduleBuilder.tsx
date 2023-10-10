@@ -112,6 +112,13 @@ export default class ScheduleBuilder extends Component<Props, States> {
         this.reset(); // Make sure to only show info from the current SOC
     }
 
+    getCourseBySectionUID(sectionUID: string): Course | null {
+        if (this.state.soc) {
+            return this.state.soc.getCourseBySectionUID(sectionUID);
+        }
+        return null;
+    }
+
     async handleDrop(ind: number, uid: string) {
         if (this.state.soc) {
             // Make sure SOC exists
@@ -252,6 +259,7 @@ export default class ScheduleBuilder extends Component<Props, States> {
                                 this,
                             )}
                             key={new Date().getTime()}
+                            getCourseBySectionUID={this.getCourseBySectionUID.bind(this)}
                         />
                     </div>
 
