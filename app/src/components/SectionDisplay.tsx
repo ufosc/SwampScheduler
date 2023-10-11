@@ -46,7 +46,7 @@ export default function SectionDisplay({
             <div className="m-1 text-sm">
                 {" "}
                 {/* SECTION */}
-                <div className="w-full p-2 rounded-lg shadow-sm shadow-slate-400">
+                <div className="w-full p-2 rounded-lg shadow-sm shadow-slate-400 dark:shadow-slate-950">
                     <div className={"text-slate-600 flex justify-between dark:text-white"}>
                         <div className={"flex items-center gap-1"}>
                             <b>{section.number}</b>
@@ -61,15 +61,15 @@ export default function SectionDisplay({
                                 handleRemove && handleRemove(section)
                             }
                         >
-                            <GrClose />
+                            <GrClose className="grIcon"/>
                         </button>
                     </div>
 
-                    <div className={"text-slate-400 dark:text-white"}>
+                    <div className={"text-slate-400 dark:text-slate-200"}>
                         <p className={"flex items-center gap-1"}>
                             {section.deptControlled && (
                                 <abbr title={"Departmentally Controlled"}>
-                                    <GrLock />
+                                    <GrLock className="grIcon"/>
                                 </abbr>
                             )}
                             {section.displayName}

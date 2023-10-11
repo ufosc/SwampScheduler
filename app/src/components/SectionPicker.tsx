@@ -49,7 +49,7 @@ export default function SectionPicker(props: Props) {
                 <select
                     id={"search-by"}
                     className={
-                        "bg-sky-500 hover:bg-sky-400 border border-blue-300 text-white text-sm rounded-lg p-2.5 mr-1 dark:border-transparent focus:outline-none"
+                        "bg-sky-500 hover:bg-sky-400 border border-blue-300 text-white text-sm rounded-lg p-2.5 mr-1 dark:border-transparent dark:bg-sky-700 focus:outline-none"
                     }
                     defaultValue={searchByString}
                     onChange={(e) => setSearchByString(e.target.value)}
@@ -83,7 +83,7 @@ export default function SectionPicker(props: Props) {
 
                 <button
                     onClick={() => fetchCourses()}
-                    className="bg-sky-500 hover:bg-sky-400 border border-blue-300 text-white text-sm rounded-lg p-2.5 ml-1 dark:border-transparent"
+                    className="bg-sky-500 hover:bg-sky-400 border border-blue-300 text-white text-sm rounded-lg p-2.5 ml-1 dark:border-transparent dark:bg-sky-700"
                 >
                     Search
                 </button>

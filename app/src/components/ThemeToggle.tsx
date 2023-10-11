@@ -28,7 +28,7 @@ const ThemeToggle = () => {
 
   return (
       <button
-        className="bg-sky-500 hover:bg-sky-400 text-white text-sm rounded-lg p-2.5 mr-1 text-center"
+        className="bg-sky-500 hover:bg-sky-400 border border-blue-300 text-white text-sm rounded-lg p-2.5 mr-1 text-center dark:border-transparent dark:bg-sky-700"
         onClick={handleThemeSwitch}
       >
         {theme === "dark" ? "Light Mode" : "Dark Mode"}

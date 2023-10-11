@@ -30,16 +30,16 @@ export default function SelectionDisplay(props: Props) {
     return (
         <div>
             <Droppable types={["uid"]} onDrop={doDrop}>
-                <div className="p-2 mx-1 mb-2 rounded-lg shadow-sm shadow-slate-400">
+                <div className="p-2 mx-1 mb-2 rounded-lg shadow-sm shadow-slate-400 dark:shadow-slate-950">
                     <div className={"flex justify-between"}>
-                        <u className={"dark:text-white"}>Course {props.ind + 1}</u>
+                        <u>Course {props.ind + 1}</u>
                         <button
                             className={"mx-1"}
                             onClick={() =>
                                 props.handleDeleteSelection(props.ind)
                             }
                         >
-                            <GrClose />
+                            <GrClose className="grIcon"/>
                         </button>
                     </div>
 

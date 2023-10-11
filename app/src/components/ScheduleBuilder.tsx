@@ -197,7 +197,7 @@ export default class ScheduleBuilder extends Component<Props, States> {
 
                     <select
                         id="term"
-                        className="bg-sky-500 hover:bg-sky-400 border border-blue-300 text-white text-sm rounded-lg p-2.5 mr-1 text-center dark:border-transparent"
+                        className="bg-sky-500 hover:bg-sky-400 border border-blue-300 text-white text-sm rounded-lg p-2.5 mr-1 text-center dark:border-transparent dark:bg-sky-700"
                         defaultValue={this.state.soc.info.termStr}
                         onChange={(e) =>
                             this.setSOC(e.target.value, defaultProgram)
@@ -218,7 +218,7 @@ export default class ScheduleBuilder extends Component<Props, States> {
 
                     <select
                         id="limit"
-                        className="bg-sky-500 hover:bg-sky-400 border border-blue-300 text-white text-sm rounded-lg p-2.5 mr-1 text-center dark:border-transparent"
+                        className="bg-sky-500 hover:bg-sky-400 border border-blue-300 text-white text-sm rounded-lg p-2.5 mr-1 text-center dark:border-transparent dark:bg-sky-700"
                         defaultValue={this.state.limit}
                         onChange={(e) =>
                             this.setState({ limit: Number(e.target.value) })

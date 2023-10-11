@@ -16,7 +16,7 @@ export default function MultipleScheduleDisplay(props: Props) {
     const schedulesToShow = props.schedules.slice(0, maxSchedulesToShow);
     return (
         <div>
-            <p className={"text-center dark:text-white"}>
+            <p className={"text-center"}>
                 <b>
                     <u>{props.schedules.length.toLocaleString()}</u> Schedules
                     Generated
@@ -25,7 +25,7 @@ export default function MultipleScheduleDisplay(props: Props) {
 
             {schedulesToShow.map((schedule: Schedule, s) => (
                 <div key={s}>
-                    <u className={"dark:text-white"}>Schedule #{s + 1}</u>
+                    <u>Schedule #{s + 1}</u>
                     <ScheduleDisplay schedule={schedule} />
                 </div>
             ))}
