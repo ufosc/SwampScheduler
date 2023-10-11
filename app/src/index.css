@@ -2,13 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
-
 @media (prefers-color-scheme: dark) {
     .dark {
         background-color: #1a1a1a;
         color: #ffffff;
     }
-    .grIcon path {
+    .dark .grIcon path {
         stroke: #ffffff;
     }
   }
