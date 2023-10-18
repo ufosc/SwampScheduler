@@ -40,6 +40,16 @@ export abstract class SOC_Generic {
         throw new Error("SOC initializer not implemented.");
     }
 
+    /* TERM AND PROGRAM */
+
+    getSOCTermString = (): string => {
+        return this.info.termStr;
+    }
+
+    getSOCProgramString = (): string => {
+        return getProgramString(this.info.program);
+    }
+
     /* UID */
 
     /**

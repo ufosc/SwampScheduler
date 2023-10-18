@@ -4,7 +4,7 @@ import {
     API_Section,
     API_Section_Type,
 } from "@scripts/apiTypes";
-import { Meetings, MeetTime, noMeetings } from "@scripts/soc";
+import { Meetings, MeetTime, noMeetings, MeetingsJSON } from "@scripts/soc";
 import { Term } from "@constants/soc";
 import { MinMax } from "@scripts/utils.ts";
 
@@ -73,4 +73,96 @@ export class Section {
             this.type == API_Section_Type.MostlyOnline
         );
     }
+
+    static parseJSON = (sectionJson: SectionJSON): Section => {
+        let section = new Section("0#0", Term.Fall, this.emptyApiSection(), "MAS3114");
+        section.uid = sectionJson.uid;
+        section.term = sectionJson.term;
+        section.type = this.parseApiSectionType(sectionJson.type);
+        section.number = sectionJson.number;
+        section.courseCode = sectionJson.courseCode;
+        section.displayName = sectionJson.displayName;
+        section.deptControlled = sectionJson.deptControlled;
+        section.instructors = sectionJson.instructors;
+        section.credits = new MinMax<number>(
+            sectionJson.credits.min,
+            sectionJson.credits.max,
+        );
+        section.meetings = MeetTime.parseMeetings(sectionJson.meetings);
+        return section;
+    }
+
+    static emptyApiSection = (): API_Section => {
+        return {
+            number: "",
+            classNumber: 0,
+            gradBasis: 0,
+            acadCareer: 0,
+            display: "",
+            credits: 0,
+            credits_min: 0,
+            credits_max: 0,
+            note: "",
+            dNote: "",
+            genEd: [],
+            quest: [],
+            sectWeb: API_Section_Type.PrimarilyClassroom,
+            rotateTitle: "",
+            deptCode: 0,
+            deptName: "",
+            openSeats: 0,
+            courseFee: 0,
+            lateFlag: "",
+            EEP: "",
+            LMS: "",
+            instructors: [],
+            meetTimes: [],
+            addEligible: "",
+            grWriting: "",
+            finalExam: "",
+            dropaddDeadline: "",
+            pastDeadline: false,
+            startDate: "",
+            endDate: "",
+            waitList: {
+                isEligible: "",
+                cap: 0,
+                total: 0,
+            }
+        }
+    }
+
+    static parseApiSectionType = (type: string): API_Section_Type => {
+        if (type == "PC") {
+            return API_Section_Type.PrimarilyClassroom;
+        } else if (type == "HB") {
+            return API_Section_Type.Hybrid;
+        } else if (type == "PD") {
+            return API_Section_Type.MostlyOnline;
+        } else if (type == "AD") {
+            return API_Section_Type.Online;
+        }
+        else {
+            console.log(`Failed to find API_Section_Type enum for ${type}, defaulting to 'PC'`)
+            return API_Section_Type.PrimarilyClassroom;
+        }
+    }
+}
+
+// TODO(ccastillo): Remove serialization interfaces if unused, i.e. figure out if even need these interfaces
+// Interfaces used for serialization
+export interface SectionJSON {
+    uid: string;
+    term: Term;
+    type: string;
+    number: number;
+    courseCode: string;
+    displayName: string;
+    deptControlled: boolean;
+    instructors: string[];
+    credits: {
+        min: number;
+        max: number;
+    }
+    meetings: MeetingsJSON;
 }
