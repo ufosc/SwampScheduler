@@ -60,7 +60,6 @@ export default class ScheduleBuilder extends Component<Props, States> {
         });
     }
 
-    // TODO(ccastillo): Make it so search reruns automatically when term is updated
     componentDidUpdate(
         _prevProps: Readonly<Props>,
         prevState: Readonly<States>,
@@ -157,6 +156,9 @@ export default class ScheduleBuilder extends Component<Props, States> {
                         ),
                 );
                 this.newSelection(ind, sectionsToAdd); // Add the section that have not been added
+            }
+            else {
+                alert("Error dragging course or section to selections from search results. Please try re-running your search.")
             }
         }
     }
