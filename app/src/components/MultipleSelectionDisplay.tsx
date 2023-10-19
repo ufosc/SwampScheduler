@@ -8,6 +8,7 @@ interface Props {
     newSelection: () => void;
     handleRemove: (sectionToRemove: Section) => void;
     handleDeleteSelection: (ind: number) => void;
+
 }
 
 export default function MultipleSelectionDisplay(props: Props) {

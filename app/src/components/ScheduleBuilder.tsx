@@ -26,6 +26,7 @@ interface States {
     selections: Selection[];
     schedules: Schedule[];
     showAddCourse: boolean;
+    pinnedSchedules: Schedule[];
 }
 
 const defaultState: States = {
@@ -36,6 +37,7 @@ const defaultState: States = {
     selections: getDefaultSelections(),
     schedules: [],
     showAddCourse: false,
+    pinnedSchedules: []
 };
 
 export default class ScheduleBuilder extends Component<Props, States> {
@@ -139,6 +141,14 @@ export default class ScheduleBuilder extends Component<Props, States> {
     }
 
     // TODO: make separate functions
+    togglePin(sch: Schedule) {
+        const pinned = this.state.pinnedSchedules;
+        if (pinned.some(s => arrayEquals(s, sch))) {
+            this.setState({pinnedSchedules: pinned.filter(s => !arrayEquals(s, sch))});
+        } else {
+            this.setState({pinnedSchedules: [...pinned, sch]});
+        }
+    }
     newSelection(ind: number = -1, sectionsToAdd: Section[] = []) {
         if (ind == -1) {
             this.setState({
@@ -248,6 +258,7 @@ export default class ScheduleBuilder extends Component<Props, States> {
                             handleDrop={this.handleDrop.bind(this)}
                             newSelection={this.newSelection.bind(this)}
                             handleRemove={this.handleRemove.bind(this)}
+                            pinnedSchedules={this.togglePin.bind(this)}
                             handleDeleteSelection={this.handleDeleteSelection.bind(
                                 this,
                             )}
@@ -259,6 +270,7 @@ export default class ScheduleBuilder extends Component<Props, States> {
                     <div className="overflow-y-auto w-full p-1">
                         <MultipleScheduleDisplay
                             schedules={this.state.schedules}
+                            pin={this.togglePin.bind(this)}
                             key={new Date().getTime()}
                         />
                     </div>
@@ -267,3 +279,4 @@ export default class ScheduleBuilder extends Component<Props, States> {
         );
     }
 }
+

@@ -12,9 +12,8 @@ import { GrPersonalComputer } from "react-icons/gr";
 
 interface Props {
     schedule: Schedule;
+    pin: (sch: Schedule) => void;
 }
-
-interface States {}
 
 // TODO: reconsider what to store
 type MeetTimeInfo = {
@@ -24,7 +23,7 @@ type MeetTimeInfo = {
     sectionIsOnline: boolean;
 };
 
-export default class ScheduleDisplay extends Component<Props, States> {
+export default class ScheduleDisplay extends Component<Props> {
     // TODO: redo this (it is *disgusting*); maybe there is a library that does the work
     render() {
         const schedule = this.props.schedule,
@@ -179,103 +178,105 @@ export default class ScheduleDisplay extends Component<Props, States> {
 
         const onlineSections: Section[] = schedule.filter((s) => s.isOnline);
         return (
-            <div className={"text-sm"}>
-                <div className={"min-w-full w-5/12 my-1"}>
-                    <div className={"flex gap-1"}>
-                        {schedule.map((sec: Section, s: number) => (
-                            <div
-                                className={classNames([
-                                    "border-solid",
-                                    "border-2",
-                                    "border-gray-400",
-                                    getSectionColor(s),
-                                    "rounded",
-                                    "text-center",
-                                    "grow",
-                                ])}
-                            >
-                                <b>({s + 1})</b> Sec. {sec.number} [
-                                {sec.courseCode}]
-                            </div>
-                        ))}
-                    </div>
-                </div>
-
-                <div className={"min-w-full w-5/12 my-1 flex gap-1"}>
-                    <div className={"inline-block h-max"}>
-                        <div className={"grid grid-cols-1 gap-y-1"}>
-                            {[...Array(periodCounts.all).keys()]
-                                .map((p) => p + 1)
-                                .map((p) => (
-                                    <div
-                                        className={
-                                            "border-solid border-2 border-gray-400 bg-gray-200 rounded text-center w-full h-6 px-0.5 min-w-full"
-                                        }
-                                    >
-                                        <b>
-                                            {MeetTime.formatPeriod(
-                                                p,
-                                                schedule.term,
-                                            )}
-                                        </b>
-                                    </div>
-                                ))}
-
-                            {onlineSections.length > 0 && (
+            <>
+                <div className={"text-sm"}>
+                    <div className={"min-w-full w-5/12 my-1"}>
+                        <div className={"flex gap-1"}>
+                            {schedule.map((sec: Section, s: number) => (
                                 <div
-                                    className={
-                                        "border-solid border-2 border-gray-400 bg-gray-200 rounded text-center w-full h-6 px-0.5 min-w-full"
-                                    }
+                                    className={classNames([
+                                        "border-solid",
+                                        "border-2",
+                                        "border-gray-400",
+                                        getSectionColor(s),
+                                        "rounded",
+                                        "text-center",
+                                        "grow",
+                                    ])}
                                 >
-                                    <div
-                                        className={
-                                            "flex items-center justify-center"
-                                        }
-                                    >
-                                        <GrPersonalComputer />️
-                                    </div>
+                                    <b>({s + 1})</b> Sec. {sec.number} [
+                                    {sec.courseCode}]
                                 </div>
-                            )}
+                            ))}
                         </div>
                     </div>
 
-                    <div className={"inline-block grow"}>
-                        <div className={"grid grid-cols-5 grid-rows-11 gap-1"}>
-                            {divs}
-                            {onlineSections.length > 0 && (
-                                <div className={"col-span-5"}>
-                                    <div className={"min-w-full w-5/12 h-full"}>
-                                        <div className={"flex gap-1"}>
-                                            {onlineSections.map(
-                                                (sec: Section, ind: number) => (
-                                                    <div
-                                                        className={classNames([
-                                                            "border-solid",
-                                                            "border-2",
-                                                            "border-gray-400",
-                                                            getSectionColor(
-                                                                ind,
-                                                            ),
-                                                            "rounded",
-                                                            "text-center",
-                                                            "grow",
-                                                        ])}
-                                                    >
-                                                        {sec.displayName}
-                                                        <sup>
-                                                            <b>{1 + ind}</b>
-                                                        </sup>
-                                                    </div>
-                                                ),
-                                            )}
+                    <div className={"min-w-full w-5/12 my-1 flex gap-1"}>
+                        <div className={"inline-block h-max"}>
+                            <div className={"grid grid-cols-1 gap-y-1"}>
+                                {[...Array(periodCounts.all).keys()]
+                                    .map((p) => p + 1)
+                                    .map((p) => (
+                                        <div
+                                            className={"border-solid border-2 border-gray-400 bg-gray-200 rounded text-center w-full h-6 px-0.5 min-w-full"}
+                                        >
+                                            <b>
+                                                {MeetTime.formatPeriod(
+                                                    p,
+                                                    schedule.term
+                                                )}
+                                            </b>
+                                        </div>
+                                    ))}
+
+                                {onlineSections.length > 0 && (
+                                    <div
+                                        className={"border-solid border-2 border-gray-400 bg-gray-200 rounded text-center w-full h-6 px-0.5 min-w-full"}
+                                    >
+                                        <div
+                                            className={"flex items-center justify-center"}
+                                        >
+                                            <GrPersonalComputer/>️
                                         </div>
                                     </div>
-                                </div>
-                            )}
+                                )}
+                            </div>
+                        </div>
+
+                        <div className={"inline-block grow"}>
+                            <div className={"grid grid-cols-5 grid-rows-11 gap-1"}>
+                                {divs}
+                                {onlineSections.length > 0 && (
+                                    <div className={"col-span-5"}>
+                                        <div className={"min-w-full w-5/12 h-full"}>
+                                            <div className={"flex gap-1"}>
+                                                {onlineSections.map(
+                                                    (sec: Section, ind: number) => (
+                                                        <div
+                                                            className={classNames([
+                                                                "border-solid",
+                                                                "border-2",
+                                                                "border-gray-400",
+                                                                getSectionColor(
+                                                                    ind
+                                                                ),
+                                                                "rounded",
+                                                                "text-center",
+                                                                "grow",
+                                                            ])}
+                                                        >
+                                                            {sec.displayName}
+                                                            <sup>
+                                                                <b>{1 + ind}</b>
+                                                            </sup>
+                                                        </div>
+                                                    )
+                                                )}
+                                            </div>
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+                <button onClick={() => {
+                    //console.log(this.props.pin);
+                    this.props.pin(this.props.schedule)
+                }}>
+                    Pin Me
+                </button>
+            </>
         );
     }
 }
