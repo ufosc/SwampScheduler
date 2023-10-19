@@ -7,6 +7,7 @@ const NUM_PER_PAGE = 25;
 interface Props {
     schedules: Schedule[];
     numPerPage?: number;
+    pin: (sch: Schedule) => void;
 }
 
 export default function MultipleScheduleDisplay(props: Props) {
@@ -26,7 +27,7 @@ export default function MultipleScheduleDisplay(props: Props) {
             {schedulesToShow.map((schedule: Schedule, s) => (
                 <div key={s}>
                     <u>Schedule #{s + 1}</u>
-                    <ScheduleDisplay schedule={schedule} />
+                    <ScheduleDisplay schedule={schedule} pin={props.pin}/>
                 </div>
             ))}
 
