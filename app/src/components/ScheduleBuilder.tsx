@@ -1,5 +1,5 @@
 import { Component } from "react";
-import { Course, Section, SOC_API, SOC_Generic, SectionJSON } from "@scripts/soc";
+import { Course, Section, SOC_API, SOC_Generic } from "@scripts/soc";
 import {
     Schedule,
     ScheduleGenerator,
@@ -72,7 +72,7 @@ export default class ScheduleBuilder extends Component<Props, States> {
                 prevState.selections.filter(notEmpty),
             )
         ) {
-            console.log(`Modifying selections:${this.state.soc?.getSOCProgramString()},${this.state.soc?.getSOCTermString()}`)
+            console.log(`Updating local storage data for "selections:${this.state.soc?.getSOCProgramString()},${this.state.soc?.getSOCTermString()}"`)
             localStorage.setItem(`selections:${this.state.soc?.getSOCProgramString()},${this.state.soc?.getSOCTermString()}`, JSON.stringify(this.state.selections));
             if (this.state.generator) {
                 // Make sure generator is not null
@@ -116,19 +116,16 @@ export default class ScheduleBuilder extends Component<Props, States> {
     }
 
     async loadStoredSelections(termStr: string, programStr: string) {
-        console.log(`looking for selections:${programStr},${termStr}`)
+        console.log(`Searching for local storage data for "selections:${programStr},${termStr}"`)
         const data = localStorage.getItem(`selections:${programStr},${termStr}`);
         if (data != null) {
-            console.log("Stored selection data found")
-            console.log(JSON.parse(data));
-            let selectionArray = JSON.parse(data).map((selectionJson: SectionJSON[]): Selection => {
+            console.log("Stored selection data found", JSON.parse(data));
+            let selectionArray = JSON.parse(data).map((selectionJson: Section[]): Selection => {
                 return Selection.parseJSON(selectionJson);;
             });
             this.setState({ selections: selectionArray });
-            console.log("parsed the selection array");
-            console.log(selectionArray);
         } else {
-            console.log("Stored selection data not present")
+            console.log("Stored selection data not present.")
         }
     }
 

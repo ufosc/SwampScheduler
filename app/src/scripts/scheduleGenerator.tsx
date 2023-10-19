@@ -1,4 +1,4 @@
-import { Section, SOC_Generic, SectionJSON } from "@scripts/soc";
+import { Section, SOC_Generic } from "@scripts/soc";
 import { Term } from "@constants/soc";
 
 
@@ -6,8 +6,8 @@ import { Term } from "@constants/soc";
 
 
 export class Selection extends Array<Section> {
-    static parseJSON(selectionJson: SectionJSON[]): Selection {
-        return selectionJson.map((sectionJson: SectionJSON) => {
+    static parseJSON(selectionJson: Section[]): Selection {
+        return selectionJson.map((sectionJson: Section) => {
             return Section.parseJSON(sectionJson);
         });
     }

@@ -4,7 +4,7 @@ import {
     API_Section,
     API_Section_Type,
 } from "@scripts/apiTypes";
-import { Meetings, MeetTime, noMeetings, MeetingsJSON } from "@scripts/soc";
+import { Meetings, MeetTime, noMeetings } from "@scripts/soc";
 import { Term } from "@constants/soc";
 import { MinMax } from "@scripts/utils.ts";
 
@@ -74,16 +74,9 @@ export class Section {
         );
     }
 
-    static parseJSON = (sectionJson: SectionJSON): Section => {
+    static parseJSON = (sectionJson: Section): Section => {
         let section = new Section("0#0", Term.Fall, this.emptyApiSection(), "MAS3114");
-        section.uid = sectionJson.uid;
-        section.term = sectionJson.term;
-        section.type = this.parseApiSectionType(sectionJson.type);
-        section.number = sectionJson.number;
-        section.courseCode = sectionJson.courseCode;
-        section.displayName = sectionJson.displayName;
-        section.deptControlled = sectionJson.deptControlled;
-        section.instructors = sectionJson.instructors;
+        section = Object.assign(section, sectionJson);
         section.credits = new MinMax<number>(
             sectionJson.credits.min,
             sectionJson.credits.max,
@@ -131,38 +124,4 @@ export class Section {
             }
         }
     }
-
-    static parseApiSectionType = (type: string): API_Section_Type => {
-        if (type == "PC") {
-            return API_Section_Type.PrimarilyClassroom;
-        } else if (type == "HB") {
-            return API_Section_Type.Hybrid;
-        } else if (type == "PD") {
-            return API_Section_Type.MostlyOnline;
-        } else if (type == "AD") {
-            return API_Section_Type.Online;
-        }
-        else {
-            console.log(`Failed to find API_Section_Type enum for ${type}, defaulting to 'PC'`)
-            return API_Section_Type.PrimarilyClassroom;
-        }
-    }
-}
-
-// TODO(ccastillo): Remove serialization interfaces if unused, i.e. figure out if even need these interfaces
-// Interfaces used for serialization
-export interface SectionJSON {
-    uid: string;
-    term: Term;
-    type: string;
-    number: number;
-    courseCode: string;
-    displayName: string;
-    deptControlled: boolean;
-    instructors: string[];
-    credits: {
-        min: number;
-        max: number;
-    }
-    meetings: MeetingsJSON;
 }
