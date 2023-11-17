@@ -199,8 +199,8 @@ export class SOC_API extends SOC_Generic {
             fetchPromise
                 .then(() => this.searchCourses(searchBy, phrase))
                 .catch((e) => {
-                    if (e instanceof Cancellation)
-                        console.log("Fetch was aborted.");
+                    if (e instanceof Cancellation) 
+                        console.log(`Fetch was aborted due to the ${cont.signal.reason}`);
                     else throw e;
                     return [];
                 }),
@@ -235,6 +235,7 @@ export class SOC_API extends SOC_Generic {
             `&category=${getProgramString(this.info.program)}` +
             `&last-control-number=${lcn}` +
             `&${getSearchByString(searchBy)}=${phrase}`;
+        console.log(controller.signal)
         return fetchCORS(searchURL, { signal: controller.signal })
             .then(async (r) => await r.json())
             .then(async (j) => {
