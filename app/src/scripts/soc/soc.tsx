@@ -218,9 +218,12 @@ export class SOC_API extends SOC_Generic {
     ): Promise<void> {
         if (!phrase) return Promise.resolve();
 
-        const search = JSON.stringify({ by: searchBy, phrase });
+        const search = JSON.stringify({
+            by: searchBy,
+            phrase: phrase.toUpperCase(),
+        });
         if (this.fetchCache.has(search)) {
-            console.log("Search has already already fetched. Not fetching.");
+            console.log("Courses have already been fetched.");
             return Promise.resolve();
         }
         console.log(
