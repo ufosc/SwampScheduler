@@ -1,20 +1,23 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import classNames from "classnames";
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-import { ReactFitty } from "react-fitty";
-import { API_Day, API_Days } from "@scripts/apiTypes";
-import { MeetTime, Section } from "@scripts/soc";
-import { Schedule } from "@scripts/scheduleGenerator";
-import { getSectionColor } from "@constants/frontend";
-import { PERIOD_COUNTS } from "@constants/schedule";
-import { GrPersonalComputer } from "react-icons/gr";
+import {ReactFitty} from "react-fitty";
+import {API_Day, API_Days} from "@scripts/apiTypes";
+import {MeetTime, Section} from "@scripts/soc";
+import {Schedule} from "@scripts/scheduleGenerator";
+import {getSectionColor} from "@constants/frontend";
+import {PERIOD_COUNTS} from "@constants/schedule";
+import {GrPersonalComputer} from "react-icons/gr";
+import "rrule"
+import "ics"
 
 interface Props {
     schedule: Schedule;
 }
 
-interface States {}
+interface States {
+}
 
 // TODO: reconsider what to store
 type MeetTimeInfo = {
@@ -26,7 +29,14 @@ type MeetTimeInfo = {
 
 export default class ScheduleDisplay extends Component<Props, States> {
     // TODO: redo this (it is *disgusting*); maybe there is a library that does the work
+
+    handleExportScheduleClick = () => {
+        console.log("Export Schedule button clicked");
+        console.log(this.props.schedule)
+        // TODO: Parse schedule and create an iCal file for download
+    };
     render() {
+
         const schedule = this.props.schedule,
             periodCounts = PERIOD_COUNTS[schedule.term];
 
@@ -58,6 +68,7 @@ export default class ScheduleDisplay extends Component<Props, States> {
                 }),
             ),
         );
+
 
         const divs = [];
         for (let p = 0; p < periodCounts.all; ++p) {
@@ -178,8 +189,12 @@ export default class ScheduleDisplay extends Component<Props, States> {
         }
 
         const onlineSections: Section[] = schedule.filter((s) => s.isOnline);
+
         return (
             <div className={"text-sm"}>
+                <button onClick={this.handleExportScheduleClick} className={"bg-sky-500 hover:bg-sky-400 border border-blue-300 text-white text-sm rounded-lg p-1.5 mr-1 text-center mt-1.5 mb-1.5"}>
+                    Export Schedule
+                </button>
                 <div className={"min-w-full w-5/12 my-1"}>
                     <div className={"flex gap-1"}>
                         {schedule.map((sec: Section, s: number) => (
@@ -232,7 +247,7 @@ export default class ScheduleDisplay extends Component<Props, States> {
                                             "flex items-center justify-center"
                                         }
                                     >
-                                        <GrPersonalComputer />️
+                                        <GrPersonalComputer/>️
                                     </div>
                                 </div>
                             )}
