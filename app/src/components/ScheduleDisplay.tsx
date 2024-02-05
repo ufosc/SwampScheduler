@@ -9,8 +9,8 @@ import {Schedule} from "@scripts/scheduleGenerator";
 import {getSectionColor} from "@constants/frontend";
 import {PERIOD_COUNTS} from "@constants/schedule";
 import {GrPersonalComputer} from "react-icons/gr";
-import "rrule"
-import "ics"
+//import "rrule"
+import ical, {ICalEventRepeatingFreq} from 'ical-generator';
 
 interface Props {
     schedule: Schedule;
@@ -30,11 +30,54 @@ type MeetTimeInfo = {
 export default class ScheduleDisplay extends Component<Props, States> {
     // TODO: redo this (it is *disgusting*); maybe there is a library that does the work
 
-    handleExportScheduleClick = () => {
-        console.log("Export Schedule button clicked");
-        console.log(this.props.schedule)
-        // TODO: Parse schedule and create an iCal file for download
+    handleExportScheduleClick = async () => {
+        try {
+            // Create a new iCal calendar
+            const cal = ical();
+
+            const startTime = new Date();
+            const endTime = new Date();
+            endTime.setHours(startTime.getHours()+1);
+
+            const event = cal.createEvent({
+                start: startTime,
+                end: endTime,
+                summary: 'Example Event',
+                description: 'It works ;)',
+                location: 'my room',
+                url: 'http://sebbo.net/',
+            });
+
+            event.repeating({
+                freq: ICalEventRepeatingFreq.WEEKLY,
+                until: new Date('Feb 28 2024 00:00:00 UTC')
+            });
+
+            // Convert the calendar to an iCalendar string
+            const icalContent = cal.toString();
+
+            // Create a Blob from the iCalendar content
+            const file = new File([icalContent], 'ExampleEvent.ics', { type: 'text/calendar' });
+
+            // Create a URL for the Blob
+            const url = URL.createObjectURL(file);
+
+            // Create a temporary anchor element and trigger the download
+            const anchor = document.createElement('a');
+            anchor.href = url;
+            anchor.download = 'ExampleEvent.ics';
+            document.body.appendChild(anchor);
+            anchor.click();
+            document.body.removeChild(anchor);
+
+            // Revoke the URL to release memory
+            URL.revokeObjectURL(url);
+        } catch (error) {
+            console.error('Error exporting schedule:', error);
+            // Handle the error appropriately
+        }
     };
+
     render() {
 
         const schedule = this.props.schedule,

@@ -13,6 +13,7 @@
     },
     "dependencies": {
         "classnames": "^2.3.2",
+        "ical-generator": "^6.0.1",
         "ics": "^3.7.2",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
