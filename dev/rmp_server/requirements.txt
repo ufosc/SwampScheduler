@@ -1,4 +1,0 @@
-Flask
-Flask_Cors
-gql
-requests

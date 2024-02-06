@@ -17,11 +17,11 @@ Made with :heart: by [UF's Open Source Club](https://ufosc.org) ([@ufosc](https:
 ## Features
 
 - **Course Explorer:** Explore courses offered at the University of Florida
-    - Find courses by *course code*, *title*, or *instructor*
+  - Find courses by _course code_, _title_, or _instructor_
 - **Course Selections:** Make multiple courses selections with backup options.
-    - Pick which classes you want (and remove which sections you don't)
+  - Pick which classes you want (and remove which sections you don't)
 - **Schedule Generator:** View and compare all the possible schedules and pick the one that fits your needs and wants.
-    - View color-coded schedules that show what your day-to-day ~~struggle~~ workload will be
+  - View color-coded schedules that show what your day-to-day ~~struggle~~ workload will be
 
 ## Installation
 
@@ -51,8 +51,8 @@ npm install
 ### Usage:
 
 - In the web-app directory:
-    - **Development:** Run `npm run dev` to run the development server locally (with hot reloading).
-    - **Production:** Run `npm run build` to build the app to `/app/dist`.
+  - **Development:** Run `npm run dev` to run the development server locally (with hot reloading).
+  - **Production:** Run `npm run build` to build the app to `/app/dist`.
 
 ## Contribution
 
@@ -64,16 +64,16 @@ After that, you should be ready to get your hands dirty!
 This project is built using a variety of exciting technologies, including:
 
 - **TypeScript:** The JavaScript programming language with a typing system (for `Course` objects, etc.)
-    - Familiarize yourself with [TypeScript’s documentation](https://www.typescriptlang.org/docs/) to understand the
-      basics and best practices.
+  - Familiarize yourself with [TypeScript’s documentation](https://www.typescriptlang.org/docs/) to understand the
+    basics and best practices.
 - **React:** A JavaScript library for building dynamic user interfaces.
-    - The [official React documentation](https://reactjs.org/docs/getting-started.html) is a great resource for learning
-      about component-based architecture and state management.
+  - The [official React documentation](https://reactjs.org/docs/getting-started.html) is a great resource for learning
+    about component-based architecture and state management.
 - **Tailwind CSS:** A utility-first CSS framework.
-    - Review the [Tailwind CSS documentation](https://tailwindcss.com/docs) for understanding utility-first styling and
-      theming.
+  - Review the [Tailwind CSS documentation](https://tailwindcss.com/docs) for understanding utility-first styling and
+    theming.
 - **Vite:** Simply used as a build tool and development server.
-    - Learn how to set up, configure, and use Vite from [Vite’s official guide](https://vitejs.dev/guide/).
+  - Learn how to set up, configure, and use Vite from [Vite’s official guide](https://vitejs.dev/guide/).
 
 ### How It All Works
 
