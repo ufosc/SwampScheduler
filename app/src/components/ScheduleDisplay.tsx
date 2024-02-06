@@ -47,37 +47,6 @@ export default class ScheduleDisplay extends Component<Props, States> {
             currentDate.setHours(hours, minutes);
             return currentDate;
         }
-        
-        function createCalendarEvent(schedule: any, cal: any) {
-            const summary = schedule.displayName + schedule.courseCode
-            const classStartTimeStr = schedule.meetings.M[0].timeBegin;
-            const classEndTimeStr = schedule.meetings.M[0].timeEnd;
-            const location = schedule.meetings.M[0].bldg + schedule.meetings.M[0].room;
-            const description = schedule.number.toString();
-
-            const examDateString = schedule.finalExamDate;
-            const [datePart] = examDateString.split(" @ ");
-            const examDate = new Date(datePart);
-
-            const until = new Date(examDate.setHours(0, 0, 0, 0) + " 00:00:00 UTC");
-
-
-            const startDate = convertTimeStringToDate(classStartTimeStr);
-            const endDate = convertTimeStringToDate(classEndTimeStr)
-
-            const event = cal.createEvent({
-                start: startDate,
-                end: endDate,
-                summary: summary,
-                description: description,
-                location: location,
-            });
-
-            event.repeating({
-                freq: ICalEventRepeatingFreq.WEEKLY,
-                until: until
-            });
-        }
 
         try {
             // summary: class name + course code
@@ -93,29 +62,185 @@ export default class ScheduleDisplay extends Component<Props, States> {
                 console.log(this.props.schedule[i]);
 
                 if (this.props.schedule[i].meetings.M.length != 0) {
-                    createCalendarEvent(this.props.schedule[i], cal);
+                    const summary = this.props.schedule[i].displayName + " " + this.props.schedule[i].courseCode
+                    const classStartTimeStr = this.props.schedule[i].meetings.M[0].timeBegin;
+                    const classEndTimeStr = this.props.schedule[i].meetings.M[0].timeEnd;
+                    const location = this.props.schedule[i].meetings.M[0].bldg + this.props.schedule[i].meetings.M[0].room;
+                    const description = "Section #" + this.props.schedule[i].number.toString();
+
+                    const examDateString = this.props.schedule[i].finalExamDate;
+                    const [datePart] = examDateString.split(" @ ");
+
+                    const examDate = new Date(datePart);
+
+                    const until = new Date(examDate);
+
+                    const startDate = convertTimeStringToDate(classStartTimeStr);
+                    const endDate = convertTimeStringToDate(classEndTimeStr)
+
+                    const event = cal.createEvent({
+                        start: startDate,
+                        end: endDate,
+                        summary: summary,
+                        description: description,
+                        location: location,
+                    });
+
+                    event.repeating({
+                        freq: ICalEventRepeatingFreq.WEEKLY,
+                        until: until
+                    });
                 }
 
                 if (this.props.schedule[i].meetings.T.length != 0) {
-                    createCalendarEvent(this.props.schedule[i], cal);
+                    const summary = this.props.schedule[i].displayName + " " + this.props.schedule[i].courseCode
+                    const classStartTimeStr = this.props.schedule[i].meetings.T[0].timeBegin;
+                    const classEndTimeStr = this.props.schedule[i].meetings.T[0].timeEnd;
+                    const location = this.props.schedule[i].meetings.T[0].bldg + this.props.schedule[i].meetings.T[0].room;
+                    const description = "Section #" + this.props.schedule[i].number.toString();
+
+                    const examDateString = this.props.schedule[i].finalExamDate;
+                    const [datePart] = examDateString.split(" @ ");
+                    const examDate = new Date(datePart);
+
+                    const until = new Date(examDate);
+
+                    const startDate = convertTimeStringToDate(classStartTimeStr);
+                    const endDate = convertTimeStringToDate(classEndTimeStr)
+
+                    const event = cal.createEvent({
+                        start: startDate,
+                        end: endDate,
+                        summary: summary,
+                        description: description,
+                        location: location,
+                    });
+
+                    event.repeating({
+                        freq: ICalEventRepeatingFreq.WEEKLY,
+                        until: until
+                    });
                 }
 
                 if (this.props.schedule[i].meetings.W.length != 0) {
-                    createCalendarEvent(this.props.schedule[i], cal);
+                    const summary = this.props.schedule[i].displayName + " " + this.props.schedule[i].courseCode
+                    const classStartTimeStr = this.props.schedule[i].meetings.W[0].timeBegin;
+                    const classEndTimeStr = this.props.schedule[i].meetings.W[0].timeEnd;
+                    const location = this.props.schedule[i].meetings.W[0].bldg + this.props.schedule[i].meetings.W[0].room;
+                    const description = "Section #" + this.props.schedule[i].number.toString();
+
+                    const examDateString = this.props.schedule[i].finalExamDate;
+                    const [datePart] = examDateString.split(" @ ");
+                    const examDate = new Date(datePart);
+
+                    const until = new Date(examDate);
+
+                    const startDate = convertTimeStringToDate(classStartTimeStr);
+                    const endDate = convertTimeStringToDate(classEndTimeStr)
+
+                    const event = cal.createEvent({
+                        start: startDate,
+                        end: endDate,
+                        summary: summary,
+                        description: description,
+                        location: location,
+                    });
+
+                    event.repeating({
+                        freq: ICalEventRepeatingFreq.WEEKLY,
+                        until: until
+                    });
                 }
 
                 if (this.props.schedule[i].meetings.R.length != 0) {
-                    createCalendarEvent(this.props.schedule[i], cal);
+                    const summary = this.props.schedule[i].displayName + " " + this.props.schedule[i].courseCode
+                    const classStartTimeStr = this.props.schedule[i].meetings.R[0].timeBegin;
+                    const classEndTimeStr = this.props.schedule[i].meetings.R[0].timeEnd;
+                    const location = this.props.schedule[i].meetings.R[0].bldg + this.props.schedule[i].meetings.R[0].room;
+                    const description = "Section #" + this.props.schedule[i].number.toString();
+
+                    const examDateString = this.props.schedule[i].finalExamDate;
+                    const [datePart] = examDateString.split(" @ ");
+                    const examDate = new Date(datePart);
+
+                    const until = new Date(examDate);
+
+                    const startDate = convertTimeStringToDate(classStartTimeStr);
+                    const endDate = convertTimeStringToDate(classEndTimeStr)
+
+                    const event = cal.createEvent({
+                        start: startDate,
+                        end: endDate,
+                        summary: summary,
+                        description: description,
+                        location: location,
+                    });
+
+                    event.repeating({
+                        freq: ICalEventRepeatingFreq.WEEKLY,
+                        until: until
+                    });
                 }
 
                 if (this.props.schedule[i].meetings.F.length != 0) {
-                    createCalendarEvent(this.props.schedule[i], cal);
+                    const summary = this.props.schedule[i].displayName + " " + this.props.schedule[i].courseCode
+                    const classStartTimeStr = this.props.schedule[i].meetings.F[0].timeBegin;
+                    const classEndTimeStr = this.props.schedule[i].meetings.F[0].timeEnd;
+                    const location = this.props.schedule[i].meetings.F[0].bldg + this.props.schedule[i].meetings.F[0].room;
+                    const description = "Section #" + this.props.schedule[i].number.toString();
+
+                    const examDateString = this.props.schedule[i].finalExamDate;
+                    const [datePart] = examDateString.split(" @ ");
+                    const examDate = new Date(datePart);
+
+                    const until = new Date(examDate);
+
+                    const startDate = convertTimeStringToDate(classStartTimeStr);
+                    const endDate = convertTimeStringToDate(classEndTimeStr)
+
+                    const event = cal.createEvent({
+                        start: startDate,
+                        end: endDate,
+                        summary: summary,
+                        description: description,
+                        location: location,
+                    });
+
+                    event.repeating({
+                        freq: ICalEventRepeatingFreq.WEEKLY,
+                        until: until
+                    });
                 }
 
                 if (this.props.schedule[i].meetings.S.length != 0) {
-                    createCalendarEvent(this.props.schedule[i], cal);
-                }
+                    const summary = this.props.schedule[i].displayName + this.props.schedule[i].courseCode
+                    const classStartTimeStr = this.props.schedule[i].meetings.S[0].timeBegin;
+                    const classEndTimeStr = this.props.schedule[i].meetings.S[0].timeEnd;
+                    const location = this.props.schedule[i].meetings.S[0].bldg + this.props.schedule[i].meetings.S[0].room;
+                    const description = "Section #" + this.props.schedule[i].number.toString();
 
+                    const examDateString = this.props.schedule[i].finalExamDate;
+                    const [datePart] = examDateString.split(" @ ");
+                    const examDate = new Date(datePart);
+
+                    const until = new Date(examDate);
+
+                    const startDate = convertTimeStringToDate(classStartTimeStr);
+                    const endDate = convertTimeStringToDate(classEndTimeStr)
+
+                    const event = cal.createEvent({
+                        start: startDate,
+                        end: endDate,
+                        summary: summary,
+                        description: description,
+                        location: location,
+                    });
+
+                    event.repeating({
+                        freq: ICalEventRepeatingFreq.WEEKLY,
+                        until: until
+                    });
+                }
 
             }
 
@@ -123,7 +248,7 @@ export default class ScheduleDisplay extends Component<Props, States> {
             const icalContent = cal.toString();
 
             // Create a Blob from the iCalendar content
-            const file = new File([icalContent], 'ExampleEvent.ics', { type: 'text/calendar' });
+            const file = new File([icalContent], 'swampschedule.ics', { type: 'text/calendar' });
 
             // Create a URL for the Blob
             const url = URL.createObjectURL(file);
@@ -131,7 +256,7 @@ export default class ScheduleDisplay extends Component<Props, States> {
             // Create a temporary anchor element and trigger the download
             const anchor = document.createElement('a');
             anchor.href = url;
-            anchor.download = 'ExampleEvent.ics';
+            anchor.download = 'swampschedule.ics';
             document.body.appendChild(anchor);
             anchor.click();
             document.body.removeChild(anchor);
