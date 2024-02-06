@@ -31,27 +31,93 @@ export default class ScheduleDisplay extends Component<Props, States> {
     // TODO: redo this (it is *disgusting*); maybe there is a library that does the work
 
     handleExportScheduleClick = async () => {
-        try {
-            // Create a new iCal calendar
-            const cal = ical();
+        function convertTimeStringToDate(timeString: string): Date {
+            const currentDate = new Date();
+            const [time, period] = timeString.split(" ");
+            const [hoursString, minutesString] = time.split(":");
+            let hours = parseInt(hoursString, 10);
+            const minutes = parseInt(minutesString, 10);
 
-            const startTime = new Date();
-            const endTime = new Date();
-            endTime.setHours(startTime.getHours()+1);
+            if (period === "PM" && hours !== 12) {
+                hours += 12;
+            } else if (period === "AM" && hours === 12) {
+                hours = 0;
+            }
+
+            currentDate.setHours(hours, minutes);
+            return currentDate;
+        }
+        
+        function createCalendarEvent(schedule: any, cal: any) {
+            const summary = schedule.displayName + schedule.courseCode
+            const classStartTimeStr = schedule.meetings.M[0].timeBegin;
+            const classEndTimeStr = schedule.meetings.M[0].timeEnd;
+            const location = schedule.meetings.M[0].bldg + schedule.meetings.M[0].room;
+            const description = schedule.number.toString();
+
+            const examDateString = schedule.finalExamDate;
+            const [datePart] = examDateString.split(" @ ");
+            const examDate = new Date(datePart);
+
+            const until = new Date(examDate.setHours(0, 0, 0, 0) + " 00:00:00 UTC");
+
+
+            const startDate = convertTimeStringToDate(classStartTimeStr);
+            const endDate = convertTimeStringToDate(classEndTimeStr)
 
             const event = cal.createEvent({
-                start: startTime,
-                end: endTime,
-                summary: 'Example Event',
-                description: 'It works ;)',
-                location: 'my room',
-                url: 'http://sebbo.net/',
+                start: startDate,
+                end: endDate,
+                summary: summary,
+                description: description,
+                location: location,
             });
 
             event.repeating({
                 freq: ICalEventRepeatingFreq.WEEKLY,
-                until: new Date('Feb 28 2024 00:00:00 UTC')
+                until: until
             });
+        }
+
+        try {
+            // summary: class name + course code
+            // description: section #
+            // startTime = DATE OF DOWNLOAD and the timeBegin of the course
+            // endTime = DATE OF DOWNLOAD and the timeEnd of the course
+            // Location = bldg + room e.g. CAR0100
+            // Online classes have empty meet arrays
+
+            const cal = ical();
+
+            for (let i = 0; i < this.props.schedule.length; i++) {
+                console.log(this.props.schedule[i]);
+
+                if (this.props.schedule[i].meetings.M.length != 0) {
+                    createCalendarEvent(this.props.schedule[i], cal);
+                }
+
+                if (this.props.schedule[i].meetings.T.length != 0) {
+                    createCalendarEvent(this.props.schedule[i], cal);
+                }
+
+                if (this.props.schedule[i].meetings.W.length != 0) {
+                    createCalendarEvent(this.props.schedule[i], cal);
+                }
+
+                if (this.props.schedule[i].meetings.R.length != 0) {
+                    createCalendarEvent(this.props.schedule[i], cal);
+                }
+
+                if (this.props.schedule[i].meetings.F.length != 0) {
+                    createCalendarEvent(this.props.schedule[i], cal);
+                }
+
+                if (this.props.schedule[i].meetings.S.length != 0) {
+                    createCalendarEvent(this.props.schedule[i], cal);
+                }
+
+
+            }
 
             // Convert the calendar to an iCalendar string
             const icalContent = cal.toString();
