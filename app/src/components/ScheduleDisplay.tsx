@@ -9,6 +9,7 @@ import { Schedule } from "@scripts/scheduleGenerator";
 import { getSectionColor } from "@constants/frontend";
 import { PERIOD_COUNTS } from "@constants/schedule";
 import { GrPersonalComputer } from "react-icons/gr";
+import { handleExportScheduleClick } from "@scripts/soc/calendar.ts";
 
 interface Props {
     schedule: Schedule;
@@ -26,6 +27,7 @@ type MeetTimeInfo = {
 
 export default class ScheduleDisplay extends Component<Props, States> {
     // TODO: redo this (it is *disgusting*); maybe there is a library that does the work
+
     render() {
         const schedule = this.props.schedule,
             periodCounts = PERIOD_COUNTS[schedule.term];
@@ -178,8 +180,19 @@ export default class ScheduleDisplay extends Component<Props, States> {
         }
 
         const onlineSections: Section[] = schedule.filter((s) => s.isOnline);
+
         return (
             <div className={"text-sm"}>
+                <button
+                    onClick={() =>
+                        handleExportScheduleClick(this.props.schedule)
+                    }
+                    className={
+                        "bg-sky-500 hover:bg-sky-400 border border-blue-300 text-white text-sm rounded-lg p-1.5 mr-1 text-center mt-1.5 mb-1.5"
+                    }
+                >
+                    Export Schedule
+                </button>
                 <div className={"min-w-full w-5/12 my-1"}>
                     <div className={"flex gap-1"}>
                         {schedule.map((sec: Section, s: number) => (
