@@ -20,6 +20,8 @@ export class Section {
     credits: MinMax<number>;
     meetings: Meetings = noMeetings();
     finalExamDate: string;
+    startDate: string;
+    endDate: string;
 
     constructor(
         uid: string,
@@ -56,6 +58,8 @@ export class Section {
             this.deptControlled = true;
             this.displayName = courseCode;
         }
+        this.startDate = sectionJSON.startDate;
+        this.endDate = sectionJSON.endDate;
     }
 
     // Returns true if any of the meet times conflict
