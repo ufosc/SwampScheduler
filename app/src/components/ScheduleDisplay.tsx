@@ -1,22 +1,21 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import classNames from "classnames";
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-import {ReactFitty} from "react-fitty";
-import {API_Day, API_Days} from "@scripts/apiTypes";
-import {MeetTime, Section} from "@scripts/soc";
-import {Schedule} from "@scripts/scheduleGenerator";
-import {getSectionColor} from "@constants/frontend";
-import {PERIOD_COUNTS} from "@constants/schedule";
-import {GrPersonalComputer} from "react-icons/gr";
-import {handleExportScheduleClick} from "@scripts/soc/calendar.ts";
+import { ReactFitty } from "react-fitty";
+import { API_Day, API_Days } from "@scripts/apiTypes";
+import { MeetTime, Section } from "@scripts/soc";
+import { Schedule } from "@scripts/scheduleGenerator";
+import { getSectionColor } from "@constants/frontend";
+import { PERIOD_COUNTS } from "@constants/schedule";
+import { GrPersonalComputer } from "react-icons/gr";
+import { handleExportScheduleClick } from "@scripts/soc/calendar.ts";
 
 interface Props {
     schedule: Schedule;
 }
 
-interface States {
-}
+interface States {}
 
 // TODO: reconsider what to store
 type MeetTimeInfo = {
@@ -30,7 +29,6 @@ export default class ScheduleDisplay extends Component<Props, States> {
     // TODO: redo this (it is *disgusting*); maybe there is a library that does the work
 
     render() {
-
         const schedule = this.props.schedule,
             periodCounts = PERIOD_COUNTS[schedule.term];
 
@@ -62,7 +60,6 @@ export default class ScheduleDisplay extends Component<Props, States> {
                 }),
             ),
         );
-
 
         const divs = [];
         for (let p = 0; p < periodCounts.all; ++p) {
@@ -186,7 +183,14 @@ export default class ScheduleDisplay extends Component<Props, States> {
 
         return (
             <div className={"text-sm"}>
-                <button onClick={() => handleExportScheduleClick(this.props.schedule)} className={"bg-sky-500 hover:bg-sky-400 border border-blue-300 text-white text-sm rounded-lg p-1.5 mr-1 text-center mt-1.5 mb-1.5"}>
+                <button
+                    onClick={() =>
+                        handleExportScheduleClick(this.props.schedule)
+                    }
+                    className={
+                        "bg-sky-500 hover:bg-sky-400 border border-blue-300 text-white text-sm rounded-lg p-1.5 mr-1 text-center mt-1.5 mb-1.5"
+                    }
+                >
                     Export Schedule
                 </button>
                 <div className={"min-w-full w-5/12 my-1"}>
@@ -241,7 +245,7 @@ export default class ScheduleDisplay extends Component<Props, States> {
                                             "flex items-center justify-center"
                                         }
                                     >
-                                        <GrPersonalComputer/>️
+                                        <GrPersonalComputer />️
                                     </div>
                                 </div>
                             )}
