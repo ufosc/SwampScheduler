@@ -1,7 +1,6 @@
 import Container from "@components/Container";
 import { FaBan, FaBuilding, FaDisplay, FaThumbtack } from "react-icons/fa6";
 import { Section_Info } from "@components/Course";
-import moment from "moment";
 
 interface SectionProps {
   sectionInfo: Section_Info;
@@ -25,13 +24,13 @@ export default function Section({
         <div className={"flex gap-1 items-center"}>
           <FaBuilding /> {modality}
         </div>
-        <div className={""}>
+        <div>
           {meetings.map(({ daysOfWeek, startTime, endTime }, i) => (
-            <div className={"flex"} key={i}>
-              <div className={"w-4"}>{daysOfWeek.join("")}</div>
-              <div
-                className={""}
-              >{`${startTime.format("LT")}-${endTime.format("LT")}`}</div>
+            <div className={"flex gap-1 text-right"} key={i}>
+              <div className={"grow"}>{daysOfWeek.join("")}</div>
+              <div className={"w-28"}>
+                {startTime.format("LT")}-{endTime.format("LT")}
+              </div>
             </div>
           ))}
         </div>
