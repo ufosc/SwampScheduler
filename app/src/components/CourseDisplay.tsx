@@ -18,21 +18,21 @@ export default function CourseDisplay(props: Props) {
             {/* COURSE INFORMATION */}
             <Draggable type={"uid"} data={props.course.uid}>
                 <div className="m-1">
-                    <div className="w-full p-2 rounded-lg shadow-sm shadow-slate-400">
+                    <div className="w-full p-2 rounded-lg shadow-sm shadow-slate-400 dark:shadow-slate-950">
                         {/* Course Code & Name */}
-                        <p className="text-slate-700 underline">
+                        <p className="text-slate-700 underline dark:text-white">
                             <b>{props.course.code}</b> {props.course.name}
                         </p>
 
                         {/* Description */}
                         <div className="mx-2">
-                            <p className="text-slate-700 text-sm">
+                            <p className="text-slate-700 text-sm dark:text-slate-200">
                                 {props.course.description}
                             </p>
                         </div>
 
                         {/* Additional Information */}
-                        <div className={"text-center text-slate-700 text-xs"}>
+                        <div className={"text-center text-slate-700 text-xs dark:text-slate-200"}>
                             <i>({props.course.credits.display} Credits)</i>
                         </div>
                     </div>

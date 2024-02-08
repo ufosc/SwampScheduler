@@ -121,7 +121,7 @@ export default class ScheduleDisplay extends Component<Props, States> {
                             className={classNames([
                                 "border-solid",
                                 "border-2",
-                                "border-gray-400",
+                                "border-gray-400 dark:border-transparent",
                                 color,
                                 "rounded",
                                 "whitespace-nowrap",
@@ -156,7 +156,7 @@ export default class ScheduleDisplay extends Component<Props, States> {
                             className={classNames([
                                 "border-solid",
                                 "border-2",
-                                "border-gray-400",
+                                "border-gray-400 dark:border-transparent",
                                 color,
                                 "rounded",
                                 "whitespace-nowrap",
@@ -200,7 +200,7 @@ export default class ScheduleDisplay extends Component<Props, States> {
                                 className={classNames([
                                     "border-solid",
                                     "border-2",
-                                    "border-gray-400",
+                                    "border-gray-400 dark:border-transparent",
                                     getSectionColor(s),
                                     "rounded",
                                     "text-center",
@@ -222,7 +222,7 @@ export default class ScheduleDisplay extends Component<Props, States> {
                                 .map((p) => (
                                     <div
                                         className={
-                                            "border-solid border-2 border-gray-400 bg-gray-200 rounded text-center w-full h-6 px-0.5 min-w-full"
+                                            "border-solid border-2 border-gray-400 bg-gray-200 dark:bg-gray-600 dark:border-transparent rounded text-center w-full h-6 px-0.5 min-w-full"
                                         }
                                     >
                                         <b>
@@ -237,7 +237,7 @@ export default class ScheduleDisplay extends Component<Props, States> {
                             {onlineSections.length > 0 && (
                                 <div
                                     className={
-                                        "border-solid border-2 border-gray-400 bg-gray-200 rounded text-center w-full h-6 px-0.5 min-w-full"
+                                        "border-solid border-2 border-gray-400 bg-gray-200 dark:bg-gray-600 dark:border-transparent rounded text-center w-full h-6 px-0.5 min-w-full"
                                     }
                                 >
                                     <div
@@ -245,7 +245,7 @@ export default class ScheduleDisplay extends Component<Props, States> {
                                             "flex items-center justify-center"
                                         }
                                     >
-                                        <GrPersonalComputer />️
+                                        <GrPersonalComputer className="grIcon"/>️
                                     </div>
                                 </div>
                             )}
@@ -265,7 +265,7 @@ export default class ScheduleDisplay extends Component<Props, States> {
                                                         className={classNames([
                                                             "border-solid",
                                                             "border-2",
-                                                            "border-gray-400",
+                                                            "border-gray-400 dark:border-transparent",
                                                             getSectionColor(
                                                                 ind,
                                                             ),

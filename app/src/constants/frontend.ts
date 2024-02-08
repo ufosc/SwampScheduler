@@ -1,11 +1,11 @@
 const sectionColors: string[] = [
-    "bg-red-200",
-    "bg-lime-200",
-    "bg-cyan-200",
-    "bg-fuchsia-200",
-    "bg-amber-200",
-    "bg-green-200",
-    "bg-orange-200",
+    "bg-red-200 dark:bg-red-500",
+    "bg-lime-200 dark:bg-lime-500",
+    "bg-cyan-200 dark:bg-cyan-500",
+    "bg-fuchsia-200 dark:bg-fuchsia-500",
+    "bg-amber-200 dark:bg-amber-500",
+    "bg-green-200 dark:bg-green-500",
+    "bg-orange-200 dark:bg-orange-500",
 ];
 
 export function getSectionColor(sectionInd: number): string {

@@ -6,6 +6,7 @@ import {
     Selection,
 } from "@scripts/scheduleGenerator";
 import SectionPicker from "@components/SectionPicker";
+import ThemeToggle from "./ThemeToggle";
 import MultipleSelectionDisplay from "@components/MultipleSelectionDisplay";
 import MultipleScheduleDisplay from "@components/MultipleScheduleDisplay";
 import { UF_SOC_API } from "@scripts/api";
@@ -188,7 +189,7 @@ export default class ScheduleBuilder extends Component<Props, States> {
             <div className="min-h-screen flex flex-col h-screen p-3">
                 {/* Title & Term Selector */}
                 <div className="flex">
-                    <p className="text-2xl text-slate-700 inline-block">
+                    <p className="text-2xl text-slate-700 inline-block dark:text-white">
                         🐊 Swamp Scheduler 📆
                     </p>
 
@@ -196,7 +197,7 @@ export default class ScheduleBuilder extends Component<Props, States> {
 
                     <select
                         id="term"
-                        className="bg-sky-500 hover:bg-sky-400 border border-blue-300 text-white text-sm rounded-lg p-2.5 mr-1 text-center"
+                        className="bg-sky-500 hover:bg-sky-400 border border-blue-300 text-white text-sm rounded-lg p-2.5 mr-1 text-center dark:border-transparent dark:bg-sky-700"
                         defaultValue={this.state.soc.info.termStr}
                         onChange={(e) =>
                             this.setSOC(e.target.value, defaultProgram)
@@ -217,7 +218,7 @@ export default class ScheduleBuilder extends Component<Props, States> {
 
                     <select
                         id="limit"
-                        className="bg-sky-500 hover:bg-sky-400 border border-blue-300 text-white text-sm rounded-lg p-2.5 mr-1 text-center"
+                        className="bg-sky-500 hover:bg-sky-400 border border-blue-300 text-white text-sm rounded-lg p-2.5 mr-1 text-center dark:border-transparent dark:bg-sky-700"
                         defaultValue={this.state.limit}
                         onChange={(e) =>
                             this.setState({ limit: Number(e.target.value) })
@@ -230,6 +231,7 @@ export default class ScheduleBuilder extends Component<Props, States> {
                             </option>
                         ))}
                     </select>
+                    <ThemeToggle />
                 </div>
 
                 <hr className="my-1.5"></hr>
