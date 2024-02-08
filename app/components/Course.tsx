@@ -142,7 +142,7 @@ export default function Course() {
           </div>
         </div>
       </Container>
-      <Container>
+      <Container className={"rounded"}>
         <div>
           <div className={"flex justify-between"}>
             <div className={"flex items-center gap-2"}>

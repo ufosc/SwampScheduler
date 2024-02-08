@@ -1,5 +1,5 @@
 import Container from "@components/Container";
-import { FaBan, FaBuilding, FaDisplay, FaThumbtack } from "react-icons/fa6";
+import { FaBan, FaBuilding, FaThumbtack } from "react-icons/fa6";
 import { Section_Info } from "@components/Course";
 
 interface SectionProps {
