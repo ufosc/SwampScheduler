@@ -1,5 +1,5 @@
 import React from "react";
-import { Section } from "@scripts/soc";
+import { Section, SOC_Generic } from "@scripts/soc";
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import { Draggable } from "react-drag-and-drop";
@@ -12,13 +12,31 @@ interface Props {
     section: Section;
     draggable?: boolean;
     handleRemove?: (sectionToRemove: Section) => void;
+    hoveredElementSectionUid: string | null;
+    hoveredElementCourseId: string | null;
+    storeHoveredElementSection: (courseID: string | null) => void;
+    forgetHoveredElementSection: () => void;
+    storeHoveredElementCourse: (courseID: string) => void;
+    forgetHoveredElementCourse: () => void;
 }
 
-export default function SectionDisplay({
-    section,
-    draggable = false,
-    handleRemove,
-}: Props) {
+export default function SectionDisplay(props: Props) {
+    const section = props.section;
+
+    const storeHoveredElementSection = (): void => {
+        props.storeHoveredElementSection(props.section.uid)
+        props.storeHoveredElementCourse(SOC_Generic.getCourseID(props.section.uid));
+    }
+
+    const forgetHoveredElementSection = (): void => {
+        props.forgetHoveredElementSection();
+        props.forgetHoveredElementCourse();
+    }
+
+    const needsHighlight= (): boolean => {
+        return (props.hoveredElementSectionUid == props.section.uid) || (props.hoveredElementCourseId == SOC_Generic.getCourseID(props.section.uid));
+    }
+
     const allTimes: React.JSX.Element[] = API_Days.map((day, d) =>
         section.meetings[day].length > 0 ? (
             <div className="mx-1" key={d}>
@@ -41,12 +59,17 @@ export default function SectionDisplay({
             className={"inline-block"}
             type={"uid"}
             data={section.uid}
-            enabled={draggable}
+            enabled={props.draggable}
         >
             <div className="m-1 text-sm">
                 {" "}
                 {/* SECTION */}
-                <div className="w-full p-2 rounded-lg shadow-sm shadow-slate-400">
+                {/*Note that there is a white border when the section is not highlighted because otherwise the graphics will shift between having a border and not having a border, which shifts the size of the section blocks*/}
+                <div
+                    className={needsHighlight() ? "w-full p-2 rounded-lg shadow-sm shadow-slate-400 bg-slate-200 border border-blue-300" : "w-full p-2 rounded-lg shadow-sm shadow-slate-400 border border-white"}
+                    onMouseEnter={() => storeHoveredElementSection()}
+                    onMouseLeave={() => forgetHoveredElementSection()}
+                >
                     <div className={"text-slate-600 flex justify-between"}>
                         <div className={"flex items-center gap-1"}>
                             <b>{section.number}</b>
@@ -56,9 +79,9 @@ export default function SectionDisplay({
                         </div>
                         <button
                             className={"mx-1"}
-                            hidden={!handleRemove}
+                            hidden={!props.handleRemove}
                             onClick={() =>
-                                handleRemove && handleRemove(section)
+                                props.handleRemove && props.handleRemove(section)
                             }
                         >
                             <GrClose />
@@ -86,3 +109,4 @@ export default function SectionDisplay({
         </Draggable>
     );
 }
+

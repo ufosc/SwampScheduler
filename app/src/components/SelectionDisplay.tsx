@@ -9,9 +9,15 @@ import { GrClose } from "react-icons/gr";
 interface Props {
     ind: number;
     selection: Selection;
+    hoveredElementSectionUid: string | null;
+    hoveredElementCourseId: string | null;
     handleDrop: (ind: number, uid: string) => Promise<void>;
     handleRemove: (sectionToRemove: Section) => void;
     handleDeleteSelection: (ind: number) => void;
+    storeHoveredElementSection: (courseID: string | null) => void;
+    forgetHoveredElementSection: () => void;
+    storeHoveredElementCourse: (courseID: string) => void;
+    forgetHoveredElementCourse: () => void;
 }
 
 export default function SelectionDisplay(props: Props) {
@@ -21,9 +27,16 @@ export default function SelectionDisplay(props: Props) {
 
     const sectionDisplays = props.selection.map((section: Section, idx) => (
         <SectionDisplay
+            draggable={false}
             key={idx}
             section={section}
             handleRemove={props.handleRemove}
+            hoveredElementSectionUid={props.hoveredElementSectionUid}
+            hoveredElementCourseId={props.hoveredElementCourseId}
+            storeHoveredElementSection={props.storeHoveredElementSection}
+            forgetHoveredElementSection={props.forgetHoveredElementSection}
+            storeHoveredElementCourse={props.storeHoveredElementCourse}
+            forgetHoveredElementCourse={props.forgetHoveredElementCourse}
         />
     ));
 

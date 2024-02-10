@@ -26,6 +26,12 @@ interface States {
     selections: Selection[];
     schedules: Schedule[];
     showAddCourse: boolean;
+    // string of the courseUID#sectionUID being hovered, corresponding to a given SectionDisplay element
+    // null when no section on the left is being hovered
+    hoveredElementSectionUid: string | null;
+    // string of the course ID of the element being hovered.
+    // null when no element is being hovered that would require a highlight change for all elements with the same course
+    hoveredElementCourseId: string | null;
 }
 
 const defaultState: States = {
@@ -36,6 +42,8 @@ const defaultState: States = {
     selections: getDefaultSelections(),
     schedules: [],
     showAddCourse: false,
+    hoveredElementSectionUid: null,
+    hoveredElementCourseId: null
 };
 
 export default class ScheduleBuilder extends Component<Props, States> {
@@ -168,6 +176,30 @@ export default class ScheduleBuilder extends Component<Props, States> {
         this.setState({ selections: newSelections });
     }
 
+    // Stores both the course and section for an element, which is used to highlight
+    // only elements that are the same exact section
+    storeHoveredElementSection(sectionId: string | null) {
+        if (this.state.hoveredElementSectionUid != sectionId) {
+            this.setState({ hoveredElementSectionUid: sectionId });
+        }
+    }
+
+    forgetHoveredElementSection() {
+        this.setState({ hoveredElementSectionUid: null })
+    }
+
+    // Stores just the course information of an element, which is used to highlight
+    // all other elements of the same course
+    storeHoveredElementCourse(courseId: string) {
+        if (this.state.hoveredElementCourseId != courseId) {
+            this.setState({ hoveredElementCourseId: courseId });
+        }
+    }
+
+    forgetHoveredElementCourse() {
+        this.setState({ hoveredElementCourseId: null })
+    }
+
     render() {
         // Show loading screen if filters/terms haven't been fetched yet
         if (this.state.filters === null)
@@ -238,13 +270,21 @@ export default class ScheduleBuilder extends Component<Props, States> {
                 <main className="flex flex-row overflow-y-hidden h-full p-1">
                     {/* Picker */}
                     <div className="overflow-y-auto w-full">
-                        <SectionPicker soc={this.state.soc} />
+                        <SectionPicker
+                        soc={this.state.soc}
+                        storeHoveredElementSection={this.storeHoveredElementSection.bind(this)}
+                        forgetHoveredElementSection={this.forgetHoveredElementSection.bind(this)}
+                        storeHoveredElementCourse={this.storeHoveredElementCourse.bind(this)}
+                        forgetHoveredElementCourse={this.forgetHoveredElementCourse.bind(this)}
+                        />
                     </div>
 
                     {/* Selected */}
                     <div className="overflow-y-auto w-full p-1">
                         <MultipleSelectionDisplay
                             selections={this.state.selections}
+                            hoveredElementCourseId={this.state.hoveredElementCourseId}
+                            hoveredElementSectionUid={this.state.hoveredElementSectionUid}
                             handleDrop={this.handleDrop.bind(this)}
                             newSelection={this.newSelection.bind(this)}
                             handleRemove={this.handleRemove.bind(this)}
@@ -252,6 +292,8 @@ export default class ScheduleBuilder extends Component<Props, States> {
                                 this,
                             )}
                             key={new Date().getTime()}
+                            storeHoveredElementCourse={this.storeHoveredElementCourse.bind(this)}
+                            forgetHoveredElementCourse={this.forgetHoveredElementCourse.bind(this)}
                         />
                     </div>
 
