@@ -29,7 +29,7 @@ export abstract class SOC_Generic {
     info: SOCInfo;
     courses: Course[];
     // Initialize cache for broad search results and individual courses
-    courseCache: Map<string, Course[]>; 
+    courseCache: Map<string, Course[]>;
 
     /* CONSTRUCT & INITIALIZE */
 
@@ -37,7 +37,7 @@ export abstract class SOC_Generic {
         this.info = info;
         this.courses = courses;
         // Initialize the cache as an empty Map
-        this.courseCache = new Map(); 
+        this.courseCache = new Map();
     }
 
     static async initialize(): Promise<SOC_Generic> {
@@ -124,32 +124,41 @@ export abstract class SOC_Generic {
      */
     searchCourses(searchBy: SearchBy, phrase: string): Course[] {
         console.log(`Searching by ${searchBy} for "${phrase}"`);
-        if (!phrase) 
+        if (!phrase)
             // Empty search phrase should not return all courses
-            return []; 
+            return [];
 
         const upperPhrase: string = phrase.toUpperCase();
 
         // Check cache first for both broad and specific course searches
-         // Use course code as cache key for specific searches
-        const cacheKey = searchBy === SearchBy.COURSE_CODE ? upperPhrase : `${searchBy}:${upperPhrase}`;
+        // Use course code as cache key for specific searches
+        const cacheKey =
+            searchBy === SearchBy.COURSE_CODE
+                ? upperPhrase
+                : `${searchBy}:${upperPhrase}`;
         if (this.courseCache.has(cacheKey)) {
             console.log("Returning cached results for:", cacheKey);
             // Return cached results
-            return this.courseCache.get(cacheKey) || []; 
+            return this.courseCache.get(cacheKey) || [];
         }
 
         let results: Course[] = [];
         if (searchBy === SearchBy.COURSE_CODE) {
             results = this.courses.filter((c) => c.code.includes(upperPhrase));
             // Cache each individual course from the broad search result
-            results.forEach(course => this.courseCache.set(course.code.toUpperCase(), [course]));
+            results.forEach((course) =>
+                this.courseCache.set(course.code.toUpperCase(), [course]),
+            );
         } else if (searchBy === SearchBy.COURSE_TITLE) {
-            results = this.courses.filter((c) => c.name.toUpperCase().includes(upperPhrase));
+            results = this.courses.filter((c) =>
+                c.name.toUpperCase().includes(upperPhrase),
+            );
         } else if (searchBy === SearchBy.INSTRUCTOR) {
             results = this.courses.filter((c) =>
                 c.sections.some((s) =>
-                    s.instructors.some((inst) => inst.toUpperCase().includes(upperPhrase)),
+                    s.instructors.some((inst) =>
+                        inst.toUpperCase().includes(upperPhrase),
+                    ),
                 ),
             );
         } else {
@@ -236,12 +245,15 @@ export class SOC_API extends SOC_Generic {
         lcn = 0,
     ): Promise<void> {
         if (!phrase) return Promise.resolve();
-         // Check cache for individual course code to avoid refetching
+        // Check cache for individual course code to avoid refetching
         const upperPhrase = phrase.toUpperCase();
-        if (searchBy === SearchBy.COURSE_CODE && this.courseCache.has(upperPhrase)) {
+        if (
+            searchBy === SearchBy.COURSE_CODE &&
+            this.courseCache.has(upperPhrase)
+        ) {
             console.log("Course already fetched and cached:", upperPhrase);
             // Exit if the specific course is already cached
-            return Promise.resolve(); 
+            return Promise.resolve();
         }
 
         const search = JSON.stringify({ by: searchBy, phrase });
@@ -293,10 +305,9 @@ export class SOC_API extends SOC_Generic {
                             },
                         );
                         // Add the course to the courses array
-                        this.courses.push(course); 
+                        this.courses.push(course);
                         // Cache the course by its code
-                        this.courseCache.set(courseCode, [course]); 
-
+                        this.courseCache.set(courseCode, [course]);
                     }
                 });
 
