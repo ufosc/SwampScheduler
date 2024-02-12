@@ -1,4 +1,4 @@
-import React, { Component, useState } from "react";
+import { Component } from "react";
 import { Course, Section, SOC_API, SOC_Generic } from "@scripts/soc";
 import {
     Schedule,
@@ -12,7 +12,6 @@ import { UF_SOC_API } from "@scripts/api";
 import { API_Filters } from "@scripts/apiTypes";
 import { arrayEquals, notEmpty, take } from "@scripts/utils";
 import { LIMIT_VALUES, LIMITS } from "@constants/scheduleGenerator";
-import GapSlider from "@components/GapSlider";
 
 const getDefaultSelections = () => [new Selection()];
 const defaultProgram = "CWSP";
