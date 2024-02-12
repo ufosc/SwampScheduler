@@ -5,6 +5,10 @@ import { getSearchBy, getSearchByString, SearchBys } from "@constants/soc";
 import { useQuery } from "react-query";
 import { getSearchByStringExample } from "@constants/frontend";
 
+//Search Type Drop Down
+//Searh Bar
+//Search Button
+
 interface Props {
     soc: SOC_Generic;
 }

@@ -63,10 +63,10 @@ export class Section {
     }
 
     // Returns true if any of the meet times conflict
-    conflictsWith(other: Section): boolean {
+    conflictsWith(other: Section, gap: number): boolean {
         return API_Days.some((day) =>
             this.meetings[day].some((mT1) =>
-                other.meetings[day].some((mT2) => mT1.conflictsWith(mT2)),
+                other.meetings[day].some((mT2) => mT1.conflictsWith(mT2, gap)),
             ),
         );
     }

@@ -12,14 +12,17 @@ export class Schedule extends Array<Section> {
         this.term = term;
     }
 
-    fits(sectionToAdd: Section): boolean {
-        return this.every((sec: Section) => !sectionToAdd.conflictsWith(sec));
+    fits(sectionToAdd: Section, gap: number): boolean {
+        return this.every(
+            (sec: Section) => !sectionToAdd.conflictsWith(sec, gap),
+        );
     }
 }
 
 export class ScheduleGenerator {
     soc: SOC_Generic;
     selections: Selection[] = [];
+    gap: number = 0;
 
     constructor(soc: SOC_Generic) {
         this.soc = soc;
@@ -28,6 +31,10 @@ export class ScheduleGenerator {
     loadSelections(selections: Selection[]) {
         this.selections = selections;
         console.log("Loaded selections", this.selections);
+    }
+
+    setGap(gap: number) {
+        this.gap = gap;
     }
 
     *yieldSchedules(
@@ -46,7 +53,7 @@ export class ScheduleGenerator {
         // Go through all the sections for the selection, and see if each could generate a new schedule
         const selection: Selection = this.selections[selectionInd];
         for (const sectionToAdd of selection) {
-            if (currSchedule.fits(sectionToAdd)) {
+            if (currSchedule.fits(sectionToAdd, this.gap)) {
                 // If it fits the current schedule, add it and keep going
                 const gen = this.yieldSchedules(
                     selectionInd + 1,
