@@ -1,4 +1,4 @@
-import { Component } from "react";
+import React, { Component, useState } from "react";
 import { Course, Section, SOC_API, SOC_Generic } from "@scripts/soc";
 import {
     Schedule,
@@ -12,6 +12,7 @@ import { UF_SOC_API } from "@scripts/api";
 import { API_Filters } from "@scripts/apiTypes";
 import { arrayEquals, notEmpty, take } from "@scripts/utils";
 import { LIMIT_VALUES, LIMITS } from "@constants/scheduleGenerator";
+import GapSlider from "@components/GapSlider";
 
 const getDefaultSelections = () => [new Selection()];
 const defaultProgram = "CWSP";
@@ -26,6 +27,7 @@ interface States {
     selections: Selection[];
     schedules: Schedule[];
     showAddCourse: boolean;
+    gap: number;
 }
 
 const defaultState: States = {
@@ -36,6 +38,7 @@ const defaultState: States = {
     selections: getDefaultSelections(),
     schedules: [],
     showAddCourse: false,
+    gap: 0,
 };
 
 export default class ScheduleBuilder extends Component<Props, States> {
@@ -67,6 +70,7 @@ export default class ScheduleBuilder extends Component<Props, States> {
         // If limit was changed or a section was added/removed from a section, generate new schedules
         if (
             this.state.limit != prevState.limit ||
+            this.state.gap != prevState.gap ||
             !arrayEquals(
                 this.state.selections.filter(notEmpty),
                 prevState.selections.filter(notEmpty),
@@ -80,7 +84,7 @@ export default class ScheduleBuilder extends Component<Props, States> {
                         (sel: Selection) => sel.length > 0,
                     ),
                 );
-
+                this.state.generator.setGap(this.state.gap);
                 const newSchedules: Schedule[] = [
                     ...take(
                         this.state.limit,
@@ -183,16 +187,28 @@ export default class ScheduleBuilder extends Component<Props, States> {
                     <h1>Setting latest Schedule of Courses...</h1>
                 </div>
             );
-
+        //Main Over-Head Bar
         return (
             <div className="min-h-screen flex flex-col h-screen p-3">
                 {/* Title & Term Selector */}
-                <div className="flex">
+                <div className="flex justify items-center gap-1">
                     <p className="text-2xl text-slate-700 inline-block">
                         🐊 Swamp Scheduler 📆
                     </p>
 
                     <div className="grow"></div>
+
+                    <div>{<b>Gap Between Sections ({this.state.gap})</b>}</div>
+
+                    <input
+                        type="range"
+                        min="0"
+                        max="3"
+                        value={this.state.gap}
+                        onChange={(e) =>
+                            this.setState({ gap: parseInt(e.target.value) })
+                        }
+                    />
 
                     <select
                         id="term"

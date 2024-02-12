@@ -14,6 +14,8 @@ interface Props {
     handleRemove?: (sectionToRemove: Section) => void;
 }
 
+//Courses Display
+
 export default function SectionDisplay({
     section,
     draggable = false,

@@ -10,6 +10,7 @@ import { getSectionColor } from "@constants/frontend";
 import { PERIOD_COUNTS } from "@constants/schedule";
 import { GrPersonalComputer } from "react-icons/gr";
 import { handleExportScheduleClick } from "@scripts/soc/calendar.ts";
+import { GapSlider } from "@GapSlider.tsx";
 
 interface Props {
     schedule: Schedule;

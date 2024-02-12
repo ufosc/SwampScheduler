@@ -66,10 +66,16 @@ export class MeetTime {
     }
 
     // Returns true if the meet times conflict (overlap)
-    conflictsWith(other: MeetTime): boolean {
+    conflictsWith(other: MeetTime, gap: number): boolean {
         return (
-            this.periodBegin <= other.periodEnd &&
-            this.periodEnd >= other.periodBegin
+            //this after other
+            (this.periodBegin > other.periodBegin &&
+                other.periodEnd + gap >= this.periodBegin) ||
+            //this before other
+            (this.periodBegin < other.periodBegin &&
+                this.periodEnd + gap >= other.periodBegin) ||
+            //this at other
+            this.periodBegin == other.periodBegin
         );
     }
 }
