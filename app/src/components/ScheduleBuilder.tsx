@@ -1,23 +1,25 @@
 //Importing React, necessary components, other class files, and any dependencies - used ChatGPT for proper syntax with the 'from ""'. 
 import React, { useState, useEffect } from "react";
 import {
-  Course,
-  Section,
   SOC_API,
   SOC_Generic,
+  Course,
+  Section
 } from "@scripts/soc";
 import {
+  Selection,
   Schedule,
   ScheduleGenerator,
-  Selection,
-} from "@scripts/scheduleGenerator";
-import SectionPicker from "@components/SectionPicker";
-import MultipleSelectionDisplay from "@components/MultipleSelectionDisplay";
-import MultipleScheduleDisplay from "@components/MultipleScheduleDisplay";
+} 
+from "@scripts/scheduleGenerator";
 import { UF_SOC_API } from "@scripts/api";
 import { API_Filters } from "@scripts/apiTypes";
 import { arrayEquals, notEmpty, take } from "@scripts/utils";
 import { LIMIT_VALUES, LIMITS } from "@constants/scheduleGenerator";
+import SectionPicker from "@components/SectionPicker";
+import MultipleSelectionDisplay from "@components/MultipleSelectionDisplay";
+import MultipleScheduleDisplay from "@components/MultipleScheduleDisplay";
+
 
 //getDefaultSelections: returns an array of schedules selected
 //defaultProgram: default program value (this was already specified in the original code file)
@@ -28,23 +30,23 @@ const defaultProgram = "CWSP";
 const ScheduleBuilder = () => {
   //filters: API Filters fetched from the UF_SOC_API and are set to null at this time
   const [filters, setFilters] = useState<API_Filters | null>(null);
-  //soc: Schedule of Courses and is set to null to start off with (since no schedules yet built)
-  const [soc, setSOCState] = useState<SOC_Generic | null>(null);
   //generator: generation of schedules through user usage of the website
   const [generator, setGenerator] = useState<ScheduleGenerator | null>(null);
+  //soc: Schedule of Courses and is set to null to start off with (since no schedules yet built)
+  const [soc, setSOCState] = useState<SOC_Generic | null>(null);
   //limit: maximum limit of schedules that can be generated; set initially to LIMIT_VALUES[0]
   const [limit, setLimit] = useState(LIMIT_VALUES[0]);
-  //selections: user-selected course sections
-  const [selections, setSelections] = useState<Selection[]>(
-    getDefaultSelections()
-  );
   //schedules: initial list of schedules with no schedules at the beginning
   const [schedules, setSchedules] = useState<Schedule[]>([]);
-  //showAddCourse: if a course needs to be added to a schedule, the AddCourse button would be implemented
-  const [showAddCourse, setShowAddCourse] = useState(false);
   //pinnedSchedules: if a course wants to be pinned by the user, it will be added to the Schedule array
   const [pinnedSchedules, setPinnedSchedules] = useState<Schedule[]>([]);
-
+  //showAddCourse: if a course needs to be added to a schedule, the AddCourse button would be implemented
+  const [showAddCourse, setShowAddCourse] = useState(false);
+   //selections: user-selected course sections
+   const [selections, setSelections] = useState<Selection[]>(
+    getDefaultSelections()
+  );
+  
   useEffect(() => {
     //fetch filters from UF_SOC_API and set the SOCState with the default program
     UF_SOC_API.fetchFilters().then(async (fetchedFilters) => {
@@ -65,18 +67,18 @@ const ScheduleBuilder = () => {
       );
       setSchedules(newSchedules);
       //output whether the schedule was changed or not changed
-      if (schedules !== newSchedules) {
-        console.log("New schedules", newSchedules);
-      } else {
+      if (schedules === newSchedules) {
         console.log("Same schedules");
+      } else {
+        console.log("New schedules", newSchedules);
       }
     }
   }, [limit, selections, generator, schedules]);
   //reset the schedule building system
   const reset = () => {
-    console.log("Resetting Schedule Builder");
     setSelections(getDefaultSelections());
     setSchedules([]);
+    console.log("Reset Schedule Builder");
   };
   //initialize soc variable
   const setSOC = async (termStr: string, programStr: string) => {
@@ -101,31 +103,19 @@ const ScheduleBuilder = () => {
       }
     }
   };
-  //manages the pin status of a schedule
-  const togglePin = (sch: Schedule) => {
-    const pinned = pinnedSchedules;
-    if (pinned.some((s) => arrayEquals(s, sch))) {
-      setPinnedSchedules(pinned.filter((s) => !arrayEquals(s, sch)));
-    } else {
-      setPinnedSchedules([...pinned, sch]);
-    }
-  };
+  
   //handles adding of new courses or schedules
   const newSelection = (ind: number = -1, sectionsToAdd: Section[] = []) => {
-    if (ind === -1) {
-      setSelections([...selections, new Selection()]);
-      return;
+    if (ind !== -1) {
+        const newSelections = selections.map((sel, i) => {
+        if (i === ind) return [...sel, ...sectionsToAdd];
+            return sel;
+        });
     }
-    const newSelections = selections.map((sel, i) => {
-      if (i === ind) return [...sel, ...sectionsToAdd];
-      return sel;
-    });
-    setSelections(newSelections);
-  };
-  //manages deletion of a course selection
-  const handleDeleteSelection = (ind: number) => {
-    let newSelections = selections.filter((_sel, i) => i !== ind);
-    if (newSelections.length === 0) newSelections = getDefaultSelections();
+    else{
+        setSelections([...selections, new Selection()]);
+        return;
+    }
     setSelections(newSelections);
   };
   //manages removal of a course selection
@@ -135,7 +125,23 @@ const ScheduleBuilder = () => {
     );
     setSelections(newSelections);
   };
-  //sample loading messages - used ChatGPT for assistance with this part
+  //manages deletion of a course selection
+  const handleDeleteSelection = (ind: number) => {
+    let newSelections = selections.filter((_sel, i) => i !== ind);
+    if (newSelections.length === 0) 
+        newSelections = getDefaultSelections();
+    setSelections(newSelections);
+  };
+  //manages the pin status of a schedule
+  const togglePin = (sch: Schedule) => {
+    const pinned = pinnedSchedules;
+    if (pinned.some((s) => arrayEquals(s, sch))) {
+      setPinnedSchedules(pinned.filter((s) => !arrayEquals(s, sch)));
+    } else {
+      setPinnedSchedules([...pinned, sch]);
+    }
+  };
+  //sample loading messages - used ChatGPT for assistance with this section
   return (
     <div className="min-h-screen flex flex-col h-screen p-3">
       <div className="flex">
@@ -187,11 +193,11 @@ const ScheduleBuilder = () => {
         <div className="overflow-y-auto w-full p-1">
           <MultipleSelectionDisplay
             selections={selections}
-            handleDrop={handleDrop}
             newSelection={newSelection}
+            handleDrop={handleDrop}
             handleRemove={handleRemove}
-            pinnedSchedules={togglePin}
             handleDeleteSelection={handleDeleteSelection}
+            pinnedSchedules={togglePin}
             key={new Date().getTime()}
           />
         </div>
