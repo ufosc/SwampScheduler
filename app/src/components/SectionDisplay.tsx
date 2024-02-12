@@ -77,7 +77,7 @@ export default function SectionDisplay({
                         <p>
                             <i>{section.instructors.join(", ")}</i>
                         </p>
-                        <div className={"flex flex-row justify-around"}>     
+                        <div className={"flex flex-row justify-around"}>
                             {allTimes}
                         </div>
                     </div>
