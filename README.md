@@ -98,7 +98,7 @@ Simple breakdown of the web-app (`/app`):
 
 - **public** (`/app/public`)
     - Holds images
-- **src** (`/app/public`)
+- **src** (`/app/src`)
     - **components** (`/app/src/components`)
         - UI components that can be used across the React application
     - **constants** (`/app/src/constants`)
@@ -110,7 +110,7 @@ Simple breakdown of the web-app (`/app`):
     - **main.tsx** (`/app/src/main.tsx`)
         - Where the application is setup and initialized
 - **configuration files/package.json/index.html**
-    - Used for configuring technologies used in this project, installing dependencies, and setting up the basic structure of the web-page respectively.
+    - Used for configuring technologies used in this project, installing dependencies, and setting up the basic structure of the web-page respectively
 
 [SwampScheduler's documentation](https://docs.ufosc.org/docs/swamp-scheduler) is a work-in-progress.
 
