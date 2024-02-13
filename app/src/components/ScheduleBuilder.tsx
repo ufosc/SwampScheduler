@@ -176,7 +176,7 @@ export default class ScheduleBuilder extends Component<Props, States> {
         if (this.state.filters === null)
             return (
                 <div>
-                    <h1>Fetching latest semester information...</h1>
+                    <h1 style={{ fontWeight: 'bold' }}>Fetching latest semester information...</h1>
                 </div>
             );
         if (this.state.soc === null)
