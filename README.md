@@ -27,7 +27,22 @@ Made with :heart: by [UF's Open Source Club](https://ufosc.org) ([@ufosc](https:
 
 ### Prerequisites
 
-Make sure to have `npm` installed.
+Make sure to have `Node.js and npm` installed to download packages from the npm registry.
+
+To check if a version of Node.js and npm is already installed:
+
+```shell
+node -v
+npm -v
+```
+If not installed, there are two types of installation: 
+
+- Node version manager
+    - Easy to switch between versions of Node.js and npm
+- Node installer
+    - Set version of Node.js and npm
+
+To read more and install here: [Node.js and npm installation link](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm#windows-node-version-managers)
 
 ### Setup
 
