@@ -35,14 +35,14 @@ To check if a version of Node.js and npm is already installed:
 node -v
 npm -v
 ```
-If not installed, there are two types of installation: 
+If not installed, there are two types of installations and either works: 
 
 - Node version manager
-    - Easy to switch between versions of Node.js and npm
+    - Can switch between versions of Node.js and npm
 - Node installer
-    - Set version of Node.js and npm
+    - Access only to the set version of Node.js and npm
 
-To read more and install here: [Node.js and npm installation link](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm#windows-node-version-managers)
+Read more and install here: [Node.js and npm doc link](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm#windows-node-version-managers)
 
 ### Setup
 
