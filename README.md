@@ -1,7 +1,7 @@
 # 🐊 Swamp Scheduler 📆
 
 An open-source web app developed to help students at the University of Florida plan for classes next
-semester. [It's available now!](https://osc.rconde.xyz/)
+semester. [V1 of the project is live now!](https://osc.rconde.xyz/)
 
 Made with :heart: by [UF's Open Source Club](https://ufosc.org) ([@ufosc](https://github.com/ufosc/)).
 
@@ -27,7 +27,7 @@ Made with :heart: by [UF's Open Source Club](https://ufosc.org) ([@ufosc](https:
 
 ### Prerequisites
 
-Make sure to have `npm` installed.
+A version of Node.js equal to or greater than version `18.17.0`
 
 ### Setup
 
@@ -41,10 +41,10 @@ git clone <repository-url>
 
 #### Install the Dependencies
 
-Enter the web-app directory (`/app`) and install the dependencies (React, Tailwind CSS, etc.):
+Enter the repository directory (`/SwampScheduler`) and install the dependencies (Next.js, Tailwind CSS, etc.):
 
 ```shell
-cd app
+cd SwampScheduler
 npm install
 ```
 
@@ -52,7 +52,15 @@ npm install
 
 - In the web-app directory:
   - **Development:** Run `npm run dev` to run the development server locally (with hot reloading).
-  - **Production:** Run `npm run build` to build the app to `/app/dist`.
+  - **Production:** Run `npm run build` to build the app to `/.next`.
+  - By default, SwampSchedueler listens on port `3000`. To change the port, edit the scripts object in 'package.json' like so where # = 'your port number'. 
+    ```javascript
+    "scripts": {
+        "dev": "next dev -p #", // for dev
+        "start": "next start -p #" // for production
+    }
+    ```
+- Our current working pages can be found in the /app/ directory. An example of a working url is `/api/terms/all` which returns a list of all terms from the UF SOC.
 
 ## Contribution
 
@@ -66,20 +74,21 @@ This project is built using a variety of exciting technologies, including:
 - **TypeScript:** The JavaScript programming language with a typing system (for `Course` objects, etc.)
   - Familiarize yourself with [TypeScript’s documentation](https://www.typescriptlang.org/docs/) to understand the
     basics and best practices.
-- **React:** A JavaScript library for building dynamic user interfaces.
+- **Next.js:** A React based JavaScript framework for building high-quality web applications
   - The [official React documentation](https://reactjs.org/docs/getting-started.html) is a great resource for learning
     about component-based architecture and state management.
 - **Tailwind CSS:** A utility-first CSS framework.
   - Review the [Tailwind CSS documentation](https://tailwindcss.com/docs) for understanding utility-first styling and
     theming.
-- **Vite:** Simply used as a build tool and development server.
-  - Learn how to set up, configure, and use Vite from [Vite’s official guide](https://vitejs.dev/guide/).
+- **Turbo:** Simply used as a build tool and development server.
+  - Comes bundled with Next.js by default
+  - Learn how to set up, configure, and use Turbo from [Turbos’s official guide](https://turbo.build/).
 
 ### How It All Works
 
-Be sure to read (yes, read) some of our code. Everything works better when we all understand what we're talking about.
+V2 of SwampScheduler is in a work in progress state, and as such, might be difficult to understand for newcomers. However, don't let that deter you from contributing! We recommend reading the [unoffical UF SOC API](https://github.com/Rolstenhouse/uf_api) and walking through the [Next.js getting started page](https://nextjs.org/docs) before getting started.
 
-[SwampScheduler's documentation](https://docs.ufosc.org/docs/swamp-scheduler) is a work-in-progress.
+[SwampScheduler's documentation](https://docs.ufosc.org/docs/swamp-scheduler) is a work-in-progress and will be completed in the near future.
 
 ### Give Me Something To Do!
 
@@ -89,6 +98,8 @@ Take a look at what [issues (enhancements, bug fixes, and ideas)](https://github
 open. If you find one you like, assign yourself and
 be sure to talk to other people about what you're doing (it helps us, the [maintainers](#Maintainers) best allocate our
 resources).
+
+One of our technical leads, [Robert Conde](https://github.com/RobertConde) is working with the [GUD](https://www.instagram.com/gatoruserdesign/) club to redesign our UI in Figma. If you're looking to get involved in the frontend development of SwampScheduler, contact him for more information.
 
 ## Maintainers
 
