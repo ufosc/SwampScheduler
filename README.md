@@ -27,7 +27,22 @@ Made with :heart: by [UF's Open Source Club](https://ufosc.org) ([@ufosc](https:
 
 ### Prerequisites
 
-Make sure to have `npm` installed.
+Make sure to have `Node.js and npm` installed to download packages from the npm registry.
+
+To check if a version of Node.js and npm is already installed:
+
+```shell
+node -v
+npm -v
+```
+If not installed, there are two types of installations and either works: 
+
+- Node version manager
+    - Can switch between versions of Node.js and npm
+- Node installer
+    - Access only to the set version of Node.js and npm
+
+Read more and install here: [Node.js and npm doc link](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm#windows-node-version-managers)
 
 ### Setup
 
@@ -50,13 +65,13 @@ npm install
 
 ### Usage:
 
-- In the web-app directory:
+- In the web-app (`/app`) directory:
     - **Development:** Run `npm run dev` to run the development server locally (with hot reloading).
     - **Production:** Run `npm run build` to build the app to `/app/dist`.
 
 ## Contribution
 
-Before you can make good contributions, you need to know a little bit about what we're using and how the web-app works.
+Before you can make good contributions, you need to know a little bit about what we're using and how the web-app (`/app`) works.
 After that, you should be ready to get your hands dirty!
 
 ### What We're Using (our Tech Stack)
@@ -78,6 +93,24 @@ This project is built using a variety of exciting technologies, including:
 ### How It All Works
 
 Be sure to read (yes, read) some of our code. Everything works better when we all understand what we're talking about.
+
+Simple breakdown of the web-app (`/app`):
+
+- **public** (`/app/public`)
+    - Holds images
+- **src** (`/app/src`)
+    - **components** (`/app/src/components`)
+        - UI components that can be used across the React application
+    - **constants** (`/app/src/constants`)
+        - Contants layer of the application that defines and manages all the constants in the project
+    - **scripts** (`/app/src/scripts`)
+        - Holds the api information and SOC folder
+    - **index.css** (`/app/src/index.css`)
+        - Calls on Tailwind CSS
+    - **main.tsx** (`/app/src/main.tsx`)
+        - Where the application is setup and initialized
+- **configuration files/package.json/index.html**
+    - Used for configuring technologies used in this project, installing dependencies, and setting up the basic structure of the web-page respectively
 
 [SwampScheduler's documentation](https://docs.ufosc.org/docs/swamp-scheduler) is a work-in-progress.
 
