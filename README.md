@@ -1,18 +1,24 @@
 # 🐊 Swamp Scheduler 📆
 
 An open-source web app developed to help students at the University of Florida plan for classes next
-semester. [It's available now!](https://osc.rconde.xyz/)
+semester. [Click Here To View Swamp Scheduler!](https://swamp-scheduler-kux4b5je2-uf-osc.vercel.app/)
 
 Made with :heart: by [UF's Open Source Club](https://ufosc.org) ([@ufosc](https://github.com/ufosc/)).
 
 ## Table of Contents
 
+- [Project Description](#Project Description)
 - [Features](#Features)
 - [Setup](#Setup)
 - [Usage](#Usage)
 - [Contribution](#Contribution)
 - [Maintainers](#Maintainers)
 - [License](#License)
+
+
+## Project Description 
+**What is Swamp Scheduler?
+Swamp Scheduler is a web application designed for University of Florida students to plan their academic schedules. Through Swamp Scheduler, students can view and organize their semester course structure, allowing them to adjust their schedules according to their preferences. Swamp Scheduler also generates potential schedules for students to choose from, allowing course shopping to be a much smoother and easier process. The application provides real-time course data, including information on course credits, professors, section numbers, and class times, all of which are essential for creating an optimal schedule. Additionally, users can log into their accounts to save their schedules.
 
 ## Features
 
@@ -22,6 +28,10 @@ Made with :heart: by [UF's Open Source Club](https://ufosc.org) ([@ufosc](https:
     - Pick which classes you want (and remove which sections you don't)
 - **Schedule Generator:** View and compare all the possible schedules and pick the one that fits your needs and wants.
     - View color-coded schedules that show what your day-to-day ~~struggle~~ workload will be
+- **Generate a Set Range of Schedules:** Allowing users to generate x possible schedules.
+    - View all your schedules an choose the one you want!
+- **Apply Gaps between sections:** Customize your generations through gaps.
+    - Apply gaps to your generated schedules for further customization and ease.
 
 ## Installation
 
@@ -59,6 +69,8 @@ npm install
 Before you can make good contributions, you need to know a little bit about what we're using and how the web-app works.
 After that, you should be ready to get your hands dirty!
 
+
+
 ### What We're Using (our Tech Stack)
 
 This project is built using a variety of exciting technologies, including:
@@ -74,6 +86,24 @@ This project is built using a variety of exciting technologies, including:
       theming.
 - **Vite:** Simply used as a build tool and development server.
     - Learn how to set up, configure, and use Vite from [Vite’s official guide](https://vitejs.dev/guide/).
+
+### Code Style and Recommendations
+If you are unfamiliar with the tech stack, be sure to check out these free resources to learn!
+- [TypeScript’s Course](https://www.youtube.com/watch?v=d56mG7DezGs)
+- [React’s Course](https://www.youtube.com/watch?v=CgkZ7MvWUAA)
+- [Tailwind CSS’s Course](https://www.youtube.com/watch?v=lCxcTsOHrjo)
+- [Vite’s Course](https://www.youtube.com/watch?v=VAeRhmpcWEQ)
+
+If you need help, don't be afraid to ask in the OSC [discord](https://discord.gg/SawBXetE)
+
+- - **Indentation and Spacing**: Use consistent indentation (e.g., 2 or 4 spaces) to enhance readability. Include spaces around operators and after commas to improve clarity.
+- **Naming Conventions**: Follow a consistent naming convention (e.g., camelCase for variables and functions, PascalCase for classes) across your codebase.
+- **Use Descriptive Names**: Choose variable, function, and class names that clearly describe their purpose or behavior without needing additional comments.
+- **Limit Line Length**: Aim to keep line length under 80-100 characters for better readability across various editors and tools.
+- **Function Size**: Keep functions short and focused. Each function should do one thing and do it well. A good rule of thumb is that if you can’t summarize what a function does in a simple sentence, it might be doing too much.
+- **Comments and Documentation**: Use comments to explain "why" instead of "what." Use documentation blocks for functions and modules to describe their purpose, parameters, and return values.
+- **Consistent Syntax Style**: Be consistent with your syntax style, such as the use of arrow functions vs. traditional functions in JavaScript/TypeScript, or the placement of braces.
+
 
 ### How It All Works
 
