@@ -1,3 +1,6 @@
+# Introduction 
+The purpose of this application is to help students plan for their next semester. It will connect to One.UF and provide a more simple platform for students to increase time management skills. 
+
 # 🐊 Swamp Scheduler 📆
 
 An open-source web app developed to help students at the University of Florida plan for classes next
@@ -48,6 +51,8 @@ cd app
 npm install
 ```
 
+version --23 
+React app
 ### Usage:
 
 - In the web-app directory:
