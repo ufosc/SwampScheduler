@@ -29,7 +29,6 @@ export default function SectionPicker(props: Props) {
     } = useQuery<Course[]>({
         initialData: [],
         queryFn: () => {
-            setAbortRef(new AbortController());
             return props.soc instanceof SOC_API
                 ? props.soc.fetchSearchCourses(searchBy, searchText, abortRef)
                 : props.soc.searchCourses(searchBy, searchText);
@@ -76,17 +75,38 @@ export default function SectionPicker(props: Props) {
                     }
                     placeholder={getSearchByStringExample(searchByString)}
                     value={searchText}
-                    onChange={(e) => setSearchText(e.target.value)}
+                    onChange={(e) => {
+                        if (isFetching) {
+                            console.log('Aborting fetching courses')
+                            abortRef.abort('input text being changed');
+                            setAbortRef(new AbortController());
+                        }
+                        setSearchText(e.target.value)
+                    }}
                     autoComplete={"off"}
                     onKeyDown={(e) => {
                         if (e.key === "Enter") {
-                            fetchCourses();
+                            if (isFetching) {
+                                console.log('Aborting fetching courses')
+                                abortRef.abort('enter key being pressed');
+                                setAbortRef(new AbortController());
+                            } else {
+                                fetchCourses();
+                            }   
                         }
                     }}
                 />
 
                 <button
-                    onClick={() => fetchCourses()}
+                    onClick={() => {
+                        if (isFetching) {
+                            console.log('Aborting fetching courses')
+                            abortRef.abort('search button being clicked');
+                            setAbortRef(new AbortController());
+                        } else {
+                            fetchCourses();
+                        }   
+                    }}
                     className="bg-sky-500 hover:bg-sky-400 border border-blue-300 text-white text-sm rounded-lg p-2.5 ml-1"
                 >
                     Search
