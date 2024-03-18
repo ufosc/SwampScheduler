@@ -78,6 +78,36 @@ export class MeetTime {
             this.periodBegin == other.periodBegin
         );
     }
+
+    static parseMeetings = (meetingsJson: Meetings): Meetings => {
+        let meetings = noMeetings();
+        meetingsJson.M.forEach((meetTimeJson: MeetTime) => meetings.M.push(MeetTime.parseMeetTime(meetTimeJson)));
+        meetingsJson.T.forEach((meetTimeJson: MeetTime) => meetings.T.push(MeetTime.parseMeetTime(meetTimeJson)));
+        meetingsJson.W.forEach((meetTimeJson: MeetTime) => meetings.W.push(MeetTime.parseMeetTime(meetTimeJson)));
+        meetingsJson.R.forEach((meetTimeJson: MeetTime) => meetings.R.push(MeetTime.parseMeetTime(meetTimeJson)));
+        meetingsJson.F.forEach((meetTimeJson: MeetTime) => meetings.F.push(MeetTime.parseMeetTime(meetTimeJson)));
+        meetingsJson.S.forEach((meetTimeJson: MeetTime) => meetings.S.push(MeetTime.parseMeetTime(meetTimeJson)));
+        return meetings;
+    }
+
+    static parseMeetTime = (meetTimeJson: MeetTime): MeetTime => {
+        let meetTime = new MeetTime(Term.Spring, this.emptyMeetTime(), false);
+        return Object.assign(meetTime, meetTimeJson);
+    }
+
+    static emptyMeetTime = () => {
+        return {
+            meetNo: 0,
+            meetDays: [],
+            meetTimeBegin: "",
+            meetTimeEnd: "",
+            meetPeriodBegin: "",
+            meetPeriodEnd: "",
+            meetBuilding: "",
+            meetBldgCode: "",
+            meetRoom: "",
+        }
+    }
 }
 
 export type Meetings = Record<API_Day, MeetTime[]>;

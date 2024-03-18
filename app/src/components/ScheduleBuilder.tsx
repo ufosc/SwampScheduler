@@ -75,6 +75,8 @@ export default class ScheduleBuilder extends Component<Props, States> {
                 prevState.selections.filter(notEmpty),
             )
         ) {
+            console.log(`Updating local storage data for "selections:${this.state.soc?.getSOCProgramString()},${this.state.soc?.getSOCTermString()}"`)
+            localStorage.setItem(`selections:${this.state.soc?.getSOCProgramString()},${this.state.soc?.getSOCTermString()}`, JSON.stringify(this.state.selections));
             if (this.state.generator) {
                 // Make sure generator is not null
                 this.state.generator.loadSelections(
@@ -113,6 +115,21 @@ export default class ScheduleBuilder extends Component<Props, States> {
             }),
         );
         this.reset(); // Make sure to only show info from the current SOC
+        await this.loadStoredSelections(termStr, programStr);
+    }
+
+    async loadStoredSelections(termStr: string, programStr: string) {
+        console.log(`Searching for local storage data for "selections:${programStr},${termStr}"`)
+        const data = localStorage.getItem(`selections:${programStr},${termStr}`);
+        if (data != null) {
+            console.log("Stored selection data found", JSON.parse(data));
+            let selectionArray = JSON.parse(data).map((selectionJson: Section[]): Selection => {
+                return Selection.parseJSON(selectionJson);;
+            });
+            this.setState({ selections: selectionArray });
+        } else {
+            console.log("Stored selection data not present.")
+        }
     }
 
     async handleDrop(ind: number, uid: string) {
@@ -133,10 +150,15 @@ export default class ScheduleBuilder extends Component<Props, States> {
                     (section) =>
                         !this.state.selections.some(
                             // TODO: extract to a Selections class
-                            (sel) => sel.includes(section),
+                            (sel) => {
+                                return sel.map((sec) => sec.uid === section.uid).some((truthVal) => truthVal);
+                            }
                         ),
                 );
                 this.newSelection(ind, sectionsToAdd); // Add the section that have not been added
+            }
+            else {
+                alert("Error dragging course or section to selections from search results. Please try re-running your search.")
             }
         }
     }

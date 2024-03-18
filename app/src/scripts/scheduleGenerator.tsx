@@ -1,7 +1,17 @@
 import { Section, SOC_Generic } from "@scripts/soc";
 import { Term } from "@constants/soc";
 
-export class Selection extends Array<Section> {}
+
+
+
+
+export class Selection extends Array<Section> {
+    static parseJSON(selectionJson: Section[]): Selection {
+        return selectionJson.map((sectionJson: Section) => {
+            return Section.parseJSON(sectionJson);
+        });
+    }
+}
 
 export class Schedule extends Array<Section> {
     term: Term;

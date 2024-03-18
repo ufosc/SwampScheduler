@@ -77,4 +77,55 @@ export class Section {
             this.type == API_Section_Type.MostlyOnline
         );
     }
+
+    static parseJSON = (sectionJson: Section): Section => {
+        let section = new Section("0#0", Term.Fall, this.emptyApiSection(), "MAS3114");
+        section = Object.assign(section, sectionJson);
+        section.credits = new MinMax<number>(
+            sectionJson.credits.min,
+            sectionJson.credits.max,
+        );
+        section.meetings = MeetTime.parseMeetings(sectionJson.meetings);
+        return section;
+    }
+
+    static emptyApiSection = (): API_Section => {
+        return {
+            number: "",
+            classNumber: 0,
+            gradBasis: 0,
+            acadCareer: 0,
+            display: "",
+            credits: 0,
+            credits_min: 0,
+            credits_max: 0,
+            note: "",
+            dNote: "",
+            genEd: [],
+            quest: [],
+            sectWeb: API_Section_Type.PrimarilyClassroom,
+            rotateTitle: "",
+            deptCode: 0,
+            deptName: "",
+            openSeats: 0,
+            courseFee: 0,
+            lateFlag: "",
+            EEP: "",
+            LMS: "",
+            instructors: [],
+            meetTimes: [],
+            addEligible: "",
+            grWriting: "",
+            finalExam: "",
+            dropaddDeadline: "",
+            pastDeadline: false,
+            startDate: "",
+            endDate: "",
+            waitList: {
+                isEligible: "",
+                cap: 0,
+                total: 0,
+            }
+        }
+    }
 }
